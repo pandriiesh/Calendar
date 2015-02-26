@@ -1,9 +1,12 @@
 package com.home;
 
 import com.home.common.Event;
+import com.home.datastore.CalendarDataStore;
 import com.home.datastore.CalendarDataStoreImpl;
 import com.home.service.CalendarService;
 import com.home.service.CalendarServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.*;
 
@@ -23,8 +26,9 @@ public class Main {
 
     public static void main(String[] args) {
 
+        ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 
-        CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
+        CalendarService calendarService = (CalendarService) context.getBean("calendarServiceImpl");
 
         Event meeting = new Event.Builder()
                 .title("Drinking beer")
