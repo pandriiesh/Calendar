@@ -4,23 +4,23 @@ import java.util.List;
 
 public class Person {
 
-    private String name;
-    private String email;
+    private String personName;
+    private String personEmail;
     private List<Event> eventList;
 
-    public String getName() {
-        return name;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPersonEmail() {
+        return personEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPersonEmail(String personEmail) {
+        this.personEmail = personEmail;
     }
 }

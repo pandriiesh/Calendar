@@ -6,6 +6,8 @@
     <groupId>com.home</groupId>
     <artifactId>Calendar</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
 
     <properties>
         <spring.version>4.1.5.RELEASE</spring.version>
@@ -71,5 +73,24 @@
         </dependency>
     </dependencies>
 
-
+    <build>
+        <finalName>Calendar</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
