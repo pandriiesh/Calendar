@@ -26,5 +26,8 @@
         <module name="calendar" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="calendar" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
 </project>
