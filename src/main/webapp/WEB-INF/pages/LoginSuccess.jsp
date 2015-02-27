@@ -5,7 +5,9 @@
 </head>
 <body>
     <h1>${headerMessage}</h1>
-    <h2>You logged in as ${login}</h2>
+    <h2>You logged in as ${person.login}</h2>
     <h3>Welcome!</h3>
+    <a href="${pageContext.request.contextPath}/ControlPanel.html">Proceed to your account</a>
+
 </body>
 </html>

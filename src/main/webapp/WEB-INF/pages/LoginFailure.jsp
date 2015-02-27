@@ -18,13 +18,13 @@
         </tr>
     </table>
 
-    <h2>Please try again.</h2>
+    <h3>Please try again.</h3>
     <form action="${pageContext.request.contextPath}/submitLoginForm.html" method="post">
         <table>
             <tr><td>Login: <input type="text" name="login"/></td></tr>
             <tr><td>Password: <input type="password" name="password"/></td></tr>
         </table>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Done">
         <a href="${pageContext.request.contextPath}/RegistrationForm.html">Register</a>
     </form>
 

@@ -10,6 +10,8 @@
             <table>
                 <tr><td>Name: <input type="text" name="personName"/></td></tr>
                 <tr><td>Email: <input type="text" name="personEmail"/></td></tr>
+                <tr><td>Login: <input type="text" name="login"/></td></tr>
+                <tr><td>Password: <input type="password" name="password"/></td></tr>
             </table>
             <input type="submit" value="Done">
         </form>
