@@ -89,6 +89,8 @@ public class MainController {
             return "pages/LoginForm";
         }
 
+        request.getSession().setAttribute("person", personMap.get(personName));
+
         return "pages/ControlPanel";
     }
 }
