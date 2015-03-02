@@ -8,8 +8,8 @@
         <h2>Please enter your login and password to proceed:</h2>
         <form action="${pageContext.request.contextPath}/submitLoginForm.html" method="post">
             <table>
-                <tr><td>Login: <input type="text" name="login"/></td></tr>
-                <tr><td>Password: <input type="password" name="password"/></td></tr>
+                <tr><td>Login:      </td><td><input type="text" name="login"/></td></tr>
+                <tr><td>Password:   </td><td><input type="password" name="password"/></td></tr>
             </table>
             <input type="submit" value="Done">
         </form>
