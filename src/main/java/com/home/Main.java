@@ -45,6 +45,7 @@ public class Main {
 
 
         // creating and testing database connection
+        /*
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -85,5 +86,7 @@ public class Main {
         System.out.println("Person login is " + person.getLogin());
         System.out.println("Person password is " + person.getPassword());
     }
+    */
 
+    }
 }

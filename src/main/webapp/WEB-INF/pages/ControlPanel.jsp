@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>${headerMessage}</h1>
-    <h2>Control Panel</h2>
+    <h2>Control Panel of user "<%out.print(request.getSession().getAttribute("personName"));%>" </h2>
 
 </body>
 </html>
