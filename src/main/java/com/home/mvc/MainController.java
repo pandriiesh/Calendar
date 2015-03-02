@@ -24,8 +24,9 @@ public class MainController {
     }
 
     @RequestMapping(value = "/LoginForm.html", method = RequestMethod.GET)
-    public String getLoginForm() {
+    public String getLoginForm(HttpServletRequest request) {
 
+        request.getSession().setAttribute("personName", null);
         return "pages/LoginForm";
     }
 
@@ -51,7 +52,12 @@ public class MainController {
 
 
     @RequestMapping(value = "/RegistrationForm.html", method = RequestMethod.GET)
-    public String getRegistrationForm() {
+    public String getRegistrationForm(HttpServletRequest request) {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+        if (personName!=null) {
+            return "pages/LoggedInPage";
+        }
 
         return "pages/RegistrationForm";
     }
@@ -71,7 +77,13 @@ public class MainController {
     }
 
     @RequestMapping(value = "/ControlPanel.html")
-     public String getAccountView() {
+     public String getControlPanel(HttpServletRequest request) {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName==null) {
+            return "pages/LoginForm";
+        }
 
         return "pages/ControlPanel";
     }
