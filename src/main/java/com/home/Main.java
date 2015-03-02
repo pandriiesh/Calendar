@@ -1,20 +1,21 @@
 package com.home;
 
 import com.home.common.Event;
-import com.home.common.Person;
 import com.home.service.CalendarService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
 
+    //local code review (vtegza): consider encapsulation @ 3/2/2015
     List<Event> eventList;
 
+    //local code review (vtegza): not used @ 3/2/2015
     public void main(List<String> titles) {
 
         eventList = new ArrayList<Event>();
@@ -29,6 +30,7 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 
+        //local code review (vtegza): you can call getBean with id and type - this way you will get fine generic object @ 3/2/2015
         CalendarService calendarService = (CalendarService) context.getBean("calendarServiceImpl");
 
         Event meeting = new Event.Builder()
@@ -41,9 +43,10 @@ public class Main {
 
         calendarService.addEvent(meeting);
 
+        //local code review (vtegza): no need for toString @ 3/2/2015
         System.out.println(calendarService.searchEvent(meeting.getTitle()).toString());
 
-
+        //local code review (vtegza): clean up @ 3/2/2015
         // creating and testing database connection
         /*
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

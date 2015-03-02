@@ -8,8 +8,10 @@ import java.util.Map;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
+    //local code review (vtegza): could be final @ 3/2/2015
     private Map<String, Event> eventMap = new HashMap<String, Event>();
 
+    //local code review (vtegza): not used @ 3/2/2015
     public Map<String, Event> getEventMap() {
         return eventMap;
     }

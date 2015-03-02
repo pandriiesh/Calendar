@@ -1,8 +1,6 @@
 package com.home.common;
 
-import javax.persistence.*;
-import java.util.List;
-
+//local code review (vtegza): use Builder pattern @ 3/2/2015
 public class Person {
     private String personName;
     private String personEmail;
