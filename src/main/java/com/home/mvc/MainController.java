@@ -1,5 +1,6 @@
 package com.home.mvc;
 
+import com.home.common.EventClone;
 import com.home.common.Person;
 import com.home.datastore.PersonDataStore;
 import com.home.datastore.PersonDataStoreImpl;
@@ -15,6 +16,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @SessionAttributes("myRequestObject")
@@ -23,8 +28,10 @@ public class MainController {
     PersonService personService = new PersonServiceImpl();
 
     @ModelAttribute
-    public void addingCommonObjects(Model model) {
+    public void addingCommonObjects(Model model, HttpServletRequest request) {
+
         model.addAttribute("headerMessage", "ONLINE CALENDAR");
+        request.getSession().setAttribute("personMap", personService.getPersonMap());
     }
 
     @RequestMapping(value = "/LoginForm.html", method = RequestMethod.GET)
@@ -67,7 +74,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitRegistrationForm.html", method = RequestMethod.POST)
-    public String submitRegistrationForm(@ModelAttribute("person") Person person, HttpServletRequest request) {
+    public String submitRegistrationForm(@ModelAttribute("person") Person person) {
 
 
         if (person.getPersonName().isEmpty()) {
@@ -100,5 +107,39 @@ public class MainController {
         request.getSession().setAttribute("personMap", personService.getPersonMap());
 
         return "pages/RegisteredPersons";
+    }
+
+    @RequestMapping(value = "/CreateEventForm.html")
+    public String createEvent() {
+
+        return "pages/CreateEventForm";
+    }
+
+    @RequestMapping(value = "/submitCreateEventForm.html")
+     public String submitCreateEvent(@ModelAttribute("event") EventClone eventClone,
+                                     @RequestParam("allAttenders") String allAttenders,
+                                     HttpServletRequest request) {
+
+        List<String> attendersList = Arrays.asList(allAttenders.split(" "));
+        for (String login : attendersList) {
+            personService.findPerson(login).addEvent(eventClone);
+        }
+
+        eventClone.setAttendersLogins(attendersList);
+
+        request.getSession().setAttribute("event", eventClone);
+
+        return "pages/ControlPanel";
+    }
+
+    @RequestMapping(value = "/ShowEvents.html")
+    public String submitCreateEvent(HttpServletRequest request, HttpServletResponse response) {
+
+
+        Person person = personService.findPerson((String) request.getSession().getAttribute("personName"));
+
+        request.getSession().setAttribute("person", person);
+
+        return "pages/ShowEvents";
     }
 }

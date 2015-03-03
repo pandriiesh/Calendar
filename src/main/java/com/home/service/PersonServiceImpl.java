@@ -10,7 +10,6 @@ public class PersonServiceImpl implements PersonService {
 
     private PersonDataStore personDataStore = new PersonDataStoreImpl();
 
-
     @Override
     public Person findPerson(String personLogin) {
         return personDataStore.findPerson(personLogin);
