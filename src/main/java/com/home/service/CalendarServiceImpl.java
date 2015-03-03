@@ -12,7 +12,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     private CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
-    private Map<String, Event> eventMap = new HashMap<String, Event>();
+    private final Map<String, Event> eventMap = new HashMap<String, Event>();
 
     public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
         this.calendarDataStore = calendarDataStore;
