@@ -91,9 +91,7 @@ public class Event {
         private Date startDate;
         private Date endDate;
 
-        //local code review (vtegza): add copy constructor @ 3/2/2015
         public Builder() {
-
         }
 
         public Builder(Event event) {
