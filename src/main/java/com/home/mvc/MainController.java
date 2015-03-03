@@ -20,7 +20,7 @@ public class MainController {
 
     //local code review (vtegza): wrap this map to similar object like data store @ 3/2/2015
     //local code review (vtegza): should not be static and package local @ 3/2/2015
-    static Map<String, Person> personMap = new HashMap<String, Person>();
+    private Map<String, Person> personMap = new HashMap<String, Person>();
 
     @ModelAttribute
     public void addingCommonObjects(Model model) {
