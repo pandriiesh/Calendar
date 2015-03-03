@@ -95,6 +95,15 @@ public class Event {
 
         }
 
+        public Builder(Event event) {
+            this.title = event.title;
+            this.description = event.description;
+            this.attenders = event.attenders;
+            this.attendersEmails = event.attendersEmails;
+            this.startDate = event.startDate;
+            this.endDate = event.endDate;
+        }
+
         public Builder title(String title) {
             this.title = title;
             return this;

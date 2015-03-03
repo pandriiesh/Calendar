@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface CalendarDataStore {
 
-    public void addEvent(Event event);
+    void addEvent(Event event);
 
-    public void removeEvent(Event event);
+    void removeEvent(Event event);
 
-    public Event createEvent(String title, List<String> attendersEmails);
+    Event createEvent(String title, List<String> attendersEmails);
 
-    public Event searchEvent(String title);
+    Event searchEvent(String title);
 
 }

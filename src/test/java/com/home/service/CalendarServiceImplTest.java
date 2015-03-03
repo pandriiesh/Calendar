@@ -4,12 +4,15 @@ import com.home.common.Event;
 import com.home.datastore.CalendarDataStore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CalendarServiceImplTest {
 
@@ -38,6 +41,7 @@ public class CalendarServiceImplTest {
 
 
         // verify mock expectations
+        //local code review (vtegza): no nee for times(1) @ 3/2/2015
         verify(calendarDataStore, times(1)).addEvent(actualEvent);
 
     }
@@ -68,6 +72,7 @@ public class CalendarServiceImplTest {
         }
 
         // verify mock expectations
+        //local code review (vtegza): no nee for times(1) @ 3/2/2015
         verify(calendarDataStore, times(1)).createEvent(title, attendersEmails);
     }
 
@@ -119,6 +124,7 @@ public class CalendarServiceImplTest {
         }
 
         // verify mock expectations
+        //local code review (vtegza): no nee for times(1) @ 3/2/2015
         verify(calendarDataStore, times(1)).removeEvent(actualEvent);
 
     }
