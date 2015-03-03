@@ -3,6 +3,7 @@ package com.home.datastore;
 import com.home.common.Person;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PersonDataStoreImpl implements PersonDataStore {
@@ -22,5 +23,10 @@ public class PersonDataStoreImpl implements PersonDataStore {
     @Override
     public void removePerson(Person person) {
         personStore.remove(person.getLogin());
+    }
+
+    @Override
+    public Map<String, Person> getPersonMap() {
+        return personStore;
     }
 }

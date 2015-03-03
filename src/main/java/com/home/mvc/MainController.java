@@ -3,6 +3,8 @@ package com.home.mvc;
 import com.home.common.Person;
 import com.home.datastore.PersonDataStore;
 import com.home.datastore.PersonDataStoreImpl;
+import com.home.service.PersonService;
+import com.home.service.PersonServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @SessionAttributes("myRequestObject")
 public class MainController {
 
-    private PersonDataStore personDataStore = new PersonDataStoreImpl();
+    PersonService personService = new PersonServiceImpl();
 
     @ModelAttribute
     public void addingCommonObjects(Model model) {
@@ -37,7 +39,7 @@ public class MainController {
                                             @RequestParam("password") String password,
                                             HttpServletRequest request) {
 
-        Person person = personDataStore.findPerson(login);
+        Person person = personService.findPerson(login);
 
         if (person!=null && person.getPassword().equals(password)) {
             ModelAndView model = new ModelAndView("pages/LoginSuccess");
@@ -73,7 +75,7 @@ public class MainController {
         }
 
 
-        personDataStore.registerPerson(person);
+        personService.registerPerson(person);
 
         return "pages/RegistrationSuccess";
     }
@@ -87,8 +89,16 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        request.getSession().setAttribute("person", personDataStore.findPerson(personName));
+        request.getSession().setAttribute("person", personService.findPerson(personName));
 
         return "pages/ControlPanel";
+    }
+
+    @RequestMapping(value = "/RegisteredPersons.html")
+    public String showRegisteredPersons(HttpServletRequest request) {
+
+        request.getSession().setAttribute("personMap", personService.getPersonMap());
+
+        return "pages/RegisteredPersons";
     }
 }

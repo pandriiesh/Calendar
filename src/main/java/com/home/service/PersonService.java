@@ -1,11 +1,10 @@
-package com.home.datastore;
+package com.home.service;
 
 import com.home.common.Person;
 
 import java.util.Map;
 
-
-public interface PersonDataStore {
+public interface PersonService {
 
     void registerPerson(Person person);
 
@@ -14,4 +13,5 @@ public interface PersonDataStore {
     Person findPerson(String personLogin);
 
     Map<String, Person> getPersonMap();
+
 }

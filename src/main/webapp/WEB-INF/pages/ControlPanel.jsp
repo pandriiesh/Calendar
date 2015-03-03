@@ -19,5 +19,8 @@
     </table>
     <h3>Not "<%out.print(person.getPersonName());%>"?
          <a href="${pageContext.request.contextPath}/LoginForm.html">Loguot</a></h3>
+
+        <h3><a href="${pageContext.request.contextPath}/RegisteredPersons.html">View all registered persons</a></h3>
+
 </body>
 </html>
