@@ -1,6 +1,8 @@
 package com.home.mvc;
 
 import com.home.common.Person;
+import com.home.datastore.PersonDataStore;
+import com.home.datastore.PersonDataStoreImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,16 +13,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @SessionAttributes("myRequestObject")
 public class MainController {
 
-    //local code review (vtegza): wrap this map to similar object like data store @ 3/2/2015
-    //local code review (vtegza): should not be static and package local @ 3/2/2015
-    private Map<String, Person> personMap = new HashMap<String, Person>();
+    private PersonDataStore personDataStore = new PersonDataStoreImpl();
 
     @ModelAttribute
     public void addingCommonObjects(Model model) {
@@ -39,9 +37,9 @@ public class MainController {
                                             @RequestParam("password") String password,
                                             HttpServletRequest request) {
 
-        Person person = personMap.get(login);
+        Person person = personDataStore.findPerson(login);
 
-        if (personMap.containsKey(login) && person.getPassword().equals(password)) {
+        if (person!=null && person.getPassword().equals(password)) {
             ModelAndView model = new ModelAndView("pages/LoginSuccess");
             model.addObject("person", person);
             request.getSession().setAttribute("personName", person.getPersonName());
@@ -75,7 +73,7 @@ public class MainController {
         }
 
 
-        personMap.put(person.getPersonName(), person);
+        personDataStore.registerPerson(person);
 
         return "pages/RegistrationSuccess";
     }
@@ -89,7 +87,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        request.getSession().setAttribute("person", personMap.get(personName));
+        request.getSession().setAttribute("person", personDataStore.findPerson(personName));
 
         return "pages/ControlPanel";
     }

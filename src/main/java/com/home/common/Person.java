@@ -1,6 +1,7 @@
 package com.home.common;
 
 public class Person {
+
     private String personName;
     private String personEmail;
     private String login;

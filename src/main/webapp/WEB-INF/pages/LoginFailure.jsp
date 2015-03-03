@@ -8,24 +8,17 @@
     <h2>SORRY! YOU'VE ENTERED INVALID LOGIN OR PASSWORD</h2>
     <h3>You typed such information: </h3>
     <table>
-        <tr>
-            <td>Login:</td>
-            <td>${login}</td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td>${password}</td>
-        </tr>
+        <tr><td>Login:      </td><td>${login}</td></tr>
+        <tr><td>Password:   </td><td>${password}</td></tr>
     </table>
 
-    <h3>Please try again.</h3>
+    <h3>Please try again or <a href="${pageContext.request.contextPath}/RegistrationForm.html">register</a></h3>
     <form action="${pageContext.request.contextPath}/submitLoginForm.html" method="post">
         <table>
-            <tr><td>Login: <input type="text" name="login"/></td></tr>
-            <tr><td>Password: <input type="password" name="password"/></td></tr>
+            <tr><td>Login:      </td><td> <input type="text" name="login"/></td></tr>
+            <tr><td>Password:   </td><td> <input type="password" name="password"/></td></tr>
         </table>
         <input type="submit" value="Done">
-        <a href="${pageContext.request.contextPath}/RegistrationForm.html">Register</a>
     </form>
 
 </body>
