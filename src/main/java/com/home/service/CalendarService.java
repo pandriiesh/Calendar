@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface CalendarService {
 
-    //local code review (vtegza): no need for public here @ 3/2/2015
     public void addEvent(Event event);
 
     public void removeEvent(Event event);

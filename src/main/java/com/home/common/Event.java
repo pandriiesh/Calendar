@@ -91,9 +91,16 @@ public class Event {
         private Date startDate;
         private Date endDate;
 
-        //local code review (vtegza): add copy constructor @ 3/2/2015
         public Builder() {
+        }
 
+        public Builder(Event event) {
+            this.title = event.title;
+            this.description = event.description;
+            this.attenders = event.attenders;
+            this.attendersEmails = event.attendersEmails;
+            this.startDate = event.startDate;
+            this.endDate = event.endDate;
         }
 
         public Builder title(String title) {

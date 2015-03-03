@@ -7,8 +7,11 @@
           <element id="module-output" name="calendar" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.34" />
@@ -31,10 +34,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.5.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">

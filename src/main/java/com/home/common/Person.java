@@ -1,27 +1,10 @@
 package com.home.common;
 
-//local code review (vtegza): use Builder pattern @ 3/2/2015
 public class Person {
     private String personName;
     private String personEmail;
     private String login;
     private String password;
-
-    public String getPersonName() {
-        return personName;
-    }
-
-    public void setPersonName(String personName) {
-        this.personName = personName;
-    }
-
-    public String getPersonEmail() {
-        return personEmail;
-    }
-
-    public void setPersonEmail(String personEmail) {
-        this.personEmail = personEmail;
-    }
 
     public String getLogin() {
         return login;
@@ -39,4 +22,19 @@ public class Person {
         this.password = password;
     }
 
+    public String getPersonEmail() {
+        return personEmail;
+    }
+
+    public void setPersonEmail(String personEmail) {
+        this.personEmail = personEmail;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
 }
