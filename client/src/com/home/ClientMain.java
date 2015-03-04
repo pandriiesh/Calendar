@@ -21,7 +21,7 @@ public class ClientMain {
         String[] reservedCalendarNames = {"New Year", "Meeting10", "code review"};
 
         for (String name : reservedCalendarNames)
-            service.addEvent(new Event.Builder().title(name).description(name).build());
+            service.addEvent(new Event.Builder().title(name).description(name + "'s description").build());
 
         for (String name : reservedCalendarNames)
             logger.info("Created event in data store: " + service.searchEvent(name));

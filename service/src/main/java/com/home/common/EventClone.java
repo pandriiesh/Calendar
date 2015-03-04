@@ -1,10 +1,14 @@
 package com.home.common;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class EventClone {
+// This class is Event class clone, and here because i cant bind the Event class attribute from request after
+// JSP form filling at RegistrationForm.jsp (because of Builder)
+// later will think how to do it
+public class EventClone implements Serializable{
 
     private String title;
     private String description;
