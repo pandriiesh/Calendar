@@ -1,75 +1,68 @@
 package com.home.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person {
-    private final String personName;
-    private final String personEmail;
-    private final String login;
-    private final String password;
 
-    public Person(Builder builder) {
-        personName = builder.personName;
-        personEmail = builder.personEmail;
-        login = builder.login;
-        password = builder.password;
+    private String personName;
+    private String personEmail;
+    private String login;
+    private String password;
+    private List<EventClone> eventList = new ArrayList<EventClone>();
+
+    public void addEvent(EventClone event) {
+        eventList.add(event);
     }
 
-    public String getPersonName() {
-        return personName;
+    public void removeEvent(EventClone event) {
+        eventList.remove(event);
     }
 
-    public String getPersonEmail() {
-        return personEmail;
+    public List<EventClone> getEvents() {
+        return eventList;
     }
 
     public String getLogin() {
         return login;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public String getPassword() {
         return password;
     }
 
-
-    static class Builder {
-        private String personName;
-        private String personEmail;
-        private String login;
-        private String password;
-
-        public Builder() {
-
-        }
-
-        public Builder(Person person) {
-            personName = person.personName;
-            personEmail = person.personEmail;
-            login = person.login;
-            password = person.password;
-        }
-
-        public Builder personName(String personName) {
-            this.personName = personName;
-            return this;
-        }
-
-        public Builder personEmail(String personEmail) {
-            this.personEmail = personEmail;
-            return this;
-        }
-
-        public Builder login(String login) {
-            this.login = login;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Person build() {
-            return new Person(this);
-        }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public String getPersonEmail() {
+        return personEmail;
+    }
+
+    public void setPersonEmail(String personEmail) {
+        this.personEmail = personEmail;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "eventList=" + eventList +
+                ", personName='" + personName + '\'' +
+                ", personEmail='" + personEmail + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

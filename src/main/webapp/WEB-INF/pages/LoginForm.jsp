@@ -13,5 +13,7 @@
             </table>
             <input type="submit" value="Done">
         </form>
+        <h3>Not a member yet? <a href="${pageContext.request.contextPath}/RegistrationForm.html">Register</a></h3>
+
 </body>
 </html>

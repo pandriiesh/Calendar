@@ -92,7 +92,6 @@ public class Event {
         private Date endDate;
 
         public Builder() {
-
         }
 
         public Builder(Event event) {

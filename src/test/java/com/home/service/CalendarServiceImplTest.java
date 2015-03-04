@@ -41,8 +41,7 @@ public class CalendarServiceImplTest {
 
 
         // verify mock expectations
-        //local code review (vtegza): no nee for times(1) @ 3/2/2015
-        verify(calendarDataStore, times(1)).addEvent(actualEvent);
+        verify(calendarDataStore).addEvent(actualEvent);
 
     }
 
@@ -72,8 +71,7 @@ public class CalendarServiceImplTest {
         }
 
         // verify mock expectations
-        //local code review (vtegza): no nee for times(1) @ 3/2/2015
-        verify(calendarDataStore, times(1)).createEvent(title, attendersEmails);
+        verify(calendarDataStore).createEvent(title, attendersEmails);
     }
 
     @Test
@@ -124,8 +122,7 @@ public class CalendarServiceImplTest {
         }
 
         // verify mock expectations
-        //local code review (vtegza): no nee for times(1) @ 3/2/2015
-        verify(calendarDataStore, times(1)).removeEvent(actualEvent);
+        verify(calendarDataStore).removeEvent(actualEvent);
 
     }
 }
