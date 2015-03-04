@@ -23,6 +23,7 @@
         <h3><a href="${pageContext.request.contextPath}/RegisteredPersons.html">View all registered persons</a></h3>
 
         <h3><a href="${pageContext.request.contextPath}/CreateEventForm.html">Create new event</a></h3>
+
         <h3><a href="${pageContext.request.contextPath}/ShowEvents.html">Show my Events</a></h3>
 
 

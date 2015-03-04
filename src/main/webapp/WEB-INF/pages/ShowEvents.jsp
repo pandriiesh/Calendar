@@ -6,11 +6,19 @@
 <head>
     <title></title>
 </head>
-<body><h2>Events with you:</h2>
+<body>
+    <h3>Find event by title: <form>
+        <input type="text" name="">
+    </form></h3>
+    <h3><a href="${pageContext.request.contextPath}/FindEvent.html">Find event</a></h3>
+    <h3><a href="${pageContext.request.contextPath}/RemoveEvent.html">Remove event</a></h3>
+
+    <h2>Events with you:</h2>
     <%
         Person person = (Person) request.getSession().getAttribute("person");
+
         List<EventClone> eventList = person.getEvents();
-        if ( eventList.size()>0)
+
         for (EventClone eventClone : eventList) {
     %>
             <table>
