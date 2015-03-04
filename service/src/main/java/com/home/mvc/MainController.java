@@ -1,6 +1,7 @@
 package com.home.mvc;
 
 import com.home.common.EventClone;
+import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStoreImpl;
 import com.home.datastore.PersonDataStore;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -141,7 +143,7 @@ public class MainController {
     @RequestMapping(value = "/submitCreateEventForm.html")
      public String submitCreateEvent(@ModelAttribute("event") EventClone eventClone,
                                      @RequestParam("allAttenders") String allAttenders,
-                                     HttpServletRequest request) {
+                                     HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -152,6 +154,7 @@ public class MainController {
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
         for (String login : attendersList) {
             personService.findPerson(login).addEvent(eventClone);
+            calendarService.addEvent(eventClone);
         }
 
         eventClone.setAttendersLogins(attendersList);
@@ -179,7 +182,7 @@ public class MainController {
 
     @RequestMapping(value = "/FindEvent.html")
     public String findEvent(@RequestParam("eventToFind") String eventToFind,
-                            HttpServletRequest request) {
+                            HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -187,10 +190,32 @@ public class MainController {
             return "pages/LoginForm";
         }
 
+        EventInterface event = calendarService.searchEvent(eventToFind);
 
-        Person person = personService.findPerson((String) request.getSession().getAttribute("personName"));
+        request.setAttribute("foundedEvent", event);
 
-        request.getSession().setAttribute("person", person);
+        return "pages/ShowEvents";
+    }
+
+    @RequestMapping(value = "/RemoveEvent.html")
+    public String removeEvent(@RequestParam("eventToRemove") String eventToRemove,
+                            HttpServletRequest request) throws RemoteException {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName==null) {
+            return "pages/LoginForm";
+        }
+
+        EventInterface event = calendarService.searchEvent(eventToRemove);
+
+        for (String login : event.getAttendersLogins()) {
+            personService.findPerson(login).removeEvent(event);
+        }
+
+        calendarService.removeEvent(event);
+
+        request.setAttribute("isRemoved", Boolean.TRUE);
 
         return "pages/ShowEvents";
     }

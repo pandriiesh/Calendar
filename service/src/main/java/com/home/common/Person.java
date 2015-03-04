@@ -10,17 +10,17 @@ public class Person implements Serializable{
     private String personEmail;
     private String login;
     private String password;
-    private List<EventClone> eventList = new ArrayList<EventClone>();
+    private List<EventInterface> eventList = new ArrayList<EventInterface>();
 
-    public void addEvent(EventClone event) {
+    public void addEvent(EventInterface event) {
         eventList.add(event);
     }
 
-    public void removeEvent(EventClone event) {
+    public void removeEvent(EventInterface event) {
         eventList.remove(event);
     }
 
-    public List<EventClone> getEvents() {
+    public List<EventInterface> getEvents() {
         return eventList;
     }
 
