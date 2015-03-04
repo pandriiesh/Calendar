@@ -12,8 +12,8 @@ public class Event implements Serializable {
     private final UUID id;
     private final List<Person> attenders;
     private final List<String> attendersEmails;
-    private final Date startDate;
-    private final Date endDate;
+    private final Date startTime;
+    private final Date endTime;
 
     private Event(Builder builder) {
         id = UUID.randomUUID();
@@ -21,8 +21,8 @@ public class Event implements Serializable {
         description = builder.description;
         attenders = builder.attenders;
         attendersEmails = builder.attendersEmails;
-        startDate = builder.startDate;
-        endDate = builder.endDate;
+        startTime = builder.startTime;
+        endTime = builder.endTime;
     }
 
     public List<Person> getAttenders() {
@@ -37,16 +37,16 @@ public class Event implements Serializable {
         return description;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndTime() {
+        return endTime;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartTime() {
+        return startTime;
     }
 
     public String getTitle() {
@@ -77,8 +77,8 @@ public class Event implements Serializable {
                 ", description='" + description + '\'' +
                 ", attenders='" + attenders + '\'' +
                 ", attendersEmails=" + attendersEmails +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", id=" + id +
                 '}';
     }
@@ -89,8 +89,8 @@ public class Event implements Serializable {
         private String description;
         private List<Person> attenders;
         private List<String> attendersEmails;
-        private Date startDate;
-        private Date endDate;
+        private Date startTime;
+        private Date endTime;
 
         public Builder() {
         }
@@ -100,8 +100,8 @@ public class Event implements Serializable {
             this.description = event.description;
             this.attenders = event.attenders;
             this.attendersEmails = event.attendersEmails;
-            this.startDate = event.startDate;
-            this.endDate = event.endDate;
+            this.startTime = event.startTime;
+            this.endTime = event.endTime;
         }
 
         public Builder title(String title) {
@@ -125,12 +125,12 @@ public class Event implements Serializable {
         }
 
         public Builder startDate(Date startDate) {
-            this.startDate = startDate;
+            this.startTime = startDate;
             return this;
         }
 
         public Builder endDate(Date endDate) {
-            this.endDate = endDate;
+            this.endTime = endDate;
             return this;
         }
 

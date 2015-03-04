@@ -15,8 +15,8 @@ public class EventClone implements Serializable{
     private final UUID id;
     private List<Person> attenders;
     private List<String> attendersLogins;
-    private Date startDate;
-    private Date endDate;
+    private Date startTime;
+    private Date endTime;
 
     public EventClone() {
         id = UUID.randomUUID();
@@ -50,20 +50,20 @@ public class EventClone implements Serializable{
         this.description = description;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     public String getTitle() {
@@ -85,9 +85,9 @@ public class EventClone implements Serializable{
         if (attendersLogins != null ? !attendersLogins.equals(that.attendersLogins) : that.attendersLogins != null)
             return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
+        if (endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
         if (!id.equals(that.id)) return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
+        if (startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
 
         return true;
@@ -100,8 +100,8 @@ public class EventClone implements Serializable{
         result = 31 * result + id.hashCode();
         result = 31 * result + (attenders != null ? attenders.hashCode() : 0);
         result = 31 * result + (attendersLogins != null ? attendersLogins.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
+        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
         return result;
     }
 
@@ -112,8 +112,8 @@ public class EventClone implements Serializable{
                 ", description='" + description + '\'' +
                 ", attenders='" + attenders + '\'' +
                 ", attendersLogins=" + attendersLogins +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", id=" + id +
                 '}';
     }

@@ -2,13 +2,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Pavel
-  Date: 03.03.2015
-  Time: 21:09
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

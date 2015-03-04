@@ -7,11 +7,18 @@
     <title></title>
 </head>
 <body>
-    <h3>Find event by title: <form>
-        <input type="text" name="">
-    </form></h3>
-    <h3><a href="${pageContext.request.contextPath}/FindEvent.html">Find event</a></h3>
-    <h3><a href="${pageContext.request.contextPath}/RemoveEvent.html">Remove event</a></h3>
+        <form method="post">
+            <table>
+                <tr><td>Find event with title</td>
+                    <td><input type="text" name="eventToFind"></td>
+                    <td><input type="submit" value="Find" formaction="/FindEvent.html"></td>
+                </tr>
+                <tr><td>Remove event with title </td>
+                    <td><input type="text" name="eventToRemove"></td>
+                    <td><input type="submit" value="Remove" formaction="/RemoveEvent.html"></td>
+                </tr>
+            </table>
+        </form>
 
     <h2>Events with you:</h2>
     <%
@@ -24,8 +31,8 @@
             <table>
                 <tr><td>Title:            </td><td><%out.print(eventClone.getTitle());%></td></tr>
                 <tr><td>Description:      </td><td><%out.print(eventClone.getDescription());%></td></tr>
-                <tr><td>Start Date:       </td><td><%out.print(eventClone.getStartDate());%></td></tr>
-                <tr><td>End Date:         </td><td><%out.print(eventClone.getEndDate());%></td></tr>
+                <tr><td>Start Date/Time:  </td><td><%out.print(eventClone.getStartTime());%></td></tr>
+                <tr><td>End Date/Time:    </td><td><%out.print(eventClone.getEndTime());%></td></tr>
                 <tr><td>Attenders:        </td><td><%out.print(eventClone.getAttendersLogins().toString());%></td></tr>
                 <tr><td>UUID:             </td><td><%out.print(eventClone.getId());%></td></tr>
 
