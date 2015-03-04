@@ -1,6 +1,7 @@
 package com.home.service;
 
 import com.home.common.Event;
+import com.home.common.EventInterface;
 import com.home.datastore.CalendarDataStore;
 import com.home.datastore.CalendarDataStoreImpl;
 
@@ -23,22 +24,22 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void addEvent(Event event) {
+    public void addEvent(EventInterface event) {
         calendarDataStore.addEvent(event);
     }
 
     @Override
-    public Event createEvent(String title, List<String> emails) {
+    public EventInterface createEvent(String title, List<String> emails) {
         return calendarDataStore.createEvent(title, emails);
     }
 
     @Override
-    public Event searchEvent(String title) {
+    public EventInterface searchEvent(String title) {
         return calendarDataStore.searchEvent(title);
     }
 
     @Override
-    public void removeEvent(Event event) {
+    public void removeEvent(EventInterface event) {
         calendarDataStore.removeEvent(event);
     }
 

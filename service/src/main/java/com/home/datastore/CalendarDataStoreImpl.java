@@ -1,6 +1,7 @@
 package com.home.datastore;
 
 import com.home.common.Event;
+import com.home.common.EventInterface;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,27 +9,27 @@ import java.util.Map;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
-    private final Map<String, Event> eventMap = new HashMap<String, Event>();
+    private final Map<String, EventInterface> eventMap = new HashMap<String, EventInterface>();
 
     @Override
-    public void addEvent(Event event) {
+    public void addEvent(EventInterface event) {
         eventMap.put(event.getTitle(), event);
     }
 
     @Override
-    public void removeEvent(Event event) {
+    public void removeEvent(EventInterface event) {
         eventMap.remove(event.getTitle());
     }
 
     @Override
-    public Event createEvent(String title, List<String> attendersEmails) {
-        Event event = new Event.Builder().title(title).attendersEmails(attendersEmails).build();
+    public EventInterface createEvent(String title, List<String> attendersEmails) {
+        EventInterface event = new Event.Builder().title(title).attendersEmails(attendersEmails).build();
         return event;
     }
 
     @Override
-    public Event searchEvent(String title) {
-        Event event = eventMap.get(title);
+    public EventInterface searchEvent(String title) {
+        EventInterface event = eventMap.get(title);
         return event;
     }
 }

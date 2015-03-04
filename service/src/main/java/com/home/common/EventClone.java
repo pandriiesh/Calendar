@@ -8,7 +8,7 @@ import java.util.UUID;
 // This class is Event class clone, and here because i cant bind the Event class attribute from request after
 // JSP form filling at RegistrationForm.jsp (because of Builder)
 // later will think how to do it
-public class EventClone implements Serializable{
+public class EventClone implements Serializable, EventInterface{
 
     private String title;
     private String description;

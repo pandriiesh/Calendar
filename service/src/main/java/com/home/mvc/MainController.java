@@ -2,8 +2,11 @@ package com.home.mvc;
 
 import com.home.common.EventClone;
 import com.home.common.Person;
+import com.home.datastore.CalendarDataStoreImpl;
 import com.home.datastore.PersonDataStore;
 import com.home.datastore.PersonDataStoreImpl;
+import com.home.service.CalendarService;
+import com.home.service.CalendarServiceImpl;
 import com.home.service.PersonService;
 import com.home.service.PersonServiceImpl;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -26,6 +29,7 @@ import java.util.List;
 public class MainController {
 
     PersonService personService = new PersonServiceImpl();
+    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -158,13 +162,31 @@ public class MainController {
     }
 
     @RequestMapping(value = "/ShowEvents.html")
-    public String submitCreateEvent(HttpServletRequest request, HttpServletResponse response) {
+    public String submitCreateEvent(HttpServletRequest request) {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
         if (personName==null) {
             return "pages/LoginForm";
         }
+
+        Person person = personService.findPerson((String) request.getSession().getAttribute("personName"));
+
+        request.getSession().setAttribute("person", person);
+
+        return "pages/ShowEvents";
+    }
+
+    @RequestMapping(value = "/FindEvent.html")
+    public String findEvent(@RequestParam("eventToFind") String eventToFind,
+                            HttpServletRequest request) {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName==null) {
+            return "pages/LoginForm";
+        }
+
 
         Person person = personService.findPerson((String) request.getSession().getAttribute("personName"));
 

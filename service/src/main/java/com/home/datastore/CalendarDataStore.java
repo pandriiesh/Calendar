@@ -1,17 +1,18 @@
 package com.home.datastore;
 
 import com.home.common.Event;
+import com.home.common.EventInterface;
 
 import java.util.List;
 
 public interface CalendarDataStore {
 
-    void addEvent(Event event);
+    void addEvent(EventInterface event);
 
-    void removeEvent(Event event);
+    void removeEvent(EventInterface event);
 
-    Event createEvent(String title, List<String> attendersEmails);
+    EventInterface createEvent(String title, List<String> attendersEmails);
 
-    Event searchEvent(String title);
+    EventInterface searchEvent(String title);
 
 }

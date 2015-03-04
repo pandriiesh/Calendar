@@ -1,6 +1,7 @@
 package com.home.datastore;
 
 import com.home.common.Event;
+import com.home.common.EventInterface;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -26,7 +27,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         assertEquals(expectedEvent, actualEvent);
 
@@ -37,7 +38,7 @@ public class CalendarDataStoreImplTest {
     @Test
     public void testCreateEvent() throws Exception {
         // initialize variable inputs
-        Event actualEvent = null;
+        EventInterface actualEvent = null;
 
         // initialize mocks
 
@@ -49,7 +50,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         assertEquals(expectedEvent, actualEvent);
 
@@ -71,7 +72,7 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         calendarDataStore.addEvent(actualEvent);
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         // assert return value
         assertEquals(expectedEvent, actualEvent);

@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Event implements Serializable {
+public class Event implements Serializable, EventInterface {
 
     private final String title;
     private final String description;
     private final UUID id;
     private final List<Person> attenders;
-    private final List<String> attendersEmails;
+    private final List<String> attendersLogins;
     private final Date startTime;
     private final Date endTime;
 
@@ -20,7 +20,7 @@ public class Event implements Serializable {
         title = builder.title;
         description = builder.description;
         attenders = builder.attenders;
-        attendersEmails = builder.attendersEmails;
+        attendersLogins = builder.attendersEmails;
         startTime = builder.startTime;
         endTime = builder.endTime;
     }
@@ -29,8 +29,8 @@ public class Event implements Serializable {
         return attenders;
     }
 
-    public List<String> getAttendersEmails() {
-        return attendersEmails;
+    public List<String> getAttendersLogins() {
+        return attendersLogins;
     }
 
     public String getDescription() {
@@ -76,7 +76,7 @@ public class Event implements Serializable {
                 "title=" + title +
                 ", description='" + description + '\'' +
                 ", attenders='" + attenders + '\'' +
-                ", attendersEmails=" + attendersEmails +
+                ", attendersLogins=" + attendersLogins +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", id=" + id +
@@ -99,7 +99,7 @@ public class Event implements Serializable {
             this.title = event.title;
             this.description = event.description;
             this.attenders = event.attenders;
-            this.attendersEmails = event.attendersEmails;
+            this.attendersEmails = event.attendersLogins;
             this.startTime = event.startTime;
             this.endTime = event.endTime;
         }

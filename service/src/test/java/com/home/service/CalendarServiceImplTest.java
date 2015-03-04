@@ -1,6 +1,7 @@
 package com.home.service;
 
 import com.home.common.Event;
+import com.home.common.EventInterface;
 import com.home.datastore.CalendarDataStore;
 import org.junit.Test;
 
@@ -89,7 +90,7 @@ public class CalendarServiceImplTest {
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
-        Event expectedValue = calendarService.searchEvent(actualEvent.getTitle());
+        EventInterface expectedValue = calendarService.searchEvent(actualEvent.getTitle());
 
         // assert return value
         assertEquals(expectedValue.getTitle(), actualEvent.getTitle());
