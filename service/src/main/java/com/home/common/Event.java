@@ -1,10 +1,11 @@
 package com.home.common;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Event {
+public class Event implements Serializable {
 
     private final String title;
     private final String description;

@@ -1,9 +1,10 @@
 package com.home.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person {
+public class Person implements Serializable{
 
     private String personName;
     private String personEmail;

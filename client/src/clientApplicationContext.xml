@@ -6,7 +6,7 @@
 
     <bean id="calendarService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
         <property name="serviceUrl" value="rmi://localhost:1199/CalendarService"/>
-        <property name="serviceInterface" value="com.diosoft.sample.calendar.service.CalendarService"/>
+        <property name="serviceInterface" value="com.home.service.CalendarService"/>
     </bean>
 
 </beans>

@@ -11,4 +11,14 @@
 
     <bean id="calendarDataStoreImpl" class="com.home.datastore.CalendarDataStoreImpl"/>
 
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- does not necessarily have to be the same name as the bean to be exported -->
+        <property name="serviceName" value="CalendarService"/>
+        <property name="service" ref="calendarServiceImpl"/>
+        <property name="serviceInterface" value="com.home.service.CalendarService"/>
+        <!-- defaults to 1099 -->
+        <property name="registryPort" value="1199"/>
+    </bean>
+
+
 </beans>
