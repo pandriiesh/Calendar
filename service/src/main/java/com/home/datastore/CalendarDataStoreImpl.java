@@ -9,16 +9,21 @@ import java.util.Map;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
-    private final Map<String, EventInterface> eventMap = new HashMap<String, EventInterface>();
+    private final Map<String, EventInterface> eventStore = new HashMap<String, EventInterface>();
+
+    @Override
+    public Map<String, EventInterface> getEventStore() {
+        return eventStore;
+    }
 
     @Override
     public void addEvent(EventInterface event) {
-        eventMap.put(event.getTitle(), event);
+        eventStore.put(event.getTitle(), event);
     }
 
     @Override
     public void removeEvent(EventInterface event) {
-        eventMap.remove(event.getTitle());
+        eventStore.remove(event.getTitle());
     }
 
     @Override
@@ -29,7 +34,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public EventInterface searchEvent(String title) {
-        EventInterface event = eventMap.get(title);
+        EventInterface event = eventStore.get(title);
         return event;
     }
 }

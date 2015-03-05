@@ -2,6 +2,7 @@ package com.home.datastore;
 
 import com.home.common.Person;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -13,5 +14,7 @@ public interface PersonDataStore {
 
     Person findPerson(String personLogin);
 
-    Map<String, Person> getPersonMap();
+    Map<String, Person> getPersonStore();
+
+    boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date);
 }

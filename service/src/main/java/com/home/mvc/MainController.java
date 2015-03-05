@@ -4,18 +4,19 @@ import com.home.common.EventClone;
 import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStoreImpl;
+import com.home.datastore.PersonDataStoreImpl;
 import com.home.service.CalendarService;
 import com.home.service.CalendarServiceImpl;
-import com.home.service.PersonService;
-import com.home.service.PersonServiceImpl;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -27,8 +28,7 @@ import java.util.List;
 @SessionAttributes("myRequestObject")
 public class MainController {
 
-    PersonService personService = new PersonServiceImpl();
-    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
+    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl(), new PersonDataStoreImpl());
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -38,10 +38,10 @@ public class MainController {
     }
 
     @ModelAttribute
-    public void addingCommonObjects(Model model, HttpServletRequest request) {
+    public void addingCommonObjects(Model model, HttpServletRequest request) throws RemoteException {
 
         model.addAttribute("headerMessage", "ONLINE CALENDAR");
-        request.getSession().setAttribute("personMap", personService.getPersonMap());
+        request.getSession().setAttribute("personMap", calendarService.getPersonStore());
     }
 
     @RequestMapping(value = "/LoginForm.html", method = RequestMethod.GET)
@@ -54,9 +54,9 @@ public class MainController {
     @RequestMapping(value = "/submitLoginForm.html", method = RequestMethod.POST)
     public ModelAndView submitLoginForm(@RequestParam("login") String login,
                                             @RequestParam("password") String password,
-                                            HttpServletRequest request) {
+                                            HttpServletRequest request) throws RemoteException {
 
-        Person person = personService.findPerson(login);
+        Person person = calendarService.findPerson(login);
 
         if (person!=null && person.getPassword().equals(password)) {
             ModelAndView model = new ModelAndView("pages/LoginSuccess");
@@ -84,21 +84,26 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitRegistrationForm.html", method = RequestMethod.POST)
-    public String submitRegistrationForm(@ModelAttribute("person") Person person) {
+    public String submitRegistrationForm(@Valid @ModelAttribute("person") Person person,
+                                         BindingResult result) throws RemoteException {
 
 
-        if (person.getPersonName().isEmpty()) {
-            return "pages/RegistrationFailure";
+//        if (person.getPersonName().isEmpty()) {
+//            return "pages/RegistrationFailure";
+//        }
+
+        if (result.hasErrors()){
+            return "pages/RegistrationForm";
         }
 
 
-        personService.registerPerson(person);
+        calendarService.registerPerson(person);
 
         return "pages/RegistrationSuccess";
     }
 
     @RequestMapping(value = "/ControlPanel.html")
-     public String getControlPanel(HttpServletRequest request) {
+     public String getControlPanel(HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -106,13 +111,13 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        request.getSession().setAttribute("person", personService.findPerson(personName));
+        request.getSession().setAttribute("person", calendarService.findPerson(personName));
 
         return "pages/ControlPanel";
     }
 
     @RequestMapping(value = "/RegisteredPersons.html")
-    public String showRegisteredPersons(HttpServletRequest request) {
+    public String showRegisteredPersons(HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -120,7 +125,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        request.getSession().setAttribute("personMap", personService.getPersonMap());
+        request.getSession().setAttribute("personMap", calendarService.getPersonStore());
 
         return "pages/RegisteredPersons";
     }
@@ -162,7 +167,7 @@ public class MainController {
 
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
         for (String login : attendersList) {
-            personService.findPerson(login).addEvent(eventClone);
+            calendarService.findPerson(login).addEvent(eventClone);
             calendarService.addEvent(eventClone);
         }
 
@@ -174,7 +179,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/ShowEvents.html")
-    public String submitCreateEvent(HttpServletRequest request) {
+    public String submitCreateEvent(HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -182,7 +187,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        Person person = personService.findPerson((String) request.getSession().getAttribute("personName"));
+        Person person = calendarService.findPerson((String) request.getSession().getAttribute("personName"));
 
         request.getSession().setAttribute("person", person);
 
@@ -219,7 +224,7 @@ public class MainController {
         EventInterface event = calendarService.searchEvent(eventToRemove);
 
         for (String login : event.getAttendersLogins()) {
-            personService.findPerson(login).removeEvent(event);
+            calendarService.findPerson(login).removeEvent(event);
         }
 
         calendarService.removeEvent(event);

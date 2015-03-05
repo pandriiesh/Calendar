@@ -1,26 +1,22 @@
 package com.home.service;
 
-import com.home.common.Event;
 import com.home.common.EventInterface;
+import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
-import com.home.datastore.CalendarDataStoreImpl;
+import com.home.datastore.PersonDataStore;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class CalendarServiceImpl implements CalendarService {
 
-    private CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+    private CalendarDataStore calendarDataStore;
+    private PersonDataStore personDataStore;
 
-    private final Map<String, Event> eventMap = new HashMap<String, Event>();
-
-    public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
+    public CalendarServiceImpl(CalendarDataStore calendarDataStore, PersonDataStore personDataStore) {
         this.calendarDataStore = calendarDataStore;
-    }
-
-    public Map<String, Event> getEventMap() {
-        return eventMap;
+        this.personDataStore = personDataStore;
     }
 
     @Override
@@ -43,4 +39,33 @@ public class CalendarServiceImpl implements CalendarService {
         calendarDataStore.removeEvent(event);
     }
 
+    @Override
+    public Person findPerson(String personLogin) {
+        return personDataStore.findPerson(personLogin);
+    }
+
+    @Override
+    public void registerPerson(Person person) {
+        personDataStore.registerPerson(person);
+    }
+
+    @Override
+    public void removePerson(Person person) {
+        personDataStore.removePerson(person);
+    }
+
+    @Override
+    public Map<String, Person> getPersonStore() {
+        return personDataStore.getPersonStore();
+    }
+
+    @Override
+    public Map<String, EventInterface> getEventStore() {
+        return calendarDataStore.getEventStore();
+    }
+
+    @Override
+    public boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) {
+        return personDataStore.checkIfPersonIsFreeAtCertainTime(personLogin, date);
+    }
 }
