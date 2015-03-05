@@ -124,13 +124,13 @@ public class Event implements Serializable, EventInterface {
             return this;
         }
 
-        public Builder startDate(Date startDate) {
-            this.startTime = startDate;
+        public Builder startTime(Date startTime) {
+            this.startTime = startTime;
             return this;
         }
 
-        public Builder endDate(Date endDate) {
-            this.endTime = endDate;
+        public Builder endTime(Date endTime) {
+            this.endTime = endTime;
             return this;
         }
 
