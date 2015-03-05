@@ -36,7 +36,6 @@
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
                 <tr><td>Attenders:        </td><td><%out.print(event.getAttendersLogins().toString());%></td></tr>
-                <tr><td>UUID:             </td><td><%out.print(event.getId());%></td></tr>
             </table>
             <br>
             <%} %>
@@ -65,7 +64,6 @@
                 <tr><td>Start Date/Time:  </td><td><%out.print(event1.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event1.getEndTime());%></td></tr>
                 <tr><td>Attenders:        </td><td><%out.print(event1.getAttendersLogins().toString());%></td></tr>
-                <tr><td>UUID:             </td><td><%out.print(event1.getId());%></td></tr>
             </table>
             <br>
         <%} %>

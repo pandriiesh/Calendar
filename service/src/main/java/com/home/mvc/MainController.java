@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class MainController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        binder.registerCustomEditor(Date.class, "startTime", new CustomDateEditor(dateFormat,false));
-        binder.registerCustomEditor(Date.class, "endTime", new CustomDateEditor(dateFormat,false));
+        binder.registerCustomEditor(Date.class, "startTime", new CustomDateEditor(dateFormat, false));
+        binder.registerCustomEditor(Date.class, "endTime", new CustomDateEditor(dateFormat, true));
     }
 
     @ModelAttribute
@@ -145,6 +146,18 @@ public class MainController {
 
         if (personName==null) {
             return "pages/LoginForm";
+        }
+
+        if (eventClone.getEndTime()==null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(eventClone.getStartTime());
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+
+            Date endTime = cal.getTime();
+
+            eventClone.setEndTime(endTime);
         }
 
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
