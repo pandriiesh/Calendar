@@ -4,8 +4,6 @@ import com.home.common.EventClone;
 import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStoreImpl;
-import com.home.datastore.PersonDataStore;
-import com.home.datastore.PersonDataStoreImpl;
 import com.home.service.CalendarService;
 import com.home.service.CalendarServiceImpl;
 import com.home.service.PersonService;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
