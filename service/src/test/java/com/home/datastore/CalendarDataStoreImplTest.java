@@ -2,9 +2,11 @@ package com.home.datastore;
 
 import com.home.common.Event;
 import com.home.common.EventInterface;
+import com.home.common.Person;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -100,6 +102,96 @@ public class CalendarDataStoreImplTest {
         assertNull(calendarDataStore.searchEvent(actualEvent.getTitle()));
 
         // verify mock expectations
+    }
+
+    @Test
+    public void testFindPerson() throws Exception {
+        // initialize variable inputs
+        Person person = new Person();
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        Person expectedPerson = calendarDataStore.findPerson(person.getLogin());
+
+        // assert return value
+        assertEquals(person, expectedPerson);
+
+        // verify mock expectations
 
     }
+
+    @Test
+    public void testRegisterPerson() throws Exception {
+        // initialize variable inputs
+        Person person = new Person();
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+
+        // assert return value
+        assertEquals(person, calendarDataStore.findPerson(person.getLogin()));
+
+        // verify mock expectations
+    }
+
+    @Test
+    public void testRemovePerson() throws Exception {
+        // initialize variable inputs
+        Person person = new Person();
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.removePerson(person);
+        Person expectedPerson = calendarDataStore.findPerson(person.getLogin());
+
+        // assert return value
+        assertNull(expectedPerson);
+
+        // verify mock expectations
+    }
+
+    @Test
+    public void testCheckIfPersonIsFreeAtCertainTime() throws Exception {
+
+        // initialize variable inputs
+        Person person = new Person();
+        Date startTime = new Date(new Date().getTime()-3600000);
+        Date endTime = new Date(new Date().getTime()+3600000);
+        EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime).build();
+
+        person.addEvent(event);
+
+        Date checkedTime = new Date();
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+        calendarDataStore.registerPerson(person);
+
+        // invoke method on class to test
+        boolean checked = calendarDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
+
+        // assert return value
+        assertFalse(checked);
+
+        // verify mock expectations
+
+    }
+
 }
