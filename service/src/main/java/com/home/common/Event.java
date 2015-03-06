@@ -20,7 +20,7 @@ public class Event implements Serializable, EventInterface {
         title = builder.title;
         description = builder.description;
         attenders = builder.attenders;
-        attendersLogins = builder.attendersEmails;
+        attendersLogins = builder.attendersLogins;
         startTime = builder.startTime;
         endTime = builder.endTime;
     }
@@ -88,7 +88,7 @@ public class Event implements Serializable, EventInterface {
         private String title;
         private String description;
         private List<Person> attenders;
-        private List<String> attendersEmails;
+        private List<String> attendersLogins;
         private Date startTime;
         private Date endTime;
 
@@ -99,7 +99,7 @@ public class Event implements Serializable, EventInterface {
             this.title = event.title;
             this.description = event.description;
             this.attenders = event.attenders;
-            this.attendersEmails = event.attendersLogins;
+            this.attendersLogins = event.attendersLogins;
             this.startTime = event.startTime;
             this.endTime = event.endTime;
         }
@@ -119,8 +119,8 @@ public class Event implements Serializable, EventInterface {
             return this;
         }
 
-        public Builder attendersEmails(List<String> attendersEmails) {
-            this.attendersEmails = attendersEmails;
+        public Builder attendersLogins(List<String> attendersLogins) {
+            this.attendersLogins = attendersLogins;
             return this;
         }
 

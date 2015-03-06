@@ -28,7 +28,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public EventInterface createEvent(String title, List<String> attendersEmails) {
-        EventInterface event = new Event.Builder().title(title).attendersEmails(attendersEmails).build();
+        EventInterface event = new Event.Builder().title(title).attendersLogins(attendersEmails).build();
         return event;
     }
 

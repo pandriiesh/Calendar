@@ -5,7 +5,6 @@ import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
 import com.home.datastore.PersonDataStore;
-import com.home.datastore.PersonDataStoreImpl;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -57,7 +56,7 @@ public class CalendarServiceImplTest {
         // initialize variable inputs
         String title = "Event";
         List<String> attendersEmails = Arrays.asList("email1", "email2");
-        Event actualEvent = new Event.Builder().title(title).attendersEmails(attendersEmails).build();
+        Event actualEvent = new Event.Builder().title(title).attendersLogins(attendersEmails).build();
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
