@@ -12,13 +12,13 @@ import java.util.Map;
 
 public interface CalendarService extends Remote {
 
-    public void addEvent(EventInterface event) throws RemoteException;
+    void addEvent(EventInterface event) throws RemoteException;
 
-    public void removeEvent(EventInterface event) throws RemoteException;
+    void removeEvent(EventInterface event) throws RemoteException;
 
-    public EventInterface createEvent(String title, List<String> attendersEmails) throws RemoteException;
+    EventInterface createEvent(String title, List<String> attendersEmails) throws RemoteException;
 
-    public EventInterface searchEvent(String title) throws RemoteException;
+    EventInterface searchEvent(String title) throws RemoteException;
 
     boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) throws RemoteException;
 
@@ -31,5 +31,8 @@ public interface CalendarService extends Remote {
     Map<String, Person> getPersonStore() throws RemoteException;
 
     Map<String, EventInterface> getEventStore() throws RemoteException;
+
+    Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) throws RemoteException;
+
 
 }

@@ -7,11 +7,9 @@
 
     <bean id="calendarServiceImpl" class="com.home.service.CalendarServiceImpl">
         <constructor-arg name="calendarDataStore" ref="calendarDataStoreImpl"/>
-        <constructor-arg name="personDataStore" ref="personDataStoreImpl"/>
     </bean>
 
     <bean id="calendarDataStoreImpl" class="com.home.datastore.CalendarDataStoreImpl"/>
-    <bean id="personDataStoreImpl" class="com.home.datastore.PersonDataStoreImpl"/>
 
     <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
         <!-- does not necessarily have to be the same name as the bean to be exported -->

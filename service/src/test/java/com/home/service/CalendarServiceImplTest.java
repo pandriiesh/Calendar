@@ -4,7 +4,6 @@ import com.home.common.Event;
 import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
-import com.home.datastore.PersonDataStore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -28,12 +27,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).addEvent(actualEvent);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         // assert return value
@@ -60,12 +58,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).createEvent(title, attendersEmails);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         // assert return value
@@ -88,12 +85,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         when(calendarDataStore.searchEvent(actualEvent.getTitle())).thenReturn(actualEvent);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         EventInterface expectedValue = calendarService.searchEvent(actualEvent.getTitle());
@@ -113,12 +109,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).removeEvent(actualEvent);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         // assert return value
@@ -143,12 +138,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
-        when(personDataStore.findPerson("personLogin")).thenReturn(expectedPerson);
+        when(calendarDataStore.findPerson("personLogin")).thenReturn(expectedPerson);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         Person person = calendarService.findPerson("personLogin");
@@ -157,7 +151,7 @@ public class CalendarServiceImplTest {
         assertEquals(expectedPerson, person);
 
         // verify mock expectations
-        verify(personDataStore).findPerson("personLogin");
+        verify(calendarDataStore).findPerson("personLogin");
 
     }
 
@@ -170,13 +164,12 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         RuntimeException tobeThrown = new RuntimeException("testRegisterPerson method");
-        doThrow(tobeThrown).when(personDataStore).registerPerson(person);
+        doThrow(tobeThrown).when(calendarDataStore).registerPerson(person);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         try {
@@ -188,7 +181,7 @@ public class CalendarServiceImplTest {
         // assert return value
 
         // verify mock expectations
-        verify(personDataStore).registerPerson(person);
+        verify(calendarDataStore).registerPerson(person);
     }
 
     @Test
@@ -199,13 +192,12 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
         RuntimeException tobeThrown = new RuntimeException("testRemovePerson method");
-        doThrow(tobeThrown).when(personDataStore).removePerson(person);
+        doThrow(tobeThrown).when(calendarDataStore).removePerson(person);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         calendarService.registerPerson(person);
@@ -219,7 +211,7 @@ public class CalendarServiceImplTest {
         // assert return value
 
         // verify mock expectations
-        verify(personDataStore).removePerson(person);
+        verify(calendarDataStore).removePerson(person);
     }
 
     @Test
@@ -239,12 +231,11 @@ public class CalendarServiceImplTest {
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
-        PersonDataStore personDataStore = mock(PersonDataStore.class);
 
-        when(personDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime)).thenReturn(expectedValue);
+        when(calendarDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime)).thenReturn(expectedValue);
 
         // initialize class to test
-        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore, personDataStore);
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
         boolean value = calendarService.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
@@ -253,6 +244,6 @@ public class CalendarServiceImplTest {
         assertEquals(expectedValue, value);
 
         // verify mock expectations
-        verify(personDataStore).checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
+        verify(calendarDataStore).checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
     }
 }

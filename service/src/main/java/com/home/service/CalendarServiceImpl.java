@@ -3,8 +3,8 @@ package com.home.service;
 import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
-import com.home.datastore.PersonDataStore;
 
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +12,9 @@ import java.util.Map;
 public class CalendarServiceImpl implements CalendarService {
 
     private CalendarDataStore calendarDataStore;
-    private PersonDataStore personDataStore;
 
-    public CalendarServiceImpl(CalendarDataStore calendarDataStore, PersonDataStore personDataStore) {
+    public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
         this.calendarDataStore = calendarDataStore;
-        this.personDataStore = personDataStore;
     }
 
     @Override
@@ -44,22 +42,22 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public Person findPerson(String personLogin) {
-        return personDataStore.findPerson(personLogin);
+        return calendarDataStore.findPerson(personLogin);
     }
 
     @Override
     public void registerPerson(Person person) {
-        personDataStore.registerPerson(person);
+        calendarDataStore.registerPerson(person);
     }
 
     @Override
     public void removePerson(Person person) {
-        personDataStore.removePerson(person);
+        calendarDataStore.removePerson(person);
     }
 
     @Override
     public Map<String, Person> getPersonStore() {
-        return personDataStore.getPersonStore();
+        return calendarDataStore.getPersonStore();
     }
 
     @Override
@@ -69,6 +67,11 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) {
-        return personDataStore.checkIfPersonIsFreeAtCertainTime(personLogin, date);
+        return calendarDataStore.checkIfPersonIsFreeAtCertainTime(personLogin, date);
+    }
+
+    @Override
+    public Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) throws RemoteException {
+        return null;
     }
 }

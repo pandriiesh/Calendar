@@ -4,7 +4,6 @@ import com.home.common.EventClone;
 import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStoreImpl;
-import com.home.datastore.PersonDataStoreImpl;
 import com.home.service.CalendarService;
 import com.home.service.CalendarServiceImpl;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -28,7 +27,7 @@ import java.util.List;
 @SessionAttributes("myRequestObject")
 public class MainController {
 
-    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl(), new PersonDataStoreImpl());
+    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
