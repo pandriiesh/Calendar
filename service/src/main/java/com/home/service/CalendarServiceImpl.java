@@ -21,6 +21,9 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public void addEvent(EventInterface event) {
+        for (String login : event.getAttendersLogins()) {
+            findPerson(login).addEvent(event);
+        }
         calendarDataStore.addEvent(event);
     }
 

@@ -10,6 +10,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class ClientMain {
@@ -32,7 +34,7 @@ public class ClientMain {
 
 
         EventInterface beerFest = new Event.Builder().title("Beerfest").description("Go to pub and drink beer.")
-                .startTime(new Date()).attendersLogins(Arrays.asList("pabloLogin")).build();
+                .startTime(new Date()).endTime(new Date()).attendersLogins(Arrays.asList("pabloLogin")).build();
 
         Person pablo = new Person();
         pablo.setLogin("pabloLogin");
@@ -40,9 +42,24 @@ public class ClientMain {
         pablo.setPersonName("Pablo");
         pablo.setPersonEmail("pablo@gmail.com");
 
-        pablo.addEvent(beerFest);
-
         service.registerPerson(pablo);
+
         service.addEvent(beerFest);
+
+        Map<String, Person> personStore = service.getPersonStore();
+
+        System.out.println("Users:");
+
+        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        Map<String, EventInterface> dataStore = service.getEventStore();
+
+        System.out.println("Events:");
+
+        for (Map.Entry<String, EventInterface> entry : dataStore.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
 }

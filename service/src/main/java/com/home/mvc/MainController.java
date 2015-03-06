@@ -87,11 +87,6 @@ public class MainController {
     public String submitRegistrationForm(@Valid @ModelAttribute("person") Person person,
                                          BindingResult result) throws RemoteException {
 
-
-//        if (person.getPersonName().isEmpty()) {
-//            return "pages/RegistrationFailure";
-//        }
-
         if (result.hasErrors()){
             return "pages/RegistrationForm";
         }
@@ -143,7 +138,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitCreateEventForm.html")
-     public String submitCreateEvent(@ModelAttribute("event") EventClone eventClone,
+     public String submitCreateEvent(@ModelAttribute("event") EventClone event,
                                      @RequestParam("allAttenders") String allAttenders,
                                      HttpServletRequest request) throws RemoteException {
 
@@ -153,27 +148,24 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        if (eventClone.getEndTime()==null) {
+        if (event.getEndTime()==null) {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(eventClone.getStartTime());
+            cal.setTime(event.getStartTime());
             cal.set(Calendar.HOUR_OF_DAY, 23);
             cal.set(Calendar.MINUTE, 59);
             cal.set(Calendar.SECOND, 59);
 
             Date endTime = cal.getTime();
 
-            eventClone.setEndTime(endTime);
+            event.setEndTime(endTime);
         }
 
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
-        for (String login : attendersList) {
-            calendarService.findPerson(login).addEvent(eventClone);
-            calendarService.addEvent(eventClone);
-        }
+        event.setAttendersLogins(attendersList);
 
-        eventClone.setAttendersLogins(attendersList);
+        calendarService.addEvent(event);
 
-        request.getSession().setAttribute("event", eventClone);
+        request.getSession().setAttribute("event", event);
 
         return "pages/ControlPanel";
     }
