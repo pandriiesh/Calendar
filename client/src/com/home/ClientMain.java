@@ -10,7 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -23,15 +22,6 @@ public class ClientMain {
         ApplicationContext context = new ClassPathXmlApplicationContext("clientApplicationContext.xml");
 
         CalendarService service = (CalendarService) context.getBean("calendarService");
-
-        String[] reservedCalendarNames = {"New Year", "Meeting10", "code review"};
-
-        for (String name : reservedCalendarNames)
-            service.addEvent(new Event.Builder().title(name).description(name + "'s description").build());
-
-        for (String name : reservedCalendarNames)
-            logger.info("Created event in data store: " + service.searchEvent(name));
-
 
         EventInterface beerFest = new Event.Builder().title("Beerfest").description("Go to pub and drink beer.")
                 .startTime(new Date()).endTime(new Date()).attendersLogins(Arrays.asList("pabloLogin")).build();
@@ -48,18 +38,16 @@ public class ClientMain {
 
         Map<String, Person> personStore = service.getPersonStore();
 
-        System.out.println("Users:");
-
+        logger.info("All users:");
         for (Map.Entry<String, Person> entry : personStore.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            logger.info(entry.getKey() + ": " + entry.getValue());
         }
 
         Map<String, EventInterface> dataStore = service.getEventStore();
 
-        System.out.println("Events:");
-
+        logger.info("All events:");
         for (Map.Entry<String, EventInterface> entry : dataStore.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            logger.info(entry.getKey() + ": " + entry.getValue());
         }
     }
 }
