@@ -23,8 +23,11 @@ public class ClientMain {
 
         CalendarService service = (CalendarService) context.getBean("calendarService");
 
+        Date startTime = new Date(new Date().getTime()-3600000);
+        Date endTime = new Date(new Date().getTime()+3600000);
+
         EventInterface beerFest = new Event.Builder().title("Beerfest").description("Go to pub and drink beer.")
-                .startTime(new Date()).endTime(new Date()).attendersLogins(Arrays.asList("pabloLogin")).build();
+                .startTime(startTime).endTime(endTime).attendersLogins(Arrays.asList("pabloLogin")).build();
 
         Person pablo = new Person();
         pablo.setLogin("pabloLogin");
@@ -49,5 +52,11 @@ public class ClientMain {
         for (Map.Entry<String, EventInterface> entry : dataStore.entrySet()) {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
+
+        Date certainTime = new Date();
+        Date certainTime2 = new Date(new Date().getTime()+4000000);
+        logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime));
+        logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime2));
+
     }
 }
