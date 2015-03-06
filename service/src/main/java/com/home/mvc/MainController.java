@@ -53,12 +53,12 @@ public class MainController {
 
     @RequestMapping(value = "/submitLoginForm.html", method = RequestMethod.POST)
     public ModelAndView submitLoginForm(@RequestParam("login") String login,
-                                            @RequestParam("password") String password,
-                                            HttpServletRequest request) throws RemoteException {
+                                        @RequestParam("password") String password,
+                                        HttpServletRequest request) throws RemoteException {
 
         Person person = calendarService.findPerson(login);
 
-        if (person!=null && person.getPassword().equals(password)) {
+        if (person != null && person.getPassword().equals(password)) {
             ModelAndView model = new ModelAndView("pages/LoginSuccess");
             model.addObject("person", person);
             request.getSession().setAttribute("personName", person.getPersonName());
@@ -76,7 +76,7 @@ public class MainController {
     public String getRegistrationForm(HttpServletRequest request) {
 
         String personName = (String) request.getSession().getAttribute("personName");
-        if (personName!=null) {
+        if (personName != null) {
             return "pages/LoggedInPage";
         }
 
@@ -87,7 +87,7 @@ public class MainController {
     public String submitRegistrationForm(@Valid @ModelAttribute("person") Person person,
                                          BindingResult result) throws RemoteException {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return "pages/RegistrationForm";
         }
 
@@ -98,11 +98,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "/ControlPanel.html")
-     public String getControlPanel(HttpServletRequest request) throws RemoteException {
+    public String getControlPanel(HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -116,7 +116,7 @@ public class MainController {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -130,7 +130,7 @@ public class MainController {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -138,34 +138,36 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitCreateEventForm.html")
-     public String submitCreateEvent(@ModelAttribute("event") EventClone event,
-                                     @RequestParam("allAttenders") String allAttenders,
-                                     HttpServletRequest request) throws RemoteException {
+    public String submitCreateEvent(@ModelAttribute("event") EventClone eventClone,
+                                    @RequestParam("allAttenders") String allAttenders,
+                                    HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
-        if (event.getEndTime()==null) {
+        if (eventClone.getEndTime() == null) {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(event.getStartTime());
+            cal.setTime(eventClone.getStartTime());
             cal.set(Calendar.HOUR_OF_DAY, 23);
             cal.set(Calendar.MINUTE, 59);
             cal.set(Calendar.SECOND, 59);
 
             Date endTime = cal.getTime();
 
-            event.setEndTime(endTime);
+            eventClone.setEndTime(endTime);
         }
 
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
-        event.setAttendersLogins(attendersList);
+        eventClone.setAttendersLogins(attendersList);
 
-        calendarService.addEvent(event);
+        calendarService.addEvent(eventClone);
 
-        request.getSession().setAttribute("event", event);
+        eventClone.setAttendersLogins(attendersList);
+
+        request.getSession().setAttribute("event", eventClone);
 
         return "pages/ControlPanel";
     }
@@ -175,7 +177,7 @@ public class MainController {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -192,7 +194,7 @@ public class MainController {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -205,11 +207,11 @@ public class MainController {
 
     @RequestMapping(value = "/RemoveEvent.html")
     public String removeEvent(@RequestParam("eventToRemove") String eventToRemove,
-                            HttpServletRequest request) throws RemoteException {
+                              HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
-        if (personName==null) {
+        if (personName == null) {
             return "pages/LoginForm";
         }
 
@@ -226,3 +228,4 @@ public class MainController {
         return "pages/ShowEvents";
     }
 }
+
