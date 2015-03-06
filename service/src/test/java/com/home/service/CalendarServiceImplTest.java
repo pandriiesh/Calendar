@@ -256,12 +256,12 @@ public class CalendarServiceImplTest {
 
         // initialize variable inputs
         Person person1 = new Person();
-        person1.setLogin("personLogin");
+        person1.setLogin("person1Login");
         long time = 1435673000000L;
         Date startTime = new Date(time);
         Date endTime = new Date(new Date().getTime()+3600000);
 
-        EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime)
+        EventInterface event1 = new Event.Builder().startTime(startTime).endTime(endTime)
                 .attendersLogins(Arrays.asList("person1Login")).build();
 
         Person person2 = new Person();
