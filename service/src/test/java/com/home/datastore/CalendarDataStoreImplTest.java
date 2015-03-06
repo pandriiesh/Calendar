@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -174,7 +173,7 @@ public class CalendarDataStoreImplTest {
         Date endTime = new Date(new Date().getTime()+3600000);
         EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime).build();
 
-        person.addEvent(event);
+        person.addEventToPerson(event);
 
         Date checkedTime = new Date();
 

@@ -27,7 +27,7 @@ public class Person implements Serializable{
 
     private List<EventInterface> eventList = new ArrayList<EventInterface>();
 
-    public void addEvent(EventInterface event) {
+    public void addEventToPerson(EventInterface event) {
         eventList.add(event);
     }
 

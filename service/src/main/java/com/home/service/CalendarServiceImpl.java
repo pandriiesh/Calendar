@@ -20,7 +20,7 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public void addEvent(EventInterface event) {
         for (String login : event.getAttendersLogins()) {
-            findPerson(login).addEvent(event);
+            findPerson(login).addEventToPerson(event);
         }
         calendarDataStore.addEvent(event);
     }

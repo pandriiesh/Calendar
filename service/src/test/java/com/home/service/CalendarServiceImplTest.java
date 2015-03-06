@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -23,12 +23,16 @@ public class CalendarServiceImplTest {
     public void testAddEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Person person = new Person();
+        person.setLogin("personLogin");
+
+        Event actualEvent = new Event.Builder().title("Event").attendersLogins(Arrays.asList("personLogin")).build();
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
 
-        doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).addEvent(actualEvent);
+        when(calendarDataStore.findPerson("personLogin")).thenReturn(person);
+        doThrow(new RuntimeException("Void method testing string")).when(calendarDataStore).addEvent(actualEvent);
 
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
@@ -39,11 +43,11 @@ public class CalendarServiceImplTest {
         try {
             calendarService.addEvent(actualEvent);
         } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "Void method testing");
+            assertEquals(e.getMessage(), "Void method testing string");
         }
 
-
         // verify mock expectations
+        verify(calendarDataStore).findPerson("personLogin");
         verify(calendarDataStore).addEvent(actualEvent);
 
     }
@@ -224,7 +228,7 @@ public class CalendarServiceImplTest {
         Date endTime = new Date(new Date().getTime()+3600000);
         EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime).build();
 
-        person.addEvent(event);
+        person.addEventToPerson(event);
 
         Date checkedTime = new Date();
         boolean expectedValue = false;
@@ -245,5 +249,90 @@ public class CalendarServiceImplTest {
 
         // verify mock expectations
         verify(calendarDataStore).checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
+    }
+
+    @Test
+    public void testFindBestTimePeriodToCreateEventForUsers() throws Exception {
+
+        // initialize variable inputs
+        Person person1 = new Person();
+        person1.setLogin("personLogin");
+        long time = 1435673000000L;
+        Date startTime = new Date(time);
+        Date endTime = new Date(new Date().getTime()+3600000);
+
+        EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime)
+                .attendersLogins(Arrays.asList("person1Login")).build();
+
+        Person person2 = new Person();
+        person2.setLogin("person2Login");
+
+        Date startTime2 = new Date(new Date().getTime()+4000000);
+        Date endTime2 = new Date(new Date().getTime()+7600000);
+
+        EventInterface event2 = new Event.Builder().startTime(startTime2).endTime(endTime2)
+                .attendersLogins(Arrays.asList("person2Login")).build();
+
+
+        Person person3 = new Person();
+        person3.setLogin("person3Login");
+        Date startTime3 = new Date(new Date().getTime()+8000000);
+        Date endTime3 = new Date(new Date().getTime()+9800000);
+
+        EventInterface event3 = new Event.Builder().startTime(startTime3).endTime(endTime3)
+                .attendersLogins(Arrays.asList("person3Login")).build();
+
+
+        // initialize mocks
+        CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
+
+        RuntimeException toBeThrownRegisterPerson1 = new RuntimeException("register person1");
+        RuntimeException toBeThrownRegisterPerson2 = new RuntimeException("register person2");
+        RuntimeException toBeThrownRegisterPerson3 = new RuntimeException("register person3");
+
+        doThrow(toBeThrownRegisterPerson1).when(calendarDataStore).registerPerson(person1);
+        doThrow(toBeThrownRegisterPerson2).when(calendarDataStore).registerPerson(person2);
+        doThrow(toBeThrownRegisterPerson3).when(calendarDataStore).registerPerson(person3);
+
+        Date expectedTime = new Date(1435682800000L + 900000);
+        when(calendarDataStore.findBestTimePeriodToCreateEventForUsers(1,
+                Arrays.asList("person1Login", "person2Login", "person3Login")))
+                .thenReturn(expectedTime);
+
+        // initialize class to test
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
+
+        // invoke method on class to test
+        try {
+            calendarService.registerPerson(person1);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "register person1");
+        }
+
+        try {
+            calendarService.registerPerson(person2);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "register person2");
+        }
+
+        try {
+            calendarService.registerPerson(person3);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "register person3");
+        }
+
+        Date value = calendarService.findBestTimePeriodToCreateEventForUsers(1,
+                Arrays.asList("person1Login", "person2Login", "person3Login"));
+
+        // assert return value
+        assertEquals(expectedTime, value);
+
+        // verify mock expectations
+        verify(calendarDataStore).registerPerson(person1);
+        verify(calendarDataStore).registerPerson(person2);
+        verify(calendarDataStore).registerPerson(person3);
+        verify(calendarDataStore).findBestTimePeriodToCreateEventForUsers(1,
+                Arrays.asList("person1Login", "person2Login", "person3Login"));
+
     }
 }

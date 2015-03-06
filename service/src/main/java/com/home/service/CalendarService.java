@@ -34,5 +34,4 @@ public interface CalendarService extends Remote {
 
     Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) throws RemoteException;
 
-
 }
