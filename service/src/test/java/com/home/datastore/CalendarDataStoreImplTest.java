@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -254,6 +255,54 @@ public class CalendarDataStoreImplTest {
 
         // assert return value
         assertEquals(expectedTime, calculatedTime);
+
+        // verify mock expectations
+
+    }
+
+    @Test
+    public void testFindPersonsEventsAtCertainTime() throws Exception {
+
+        // initialize variable inputs
+        Person person = new Person();
+        final Date NOW_TIME = new Date();
+        Date checkTime = new Date(NOW_TIME.getTime()+60*60*1000);
+
+        person.setLogin("personLogin");
+
+        Date eventStartTime = NOW_TIME;
+        Date eventEndTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+
+        EventInterface event1 = new Event.Builder().title("Event1").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        EventInterface event2 = new Event.Builder().title("Event2").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        EventInterface event3 = new Event.Builder().title("Event3").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        List<EventInterface> expectedEventList = Arrays.asList(event1, event2, event3);
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        person.addEventToPerson(event1);
+        person.addEventToPerson(event2);
+        person.addEventToPerson(event3);
+
+        calendarDataStore.registerPerson(person);
+
+        calendarDataStore.addEvent(event1);
+        calendarDataStore.addEvent(event2);
+        calendarDataStore.addEvent(event3);
+
+        // invoke method on class to test
+        List<EventInterface> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
+
+        // assert return value
+        assertEquals(expectedEventList, eventList);
 
         // verify mock expectations
 

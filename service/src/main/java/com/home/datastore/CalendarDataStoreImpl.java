@@ -150,4 +150,19 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         return date;
     }
+
+    @Override
+    public List<EventInterface> findPersonsEventsAtCertainTime(String personLogin, Date date) {
+
+        List<EventInterface> eventList = new ArrayList<EventInterface>();
+
+        for (EventInterface event : personStore.get(personLogin).getEvents()) {
+
+            if (date.after(event.getStartTime()) && date.before(event.getEndTime())) {
+                eventList.add(event);
+            }
+        }
+
+        return eventList;
+    }
 }

@@ -261,27 +261,32 @@ public class CalendarServiceImplTest {
 
         Person person1 = new Person();
         person1.setLogin("person1Login");
-        Date event1StartTime = NOW_TIME;
-        Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         Person person2 = new Person();
         person2.setLogin("person2Login");
-        Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
-        Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
 
         Person person3 = new Person();
         person3.setLogin("person3Login");
-        Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
-        Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
+
+
+        Date event1StartTime = NOW_TIME;
+        Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         EventInterface event1 = new Event.Builder().startTime(event1StartTime).endTime(event1EndTime)
                 .attendersLogins(Arrays.asList("person1Login")).build();
 
+        Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
+        Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
+
         EventInterface event2 = new Event.Builder().startTime(event2StartTime).endTime(event2EndTime)
                 .attendersLogins(Arrays.asList("person2Login")).build();
 
+        Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+        Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
+
         EventInterface event3 = new Event.Builder().startTime(event3StartTime).endTime(event3EndTime)
                 .attendersLogins(Arrays.asList("person3Login")).build();
+
 
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
@@ -366,8 +371,100 @@ public class CalendarServiceImplTest {
         verify(calendarDataStore).registerPerson(person2);
         verify(calendarDataStore).registerPerson(person3);
 
+        verify(calendarDataStore).addEvent(event1);
+        verify(calendarDataStore).addEvent(event2);
+        verify(calendarDataStore).addEvent(event3);
+
         verify(calendarDataStore).findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));
+
+    }
+
+    @Test
+    public void testFindPersonsEventsAtCertainTime() throws Exception {
+
+        // initialize variable inputs
+        Person person = new Person();
+        final Date NOW_TIME = new Date();
+        Date checkTime = new Date(NOW_TIME.getTime()+60*60*1000);
+
+        person.setLogin("personLogin");
+
+        Date eventStartTime = NOW_TIME;
+        Date eventEndTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+
+        EventInterface event1 = new Event.Builder().title("Event1").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        EventInterface event2 = new Event.Builder().title("Event2").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        EventInterface event3 = new Event.Builder().title("Event3").startTime(eventStartTime).endTime(eventEndTime)
+                .attendersLogins(Arrays.asList("personLogin")).build();
+
+        List<EventInterface> expectedEventList = Arrays.asList(event1, event2, event3);
+
+        // initialize mocks
+        CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
+
+        RuntimeException toBeThrownRegisterPerson = new RuntimeException("register person");
+
+        RuntimeException toBeThrownAddEvent1 = new RuntimeException("add event 1");
+        RuntimeException toBeThrownAddEvent2 = new RuntimeException("add event 2");
+        RuntimeException toBeThrownAddEvent3 = new RuntimeException("add event 3");
+
+        doThrow(toBeThrownRegisterPerson).when(calendarDataStore).registerPerson(person);
+
+        doThrow(toBeThrownAddEvent1).when(calendarDataStore).addEvent(event1);
+        doThrow(toBeThrownAddEvent2).when(calendarDataStore).addEvent(event2);
+        doThrow(toBeThrownAddEvent3).when(calendarDataStore).addEvent(event3);
+
+        when(calendarDataStore.findPerson(person.getLogin())).thenReturn(person);
+
+        when(calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime))
+                .thenReturn(expectedEventList);
+
+        // initialize class to test
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
+
+        try {
+            calendarDataStore.registerPerson(person);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "register person");
+        }
+
+        try {
+            calendarService.addEvent(event1);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "add event 1");
+        }
+
+        try {
+            calendarService.addEvent(event2);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "add event 2");
+        }
+
+        try {
+            calendarService.addEvent(event3);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "add event 3");
+        }
+
+        // invoke method on class to test
+        List<EventInterface> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
+
+        // assert return value
+        assertEquals(expectedEventList, eventList);
+
+        // verify mock expectations
+        verify(calendarDataStore).registerPerson(person);
+
+        verify(calendarDataStore).addEvent(event1);
+        verify(calendarDataStore).addEvent(event2);
+        verify(calendarDataStore).addEvent(event3);
+
+        verify(calendarDataStore).findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
 
     }
 }
