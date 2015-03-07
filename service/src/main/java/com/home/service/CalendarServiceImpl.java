@@ -72,6 +72,6 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) throws RemoteException {
-        return null;
+        return calendarDataStore.findBestTimePeriodToCreateEventForUsers(durationHours, personsLogins);
     }
 }

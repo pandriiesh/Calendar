@@ -3,6 +3,8 @@ package com.home.datastore;
 import com.home.common.Event;
 import com.home.common.EventInterface;
 import com.home.common.Person;
+import com.home.service.CalendarService;
+import com.home.service.CalendarServiceImpl;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -197,53 +199,61 @@ public class CalendarDataStoreImplTest {
     public void testFindBestTimePeriodToCreateEventForUsers() throws Exception {
 
         // initialize variable inputs
+
+        final Date NOW_TIME = new Date();
+        final long INTERVAL = 15*60*1000;
+
         Person person1 = new Person();
         person1.setLogin("person1Login");
-        long time = 1435673000000L;
-        Date startTime = new Date(time);
-        Date endTime = new Date(new Date().getTime() + 3600000);
-
-        EventInterface event1 = new Event.Builder().startTime(startTime).endTime(endTime)
-                .attendersLogins(Arrays.asList("person1Login")).build();
+        Date event1StartTime = NOW_TIME;
+        Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         Person person2 = new Person();
         person2.setLogin("person2Login");
-
-        Date startTime2 = new Date(new Date().getTime() + 4000000);
-        Date endTime2 = new Date(new Date().getTime() + 7600000);
-
-        EventInterface event2 = new Event.Builder().startTime(startTime2).endTime(endTime2)
-                .attendersLogins(Arrays.asList("person2Login")).build();
-
+        Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
+        Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
 
         Person person3 = new Person();
         person3.setLogin("person3Login");
-        Date startTime3 = new Date(new Date().getTime() + 8000000);
-        Date endTime3 = new Date(new Date().getTime() + 9800000);
+        Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+        Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
-        EventInterface event3 = new Event.Builder().startTime(startTime3).endTime(endTime3)
+        EventInterface event1 = new Event.Builder().startTime(event1StartTime).endTime(event1EndTime)
+                .attendersLogins(Arrays.asList("person1Login")).build();
+
+        EventInterface event2 = new Event.Builder().startTime(event2StartTime).endTime(event2EndTime)
+                .attendersLogins(Arrays.asList("person2Login")).build();
+
+        EventInterface event3 = new Event.Builder().startTime(event3StartTime).endTime(event3EndTime)
                 .attendersLogins(Arrays.asList("person3Login")).build();
 
-        Date expectedTime = new Date(1435682800000L + 900000);
+
+        Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
+        expectedTime.setTime(expectedTime.getTime()/1000/60*60*1000 + INTERVAL);
 
         // initialize mocks
 
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
+        person1.addEventToPerson(event1);
+        person2.addEventToPerson(event2);
+        person3.addEventToPerson(event3);
+
         calendarDataStore.registerPerson(person1);
         calendarDataStore.registerPerson(person2);
         calendarDataStore.registerPerson(person3);
+
         calendarDataStore.addEvent(event1);
         calendarDataStore.addEvent(event2);
         calendarDataStore.addEvent(event3);
 
         // invoke method on class to test
-        Date value = calendarDataStore.findBestTimePeriodToCreateEventForUsers(1,
+        Date calculatedTime = calendarDataStore.findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));
 
         // assert return value
-        assertEquals(expectedTime, value);
+        assertEquals(expectedTime, calculatedTime);
 
         // verify mock expectations
 
