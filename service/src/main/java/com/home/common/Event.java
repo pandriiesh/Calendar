@@ -12,7 +12,6 @@ public class Event implements Serializable {
     private String description;
     private final UUID id;
     private List<Person> attenders;
-    private List<String> attendersLogins;
     private Date startTime;
     private Date endTime;
 
@@ -37,7 +36,6 @@ public class Event implements Serializable {
         description = event.description;
         id = UUID.randomUUID();
         attenders = event.attenders;
-        attendersLogins = event.attendersLogins;
         startTime = event.startTime;
         endTime = event.endTime;
     }
@@ -52,14 +50,6 @@ public class Event implements Serializable {
 
     public void setAttenders(List<Person> attenders) {
         this.attenders = attenders;
-    }
-
-    public List<String> getAttendersLogins() {
-        return attendersLogins;
-    }
-
-    public void setAttendersLogins(List<String> attendersLogins) {
-        this.attendersLogins = attendersLogins;
     }
 
     public String getDescription() {
@@ -117,7 +107,6 @@ public class Event implements Serializable {
                 "title=" + title +
                 ", description='" + description + '\'' +
                 ", attenders='" + attenders + '\'' +
-                ", attendersLogins=" + attendersLogins +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", id=" + id +

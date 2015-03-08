@@ -27,7 +27,7 @@ public class CalendarServiceImplTest {
 
         Event actualEvent = new Event();
         actualEvent.setTitle("Event");
-        actualEvent.setAttendersLogins(Arrays.asList("personLogin"));
+        actualEvent.setAttenders(Arrays.asList(person));
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -277,7 +277,7 @@ public class CalendarServiceImplTest {
         Event event1 = new Event();
         event1.setStartTime(NOW_TIME);
         event1.setEndTime(event1EndTime);
-        event1.setAttendersLogins(Arrays.asList("person1Login"));
+        event1.setAttenders(Arrays.asList(person1));
 
         Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
         Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
@@ -285,7 +285,7 @@ public class CalendarServiceImplTest {
         Event event2 = new Event();
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
-        event2.setAttendersLogins(Arrays.asList("person2Login"));
+        event2.setAttenders(Arrays.asList(person2));
 
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
@@ -293,7 +293,7 @@ public class CalendarServiceImplTest {
         Event event3 = new Event();
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
-        event3.setAttendersLogins(Arrays.asList("person3Login"));
+        event3.setAttenders(Arrays.asList(person3));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
         expectedTime.setTime(expectedTime.getTime() /1000/60 *1000*60 + INTERVAL);
@@ -403,19 +403,19 @@ public class CalendarServiceImplTest {
         event1.setTitle("Event1");
         event1.setStartTime(NOW_TIME);
         event1.setEndTime(eventEndTime);
-        event1.setAttendersLogins(Arrays.asList("personLogin"));
+        event1.setAttenders(Arrays.asList(person));
 
         Event event2 = new Event();
         event2.setTitle("Event2");
         event2.setStartTime(NOW_TIME);
         event2.setEndTime(eventEndTime);
-        event2.setAttendersLogins(Arrays.asList("personLogin"));
+        event2.setAttenders(Arrays.asList(person));
 
         Event event3 = new Event();
         event3.setTitle("Event3");
         event3.setStartTime(NOW_TIME);
         event3.setEndTime(eventEndTime);
-        event3.setAttendersLogins(Arrays.asList("personLogin"));
+        event3.setAttenders(Arrays.asList(person));
 
         List<Event> expectedEventList = Arrays.asList(event1, event2, event3);
 

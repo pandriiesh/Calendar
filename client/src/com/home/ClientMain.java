@@ -25,13 +25,6 @@ public class ClientMain {
         Date startTime = new Date(new Date().getTime()-3600000);
         Date endTime = new Date(new Date().getTime()+3600000);
 
-        Event beerFest = new Event();
-        beerFest.setTitle("Beerfest");
-        beerFest.setDescription("Go to pub and drink beer.");
-        beerFest.setStartTime(startTime);
-        beerFest.setEndTime(endTime);
-        beerFest.setAttendersLogins(Arrays.asList("pabloLogin"));
-
         Person pablo = new Person();
         pablo.setLogin("pabloLogin");
         pablo.setPassword("pabloPassword");
@@ -39,6 +32,15 @@ public class ClientMain {
         pablo.setPersonEmail("pablo@gmail.com");
 
         service.registerPerson(pablo);
+
+        Event beerFest = new Event();
+        beerFest.setTitle("Beerfest");
+        beerFest.setDescription("Go to pub and drink beer.");
+        beerFest.setStartTime(startTime);
+        beerFest.setEndTime(endTime);
+        beerFest.setAttenders(Arrays.asList(pablo));
+
+
 
         service.addEvent(beerFest);
 
@@ -84,20 +86,17 @@ public class ClientMain {
         Event event1 = new Event();
         event1.setStartTime(event1StartTime);
         event1.setEndTime(event1EndTime);
-        event1.setAttendersLogins(Arrays.asList("person1Login"));
+        event1.setAttenders(Arrays.asList(person1));
 
         Event event2 = new Event();
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
-        event2.setAttendersLogins(Arrays.asList("person2Login"));
+        event2.setAttenders(Arrays.asList(person2));
 
         Event event3 = new Event();
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
-        event3.setAttendersLogins(Arrays.asList("person3Login"));
-
-        Event event4 = new Event();
-        event4.setAttendersLogins(Arrays.asList("person3Login"));
+        event3.setAttenders(Arrays.asList(person2));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
         expectedTime.setTime(expectedTime.getTime() / 1000 / 60 * 60 * 1000 + INTERVAL);
@@ -109,7 +108,6 @@ public class ClientMain {
         service.addEvent(event1);
         service.addEvent(event2);
         service.addEvent(event3);
-        service.addEvent(event4);
 
         Date calculatedTime = service.findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));

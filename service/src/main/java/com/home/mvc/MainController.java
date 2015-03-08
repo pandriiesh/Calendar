@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -136,7 +137,7 @@ public class MainController {
 
     @RequestMapping(value = "/submitCreateEventForm.html")
     public String submitCreateEvent(@ModelAttribute("event") Event event,
-                                    @RequestParam("allAttenders") String allAttenders,
+                                    @RequestParam("attenders") String attenders,
                                     HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
@@ -145,12 +146,15 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<String> attendersList = Arrays.asList(allAttenders.split(" "));
-        event.setAttendersLogins(attendersList);
+        List<Person> personList = new ArrayList<Person>();
+
+        for (String personLogin : Arrays.asList(attenders.split(" "))) {
+            personList.add(calendarService.findPerson(personLogin));
+        }
+
+        event.setAttenders(personList);
 
         calendarService.addEvent(event);
-
-        event.setAttendersLogins(attendersList);
 
         request.getSession().setAttribute("event", event);
 
@@ -202,8 +206,8 @@ public class MainController {
 
         Event event = calendarService.searchEvent(eventToRemove);
 
-        for (String login : event.getAttendersLogins()) {
-            calendarService.findPerson(login).removeEvent(event);
+        for (Person person : event.getAttenders()) {
+            calendarService.findPerson(person.getLogin()).removeEvent(event);
         }
 
         calendarService.removeEvent(event);
