@@ -85,16 +85,19 @@ public class ClientMain {
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
         Event event1 = new Event();
+        event1.setTitle("event1");
         event1.setStartTime(event1StartTime);
         event1.setEndTime(event1EndTime);
         event1.setAttenders(Arrays.asList(person1));
 
         Event event2 = new Event();
+        event2.setTitle("event2");
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
         event2.setAttenders(Arrays.asList(person2));
 
         Event event3 = new Event();
+        event3.setTitle("event3");
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
         event3.setAttenders(Arrays.asList(person2));
@@ -119,5 +122,10 @@ public class ClientMain {
         logger.info("calculatedTime: " + calculatedTime);
 
         logger.info("Verdict: " + expectedTime.equals(calculatedTime));
+
+        logger.info(service.findEventByTitle("event1").toString());
+        logger.info(service.findEventByTitle("event2").toString());
+        logger.info(service.findEventByTitle("event3").toString());
+
     }
 }

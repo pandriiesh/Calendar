@@ -39,20 +39,35 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public List<Event> searchEvent(String title) {
-        List<Event> eventList = new ArrayList<Event>();
+    public List<Event> findEventByTitle(String title) {
 
-        for (Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
-            if (entry.getValue().getTitle().equals(title)) {
-                eventList.add(entry.getValue());
+        List<Event> events = new ArrayList<Event>();
+
+        for (Map.Entry<UUID, Event> entry : eventStore.entrySet())
+        {
+            if(entry.getValue().getTitle().equals(title)) {
+                events.add(entry.getValue());
             }
         }
-        return eventList;
+        return events;
     }
 
     @Override
-    public List<Event> searchEvent(Person person) {
-        return person.getEvents();
+    public List<Event> findEventById(String id) {
+        List<Event> events = new ArrayList<Event>();
+
+        for (Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
+            if (entry.getValue().getId().toString().equals(id)) {
+                events.add(entry.getValue());
+            }
+        }
+
+        return events;
+    }
+
+    @Override
+    public List<Event> findEventByAttender(String login) {
+        return personStore.get(login).getEvents();
     }
 
     @Override

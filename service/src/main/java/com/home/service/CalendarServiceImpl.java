@@ -32,13 +32,18 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<Event> searchEvent(String title) {
-        return calendarDataStore.searchEvent(title);
+    public List<Event> findEventByTitle(String title) {
+        return calendarDataStore.findEventByTitle(title);
     }
 
     @Override
-    public List<Event> searchEvent(Person person) {
-        return calendarDataStore.searchEvent(person);
+    public List<Event> findEventById(String id) throws RemoteException {
+        return calendarDataStore.findEventById(id);
+    }
+
+    @Override
+    public List<Event> findEventByAttender(String login) {
+        return calendarDataStore.findEventByAttender(login);
     }
 
     @Override

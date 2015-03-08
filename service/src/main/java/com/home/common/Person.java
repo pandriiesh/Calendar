@@ -73,7 +73,6 @@ public class Person implements Serializable{
     @Override
     public String toString() {
         return "Person{" +
-                "eventList=" + eventList +
                 ", personName='" + personName + '\'' +
                 ", personEmail='" + personEmail + '\'' +
                 ", login='" + login + '\'' +

@@ -16,11 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.rmi.RemoteException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @SessionAttributes("myRequestObject")
@@ -136,7 +134,10 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitCreateEventForm.html")
-    public String submitCreateEvent(@ModelAttribute("event") Event event,
+    public String submitCreateEvent(@RequestParam("title") String title,
+                                    @RequestParam("description") String description,
+                                    @RequestParam("startTime") String startTime,
+                                    @RequestParam("endTime") String endTime,
                                     @RequestParam("attendersLogins") String attenders,
                                     HttpServletRequest request) throws RemoteException {
 
@@ -146,10 +147,41 @@ public class MainController {
             return "pages/LoginForm";
         }
 
+        Event event = new Event();
         List<Person> personList = new ArrayList<Person>();
 
         for (String personLogin : Arrays.asList(attenders.split(" "))) {
             personList.add(calendarService.findPerson(personLogin));
+        }
+
+        if (title != null && !title.isEmpty()) {
+            event.setTitle(title);
+        }
+
+        if (description != null && !description.isEmpty()) {
+            event.setDescription(description);
+        }
+
+        if (startTime != null && !startTime.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+            Date parsedDate = null;
+            try {
+                parsedDate = formatter.parse(startTime);
+            } catch (ParseException e) {
+                return "pages/CreateEventForm";
+            }
+            event.setStartTime(parsedDate);
+        }
+
+        if (endTime != null && !endTime.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+            Date parsedDate = null;
+            try {
+                parsedDate = formatter.parse(endTime);
+            } catch (ParseException e) {
+                return "pages/CreateEventForm";
+            }
+            event.setEndTime(parsedDate);
         }
 
         event.setAttenders(personList);
@@ -177,8 +209,42 @@ public class MainController {
         return "pages/ShowEvents";
     }
 
-    @RequestMapping(value = "/FindEvent.html")
-    public String findEvent(@RequestParam("eventToFind") String eventToFind,
+    @RequestMapping(value = "/FindEventsByTitle.html")
+    public String findEventByTitle(@RequestParam("eventTitleToFind") String attenderLogin,
+                                      HttpServletRequest request) throws RemoteException {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName == null) {
+            return "pages/LoginForm";
+        }
+
+        List<Event> events = calendarService.findEventByTitle(attenderLogin);
+
+        request.setAttribute("foundedEvents", events);
+
+        return "pages/ShowEvents";
+    }
+
+    @RequestMapping(value = "/FindEventByID.html")
+    public String findEventByID(@RequestParam("ID") String attenderID,
+                                      HttpServletRequest request) throws RemoteException {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName == null) {
+            return "pages/LoginForm";
+        }
+
+        List<Event> events = calendarService.findEventById(attenderID);
+
+        request.setAttribute("foundedEvents", events);
+
+        return "pages/ShowEvents";
+    }
+
+    @RequestMapping(value = "/FindEventByAttender.html")
+    public String findEventByAttender(@RequestParam("attenderLogin") String attenderLogin,
                             HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
@@ -187,15 +253,16 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.searchEvent(eventToFind);
+        List<Event> events = calendarService.findEventByAttender(attenderLogin);
 
-        request.setAttribute("foundedEvent", events);
+        request.setAttribute("foundedEvents", events);
 
         return "pages/ShowEvents";
     }
 
-    @RequestMapping(value = "/RemoveEvent.html")
-    public String removeEvent(@RequestParam("eventToRemove") String eventToRemove,
+
+    @RequestMapping(value = "/RemoveEventByTitle.html")
+    public String removeEventByTitle(@RequestParam("eventTitleToRemove") String eventTitle,
                               HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
@@ -204,7 +271,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.searchEvent(eventToRemove);
+        List<Event> events = calendarService.findEventByTitle(eventTitle);
 
         for (Event event : events) {
             for (Person person : event.getAttenders()) {
@@ -221,5 +288,35 @@ public class MainController {
 
         return "pages/ShowEvents";
     }
+
+    @RequestMapping(value = "/RemoveEventByID.html")
+    public String removeEventByID(@RequestParam("eventID") String eventID,
+                              HttpServletRequest request) throws RemoteException {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName == null) {
+            return "pages/LoginForm";
+        }
+
+
+        List<Event> events = calendarService.findEventById(eventID);
+
+        for (Event event : events) {
+            for (Person person : event.getAttenders()) {
+                calendarService.findPerson(person.getLogin()).removeEvent(event);
+            }
+        }
+
+        for(Event event : events) {
+            calendarService.removeEvent(event);
+        }
+
+
+        request.setAttribute("isRemoved", Boolean.TRUE);
+
+        return "pages/ShowEvents";
+    }
+
 }
 

@@ -14,6 +14,5 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
         logger.info("Service started");
-
     }
 }

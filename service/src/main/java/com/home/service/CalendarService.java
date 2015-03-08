@@ -18,9 +18,11 @@ public interface CalendarService extends Remote {
 
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;
 
-    List<Event> searchEvent(String title) throws RemoteException;
+    List<Event> findEventByTitle(String title) throws RemoteException;
 
-    List<Event> searchEvent(Person person) throws RemoteException;
+    List<Event> findEventById(String id) throws RemoteException;
+
+    List<Event> findEventByAttender(String login) throws RemoteException;
 
     boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) throws RemoteException;
 

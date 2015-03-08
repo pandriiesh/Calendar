@@ -29,7 +29,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.findEventByTitle(actualEvent.getTitle());
 
         assertEquals(expectedEvents, Arrays.asList(actualEvent));
 
@@ -51,7 +51,7 @@ public class CalendarDataStoreImplTest {
                 Arrays.asList("mail1@gmail.com", "mail2@gmail.com", "mail3@gmail.com"));
         calendarDataStore.addEvent(actualEvent);
 
-        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.findEventByTitle(actualEvent.getTitle());
 
         // assert return value
 
@@ -76,7 +76,7 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         calendarDataStore.addEvent(actualEvent);
-        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.findEventByTitle(actualEvent.getTitle());
 
         // assert return value
         assertEquals(expectedEvents, Arrays.asList(actualEvent));
@@ -102,7 +102,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.removeEvent(actualEvent);
 
         // assert return value
-        assertEquals(new ArrayList(), calendarDataStore.searchEvent(actualEvent.getTitle()));
+        assertEquals(new ArrayList(), calendarDataStore.findEventByTitle(actualEvent.getTitle()));
 
         // verify mock expectations
     }

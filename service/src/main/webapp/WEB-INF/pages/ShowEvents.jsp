@@ -12,25 +12,36 @@
 
         <form method="post">
             <table>
-                <tr><td>Find event with title</td>
-                    <td><input type="text" name="eventToFind"></td>
-                    <td><input type="submit" value="Find" formaction="/FindEvent.html"></td>
+                <tr><td>Find event by title </td>
+                    <td><input type="text" name="eventTitleToFind"></td>
+                    <td><input type="submit" value="Find" formaction="/FindEventsByTitle.html"></td>
                 </tr>
-
+                <tr><td>Find event by attender </td>
+                    <td><input type="text" name="attenderLogin"></td>
+                    <td><input type="submit" value="Find" formaction="/FindEventByAttender.html"></td>
+                </tr>
+                <tr><td>Find event by ID </td>
+                    <td><input type="text" name="ID"></td>
+                    <td><input type="submit" value="Find" formaction="/FindEventByID.html"></td>
+                </tr>
                 <tr><td>Remove event with title </td>
-                    <td><input type="text" name="eventToRemove"></td>
-                    <td><input type="submit" value="Remove" formaction="/RemoveEvent.html"></td>
+                    <td><input type="text" name="eventTitleToRemove"></td>
+                    <td><input type="submit" value="Remove" formaction="/RemoveEventByTitle.html"></td>
+                </tr>
+                <tr><td>Remove event with ID </td>
+                    <td><input type="text" name="eventID"></td>
+                    <td><input type="submit" value="Remove" formaction="/RemoveEventByID.html"></td>
                 </tr>
             </table>
         </form>
 
         <%
-            List<Event> events = (List<Event>) request.getAttribute("foundedEvent");
+            List<Event> events = (List<Event>) request.getAttribute("foundedEvents");
 
             if (events !=null) {
 
         %>
-        <h3>Founded <%out.print(events.size());%> event(s) with title <%out.print(events.get(0).getTitle());%>:</h3>
+        <h3>Founded <%out.print(events.size());%> event(s).</h3>
         <%
 
                 for (Event event : events) {
@@ -47,6 +58,7 @@
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
                 <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
+                <tr><td>ID:               </td><td><%out.print(event.getId());%></td></tr>
             </table>
             <br>
             <%} }%>
@@ -80,6 +92,7 @@
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
                 <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
+                <tr><td>ID:               </td><td><%out.print(event.getId());%></td></tr>
             </table>
             <br>
         <%} %>

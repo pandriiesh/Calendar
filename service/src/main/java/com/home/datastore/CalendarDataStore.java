@@ -16,9 +16,11 @@ public interface CalendarDataStore {
 
     Event createEvent(String title, List<String> attendersLogins);
 
-    List<Event> searchEvent(String title);
+    List<Event> findEventByTitle(String title);
 
-    List<Event> searchEvent(Person person);
+    List<Event> findEventById(String id);
+
+    List<Event> findEventByAttender(String login);
 
     Map<UUID, Event> getEventStore();
 
