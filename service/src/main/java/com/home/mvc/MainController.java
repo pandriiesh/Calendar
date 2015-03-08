@@ -260,10 +260,9 @@ public class MainController {
         return "pages/ShowEvents";
     }
 
-
-    @RequestMapping(value = "/RemoveEventByTitle.html")
-    public String removeEventByTitle(@RequestParam("eventTitleToRemove") String eventTitle,
-                              HttpServletRequest request) throws RemoteException {
+    @RequestMapping(value = "/FindEventByDate.html")
+    public String findEventsByDate(@RequestParam("dateToFind") String timeToFind,
+                                   HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
 
@@ -271,20 +270,20 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.findEventByTitle(eventTitle);
+        Date dateToFind = null;
 
-        for (Event event : events) {
-            for (Person person : event.getAttenders()) {
-                calendarService.findPerson(person.getLogin()).removeEvent(event);
+        if (timeToFind != null || !timeToFind.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            try {
+                dateToFind = formatter.parse(timeToFind);
+            } catch (ParseException e) {
+                return "pages/CreateEventForm";
             }
         }
 
-        for(Event event : events) {
-            calendarService.removeEvent(event);
-        }
+        List<Event> events = calendarService.findEventsByDate(dateToFind);
 
-
-        request.setAttribute("isRemoved", Boolean.TRUE);
+        request.setAttribute("foundedEvents", events);
 
         return "pages/ShowEvents";
     }

@@ -39,13 +39,13 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public List<Event> findEventByTitle(String title) {
+    public List<Event> findEventsByTitle(String title) {
 
         List<Event> events = new ArrayList<Event>();
 
         for (Map.Entry<UUID, Event> entry : eventStore.entrySet())
         {
-            if(entry.getValue().getTitle().equals(title)) {
+            if(entry.getValue().getTitle().contains(title)) {
                 events.add(entry.getValue());
             }
         }
@@ -53,7 +53,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public List<Event> findEventById(String id) {
+    public List<Event> findEventsById(String id) {
         List<Event> events = new ArrayList<Event>();
 
         for (Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
@@ -66,8 +66,30 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public List<Event> findEventByAttender(String login) {
+    public List<Event> findEventsByAttender(String login) {
         return personStore.get(login).getEvents();
+    }
+
+    @Override
+    public List<Event> findEventsByDate(Date startOfTheDay) {
+
+        Date endOfTheDay = new Date();
+        endOfTheDay.setTime(startOfTheDay.getTime() + 24*60*60*1000 - 1);
+        List<Event> eventList = new ArrayList<Event>();
+
+        System.out.println(startOfTheDay + " " + endOfTheDay);
+
+        for(Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
+
+            if ((entry.getValue().getStartTime().after(startOfTheDay) &&
+                 entry.getValue().getStartTime().before(endOfTheDay)) ||
+                 entry.getValue().getEndTime().after(startOfTheDay) &&
+                 entry.getValue().getEndTime().before(endOfTheDay))
+            {
+                eventList.add(entry.getValue());
+            }
+        }
+        return eventList;
     }
 
     @Override

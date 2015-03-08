@@ -12,23 +12,26 @@
 
         <form method="post">
             <table>
-                <tr><td>Find event by title </td>
+                <tr><td>Find events by title </td>
                     <td><input type="text" name="eventTitleToFind"></td>
                     <td><input type="submit" value="Find" formaction="/FindEventsByTitle.html"></td>
                 </tr>
-                <tr><td>Find event by attender </td>
+                <tr><td>Find events by attender </td>
                     <td><input type="text" name="attenderLogin"></td>
                     <td><input type="submit" value="Find" formaction="/FindEventByAttender.html"></td>
+                </tr>
+                <tr><td>Find events by day </td>
+                    <td><input type="text" name="dateToFind" value="DD.MM.YYYY"
+                               onblur="if (this.value == '') {this.value = 'DD.MM.YYYY';}"
+                               onfocus="if (this.value == 'DD.MM.YYYY') {this.value = '';}"
+                            ></td>
+                    <td><input type="submit" value="Find" formaction="/FindEventByDate.html"></td>
                 </tr>
                 <tr><td>Find event by ID </td>
                     <td><input type="text" name="ID"></td>
                     <td><input type="submit" value="Find" formaction="/FindEventByID.html"></td>
                 </tr>
-                <tr><td>Remove event with title </td>
-                    <td><input type="text" name="eventTitleToRemove"></td>
-                    <td><input type="submit" value="Remove" formaction="/RemoveEventByTitle.html"></td>
-                </tr>
-                <tr><td>Remove event with ID </td>
+                <tr><td>Remove event by ID </td>
                     <td><input type="text" name="eventID"></td>
                     <td><input type="submit" value="Remove" formaction="/RemoveEventByID.html"></td>
                 </tr>

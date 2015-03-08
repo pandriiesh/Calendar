@@ -91,7 +91,7 @@ public class CalendarServiceImplTest {
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
 
-        when(calendarDataStore.findEventByTitle(actualEvent.getTitle())).thenReturn(Arrays.asList(actualEvent));
+        when(calendarDataStore.findEventsByTitle(actualEvent.getTitle())).thenReturn(Arrays.asList(actualEvent));
 
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
@@ -103,7 +103,7 @@ public class CalendarServiceImplTest {
         assertEquals(expectedValue, Arrays.asList(actualEvent));
 
         // verify mock expectations
-        verify(calendarDataStore).findEventByTitle(actualEvent.getTitle());
+        verify(calendarDataStore).findEventsByTitle(actualEvent.getTitle());
     }
 
     @Test

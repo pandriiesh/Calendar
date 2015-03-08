@@ -16,11 +16,13 @@ public interface CalendarDataStore {
 
     Event createEvent(String title, List<String> attendersLogins);
 
-    List<Event> findEventByTitle(String title);
+    List<Event> findEventsByTitle(String title);
 
-    List<Event> findEventById(String id);
+    List<Event> findEventsById(String id);
 
-    List<Event> findEventByAttender(String login);
+    List<Event> findEventsByAttender(String login);
+
+    List<Event> findEventsByDate(Date day);
 
     Map<UUID, Event> getEventStore();
 
