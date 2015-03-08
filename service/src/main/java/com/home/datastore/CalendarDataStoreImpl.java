@@ -27,9 +27,14 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public Event createEvent(String title, List<String> attendersLogins) {
+
         Event event = new Event();
+        List<Person> personList = new ArrayList<Person>(attendersLogins.size());
+        for(String login :attendersLogins) {
+            personList.add(personStore.get(login));
+        }
         event.setTitle(title);
-        event.setAttendersLogins(attendersLogins);
+        event.setAttenders(personList);
         return event;
     }
 
