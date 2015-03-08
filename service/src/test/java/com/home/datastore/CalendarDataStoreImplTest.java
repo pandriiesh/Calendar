@@ -4,6 +4,7 @@ import com.home.common.Event;
 import com.home.common.Person;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +29,9 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
 
-        assertEquals(expectedEvent, actualEvent);
+        assertEquals(expectedEvents, Arrays.asList(actualEvent));
 
         // verify mock expectations
 
@@ -50,10 +51,11 @@ public class CalendarDataStoreImplTest {
                 Arrays.asList("mail1@gmail.com", "mail2@gmail.com", "mail3@gmail.com"));
         calendarDataStore.addEvent(actualEvent);
 
-        // assert return value
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
 
-        assertEquals(expectedEvent, actualEvent);
+        // assert return value
+
+        assertEquals(expectedEvents, Arrays.asList(actualEvent));
 
         // verify mock expectations
 
@@ -74,10 +76,10 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         calendarDataStore.addEvent(actualEvent);
-        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         // assert return value
-        assertEquals(expectedEvent, actualEvent);
+        assertEquals(expectedEvents, Arrays.asList(actualEvent));
 
         // verify mock expectations
 
@@ -100,7 +102,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.removeEvent(actualEvent);
 
         // assert return value
-        assertNull(calendarDataStore.searchEvent(actualEvent.getTitle()));
+        assertEquals(new ArrayList(), calendarDataStore.searchEvent(actualEvent.getTitle()));
 
         // verify mock expectations
     }

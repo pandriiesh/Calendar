@@ -7,22 +7,22 @@ import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
-    private final Map<String, Event> eventStore = new HashMap<String, Event>();
+    private final Map<UUID, Event> eventStore = new HashMap<UUID, Event>();
     private final Map<String, Person> personStore = new HashMap<String, Person>();
 
     @Override
-    public Map<String, Event> getEventStore() {
+    public Map<UUID, Event> getEventStore() {
         return eventStore;
     }
 
     @Override
     public void addEvent(Event event) {
-        eventStore.put(event.getTitle(), event);
+        eventStore.put(event.getId(), event);
     }
 
     @Override
     public void removeEvent(Event event) {
-        eventStore.remove(event.getTitle());
+        eventStore.remove(event.getId());
     }
 
     @Override
@@ -39,9 +39,20 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public Event searchEvent(String title) {
-        Event event = eventStore.get(title);
-        return event;
+    public List<Event> searchEvent(String title) {
+        List<Event> eventList = new ArrayList<Event>();
+
+        for (Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
+            if (entry.getValue().getTitle().equals(title)) {
+                eventList.add(entry.getValue());
+            }
+        }
+        return eventList;
+    }
+
+    @Override
+    public List<Event> searchEvent(Person person) {
+        return person.getEvents();
     }
 
     @Override

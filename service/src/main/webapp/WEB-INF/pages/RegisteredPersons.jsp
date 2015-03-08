@@ -17,5 +17,8 @@
         }
     %>
     </h3>
+
+    <h4><a href="${pageContext.request.contextPath}/ControlPanel.html">Go back to Control Panel</a></h4>
+
 </body>
 </html>

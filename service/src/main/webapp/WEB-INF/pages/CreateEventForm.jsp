@@ -18,7 +18,7 @@
             <tr><td>Description:               </td><td><input type="text" name="description"/></td></tr>
             <tr><td>Start Date/Time*:          </td><td><input type="text" name="startTime"/></td></tr>
             <tr><td>End Date/Time*:            </td><td><input type="text" name="endTime"/></td></tr>
-            <tr><td>Attenders**:               </td><td><input type="text" name="attenders"/></td></tr>
+            <tr><td>Attenders**:               </td><td><input type="text" name="attendersLogins"/></td></tr>
 
         </table>
         <p>* enter Date in such format: 20.02.2015 18:45</p>

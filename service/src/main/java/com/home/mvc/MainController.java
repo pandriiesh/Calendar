@@ -137,7 +137,7 @@ public class MainController {
 
     @RequestMapping(value = "/submitCreateEventForm.html")
     public String submitCreateEvent(@ModelAttribute("event") Event event,
-                                    @RequestParam("attenders") String attenders,
+                                    @RequestParam("attendersLogins") String attenders,
                                     HttpServletRequest request) throws RemoteException {
 
         String personName = (String) request.getSession().getAttribute("personName");
@@ -187,9 +187,9 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        Event event = calendarService.searchEvent(eventToFind);
+        List<Event> events = calendarService.searchEvent(eventToFind);
 
-        request.setAttribute("foundedEvent", event);
+        request.setAttribute("foundedEvent", events);
 
         return "pages/ShowEvents";
     }
@@ -204,13 +204,18 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        Event event = calendarService.searchEvent(eventToRemove);
+        List<Event> events = calendarService.searchEvent(eventToRemove);
 
-        for (Person person : event.getAttenders()) {
-            calendarService.findPerson(person.getLogin()).removeEvent(event);
+        for (Event event : events) {
+            for (Person person : event.getAttenders()) {
+                calendarService.findPerson(person.getLogin()).removeEvent(event);
+            }
         }
 
-        calendarService.removeEvent(event);
+        for(Event event : events) {
+            calendarService.removeEvent(event);
+        }
+
 
         request.setAttribute("isRemoved", Boolean.TRUE);
 

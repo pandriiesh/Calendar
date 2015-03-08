@@ -1,6 +1,7 @@
 <%@ page import="com.home.common.Event" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.home.common.Person" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -24,20 +25,31 @@
         </form>
 
         <%
-            Event event = (Event) request.getAttribute("foundedEvent");
+            List<Event> events = (List<Event>) request.getAttribute("foundedEvent");
 
-            if (event!=null) {
+            if (events !=null) {
+
         %>
-        <h3>Founded:</h3>
+        <h3>Founded <%out.print(events.size());%> event(s) with title <%out.print(events.get(0).getTitle());%>:</h3>
+        <%
+
+                for (Event event : events) {
+                    List<String> attenders = new ArrayList<String>();
+
+                    for(Person person: event.getAttenders()) {
+                        attenders.add(person.getLogin());
+                    }
+
+        %>
             <table>
                 <tr><td>Title:            </td><td><%out.print(event.getTitle());%></td></tr>
                 <tr><td>Description:      </td><td><%out.print(event.getDescription());%></td></tr>
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
-                <tr><td>Attenders:        </td><td><%out.print(event.getAttendersLogins().toString());%></td></tr>
+                <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
             </table>
             <br>
-            <%} %>
+            <%} }%>
 
 
 
@@ -47,7 +59,7 @@
 
             if (isRemoved!=null && isRemoved) {
         %>
-        <h3>Event removed!</h3>
+        <h3>Event(s) removed!</h3>
         <% } %>
     <h2>Events with you:</h2>
     <%
@@ -55,14 +67,19 @@
 
         List<Event> eventList = person.getEvents();
 
-        for (Event event1 : eventList) {
+        for (Event event : eventList) {
+            List<String> attenders = new ArrayList<String>();
+
+            for(Person person1: event.getAttenders()) {
+                attenders.add(person1.getLogin());
+            }
     %>
             <table>
-                <tr><td>Title:            </td><td><%out.print(event1.getTitle());%></td></tr>
-                <tr><td>Description:      </td><td><%out.print(event1.getDescription());%></td></tr>
-                <tr><td>Start Date/Time:  </td><td><%out.print(event1.getStartTime());%></td></tr>
-                <tr><td>End Date/Time:    </td><td><%out.print(event1.getEndTime());%></td></tr>
-                <tr><td>Attenders:        </td><td><%out.print(event1.getAttendersLogins().toString());%></td></tr>
+                <tr><td>Title:            </td><td><%out.print(event.getTitle());%></td></tr>
+                <tr><td>Description:      </td><td><%out.print(event.getDescription());%></td></tr>
+                <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
+                <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
+                <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
             </table>
             <br>
         <%} %>

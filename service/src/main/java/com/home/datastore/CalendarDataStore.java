@@ -6,6 +6,7 @@ import com.home.common.Person;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface CalendarDataStore {
 
@@ -13,11 +14,13 @@ public interface CalendarDataStore {
 
     void removeEvent(Event event);
 
-    Event createEvent(String title, List<String> attendersEmails);
+    Event createEvent(String title, List<String> attendersLogins);
 
-    Event searchEvent(String title);
+    List<Event> searchEvent(String title);
 
-    Map<String, Event> getEventStore();
+    List<Event> searchEvent(Person person);
+
+    Map<UUID, Event> getEventStore();
 
     void registerPerson(Person person);
 

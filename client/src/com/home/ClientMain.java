@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class ClientMain {
@@ -51,10 +52,10 @@ public class ClientMain {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
 
-        Map<String, Event> dataStore = service.getEventStore();
+        Map<UUID, Event> dataStore = service.getEventStore();
 
         logger.info("All events:");
-        for (Map.Entry<String, Event> entry : dataStore.entrySet()) {
+        for (Map.Entry<UUID, Event> entry : dataStore.entrySet()) {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
 

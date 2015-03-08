@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface CalendarService extends Remote {
 
@@ -17,7 +18,9 @@ public interface CalendarService extends Remote {
 
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;
 
-    Event searchEvent(String title) throws RemoteException;
+    List<Event> searchEvent(String title) throws RemoteException;
+
+    List<Event> searchEvent(Person person) throws RemoteException;
 
     boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) throws RemoteException;
 
@@ -29,7 +32,7 @@ public interface CalendarService extends Remote {
 
     Map<String, Person> getPersonStore() throws RemoteException;
 
-    Map<String, Event> getEventStore() throws RemoteException;
+    Map<UUID, Event> getEventStore() throws RemoteException;
 
     Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) throws RemoteException;
 

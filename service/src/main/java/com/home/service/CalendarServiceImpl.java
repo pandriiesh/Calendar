@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CalendarServiceImpl implements CalendarService {
 
@@ -31,8 +32,13 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public Event searchEvent(String title) {
+    public List<Event> searchEvent(String title) {
         return calendarDataStore.searchEvent(title);
+    }
+
+    @Override
+    public List<Event> searchEvent(Person person) {
+        return calendarDataStore.searchEvent(person);
     }
 
     @Override
@@ -61,7 +67,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public Map<String, Event> getEventStore() {
+    public Map<UUID, Event> getEventStore() {
         return calendarDataStore.getEventStore();
     }
 
