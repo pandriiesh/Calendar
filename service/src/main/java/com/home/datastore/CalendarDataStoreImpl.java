@@ -75,9 +75,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         Date endOfTheDay = new Date();
         endOfTheDay.setTime(startOfTheDay.getTime() + 24*60*60*1000 - 1);
-        List<Event> eventList = new ArrayList<Event>();
 
-        System.out.println(startOfTheDay + " " + endOfTheDay);
+        List<Event> eventList = new ArrayList<Event>();
 
         for(Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
 
@@ -127,12 +126,12 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins) {
+    public Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins) {
 
         List<Person> personList = new ArrayList<Person>(personsLogins.size());
 
         final long NOW_TIME_MINUTES = new Date().getTime()/1000/60;
-        final long EVENT_DURATION_MINUTES = (long) durationHours*60;
+        final long EVENT_DURATION_MINUTES = (long) durationMinutes;
         final long INTERVAL = 15*60*1000;
         final int MATRIX_SIZE = 11*365*24*60;
         final int MINUTES_IN_YEAR = 525600;

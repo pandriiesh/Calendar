@@ -36,7 +36,7 @@ public interface CalendarDataStore {
 
     boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date);
 
-    Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins);
+    Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins);
 
     List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date);
 }

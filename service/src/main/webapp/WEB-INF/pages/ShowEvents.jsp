@@ -2,13 +2,16 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.home.common.Person" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title></title>
 </head>
 <body>
-
+        <%
+        Date calculatedTimeForNewEvent = (Date) request.getAttribute("calculatedTimeForNewEvent");
+        %>
 
         <form method="post">
             <table>
@@ -23,8 +26,7 @@
                 <tr><td>Find events by day </td>
                     <td><input type="text" name="dateToFind" value="DD.MM.YYYY"
                                onblur="if (this.value == '') {this.value = 'DD.MM.YYYY';}"
-                               onfocus="if (this.value == 'DD.MM.YYYY') {this.value = '';}"
-                            ></td>
+                               onfocus="if (this.value == 'DD.MM.YYYY') {this.value = '';}"></td>
                     <td><input type="submit" value="Find" formaction="/FindEventByDate.html"></td>
                 </tr>
                 <tr><td>Find event by ID </td>
@@ -35,9 +37,25 @@
                     <td><input type="text" name="eventID"></td>
                     <td><input type="submit" value="Remove" formaction="/RemoveEventByID.html"></td>
                 </tr>
-            </table>
-        </form>
 
+            </table>
+            <br>
+            Find best time for your event by entering events duration(in minutes) and attenders:
+            <table>
+
+                <tr><td><input type="text" name="eventDuration" value="Duration"
+                    onblur="if (this.value == '') {this.value = 'Duration';}"
+                    onfocus="if (this.value == 'Duration') {this.value = '';}"></td>
+                <td><input type="text" name="eventAttenders" value="Attenders"
+                    onblur="if (this.value == '') {this.value = 'Attenders';}"
+                    onfocus="if (this.value == 'Attenders') {this.value = '';}"></td>
+                <td><input type="submit" value="Find" formaction="/findBestTimePeriodToCreateEventForUsers.html"></td>
+                </tr>
+
+            </table>
+            <% if (calculatedTimeForNewEvent!=null) { %>
+            The best time for new event is <%out.print(calculatedTimeForNewEvent);} %>
+        </form>
         <%
             List<Event> events = (List<Event>) request.getAttribute("foundedEvents");
 

@@ -317,5 +317,28 @@ public class MainController {
         return "pages/ShowEvents";
     }
 
+
+    @RequestMapping(value = "/findBestTimePeriodToCreateEventForUsers.html")
+    public String findBestTimePeriodToCreateEventForUsers(@RequestParam("eventDuration") String eventDuration,
+                                                          @RequestParam("eventAttenders") String eventAttenders,
+                                                          HttpServletRequest request) throws RemoteException {
+
+        String personName = (String) request.getSession().getAttribute("personName");
+
+        if (personName == null) {
+            return "pages/LoginForm";
+        }
+
+        List<String> personsLogins = Arrays.asList(eventAttenders.split(" "));
+        Date date = null;
+        try {
+            date = calendarService.findBestTimePeriodToCreateEventForUsers(Double.parseDouble(eventDuration), personsLogins);
+        } catch (Exception e) {
+            return "pages/ShowEvents";
+        }
+        request.setAttribute("calculatedTimeForNewEvent", date);
+
+        return "pages/ShowEvents";
+    }
 }
 
