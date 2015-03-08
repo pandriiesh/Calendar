@@ -1,7 +1,6 @@
-<%@ page import="com.home.common.EventClone" %>
+<%@ page import="com.home.common.Event" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.home.common.Person" %>
-<%@ page import="com.home.common.EventInterface" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -25,7 +24,7 @@
         </form>
 
         <%
-            EventInterface event = (EventInterface) request.getAttribute("foundedEvent");
+            Event event = (Event) request.getAttribute("foundedEvent");
 
             if (event!=null) {
         %>
@@ -54,9 +53,9 @@
     <%
         Person person = (Person) request.getSession().getAttribute("person");
 
-        List<EventInterface> eventList = person.getEvents();
+        List<Event> eventList = person.getEvents();
 
-        for (EventInterface event1 : eventList) {
+        for (Event event1 : eventList) {
     %>
             <table>
                 <tr><td>Title:            </td><td><%out.print(event1.getTitle());%></td></tr>

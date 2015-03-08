@@ -1,7 +1,6 @@
 package com.home.common;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -25,17 +24,17 @@ public class Person implements Serializable{
     @Size(min=4, max=20, message = "Password length must be between {min} and {max} characters!")
     private String password;
 
-    private List<EventInterface> eventList = new ArrayList<EventInterface>();
+    private List<Event> eventList = new ArrayList<Event>();
 
-    public void addEventToPerson(EventInterface event) {
+    public void addEventToPerson(Event event) {
         eventList.add(event);
     }
 
-    public void removeEvent(EventInterface event) {
+    public void removeEvent(Event event) {
         eventList.remove(event);
     }
 
-    public List<EventInterface> getEvents() {
+    public List<Event> getEvents() {
         return eventList;
     }
 

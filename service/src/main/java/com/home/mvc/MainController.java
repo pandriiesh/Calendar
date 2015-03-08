@@ -1,7 +1,6 @@
 package com.home.mvc;
 
-import com.home.common.EventClone;
-import com.home.common.EventInterface;
+import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStoreImpl;
 import com.home.service.CalendarService;
@@ -19,7 +18,6 @@ import javax.validation.Valid;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -137,7 +135,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitCreateEventForm.html")
-    public String submitCreateEvent(@ModelAttribute("event") EventClone eventClone,
+    public String submitCreateEvent(@ModelAttribute("event") Event event,
                                     @RequestParam("allAttenders") String allAttenders,
                                     HttpServletRequest request) throws RemoteException {
 
@@ -147,26 +145,14 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        if (eventClone.getEndTime() == null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(eventClone.getStartTime());
-            cal.set(Calendar.HOUR_OF_DAY, 23);
-            cal.set(Calendar.MINUTE, 59);
-            cal.set(Calendar.SECOND, 59);
-
-            Date endTime = cal.getTime();
-
-            eventClone.setEndTime(endTime);
-        }
-
         List<String> attendersList = Arrays.asList(allAttenders.split(" "));
-        eventClone.setAttendersLogins(attendersList);
+        event.setAttendersLogins(attendersList);
 
-        calendarService.addEvent(eventClone);
+        calendarService.addEvent(event);
 
-        eventClone.setAttendersLogins(attendersList);
+        event.setAttendersLogins(attendersList);
 
-        request.getSession().setAttribute("event", eventClone);
+        request.getSession().setAttribute("event", event);
 
         return "pages/ControlPanel";
     }
@@ -197,7 +183,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        EventInterface event = calendarService.searchEvent(eventToFind);
+        Event event = calendarService.searchEvent(eventToFind);
 
         request.setAttribute("foundedEvent", event);
 
@@ -214,7 +200,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        EventInterface event = calendarService.searchEvent(eventToRemove);
+        Event event = calendarService.searchEvent(eventToRemove);
 
         for (String login : event.getAttendersLogins()) {
             calendarService.findPerson(login).removeEvent(event);

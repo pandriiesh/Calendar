@@ -1,6 +1,6 @@
 package com.home.datastore;
 
-import com.home.common.EventInterface;
+import com.home.common.Event;
 import com.home.common.Person;
 
 import java.util.Date;
@@ -9,15 +9,15 @@ import java.util.Map;
 
 public interface CalendarDataStore {
 
-    void addEvent(EventInterface event);
+    void addEvent(Event event);
 
-    void removeEvent(EventInterface event);
+    void removeEvent(Event event);
 
-    EventInterface createEvent(String title, List<String> attendersEmails);
+    Event createEvent(String title, List<String> attendersEmails);
 
-    EventInterface searchEvent(String title);
+    Event searchEvent(String title);
 
-    Map<String, EventInterface> getEventStore();
+    Map<String, Event> getEventStore();
 
     void registerPerson(Person person);
 
@@ -31,5 +31,5 @@ public interface CalendarDataStore {
 
     Date findBestTimePeriodToCreateEventForUsers(double durationHours, List<String> personsLogins);
 
-    List<EventInterface> findPersonsEventsAtCertainTime(String personLogin, Date date);
+    List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date);
 }

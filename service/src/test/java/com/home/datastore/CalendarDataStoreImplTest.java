@@ -1,10 +1,7 @@
 package com.home.datastore;
 
 import com.home.common.Event;
-import com.home.common.EventInterface;
 import com.home.common.Person;
-import com.home.service.CalendarService;
-import com.home.service.CalendarServiceImpl;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 public class CalendarDataStoreImplTest {
 
@@ -20,7 +16,8 @@ public class CalendarDataStoreImplTest {
     public void testAddEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
 
         // initialize mocks
 
@@ -31,7 +28,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         assertEquals(expectedEvent, actualEvent);
 
@@ -42,7 +39,6 @@ public class CalendarDataStoreImplTest {
     @Test
     public void testCreateEvent() throws Exception {
         // initialize variable inputs
-        EventInterface actualEvent = null;
 
         // initialize mocks
 
@@ -50,11 +46,12 @@ public class CalendarDataStoreImplTest {
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
         // invoke method on class to test
-        actualEvent = calendarDataStore.createEvent("Event", Arrays.asList("mail1@gmail.com", "mail2@gmail.com", "mail3@gmail.com"));
+        Event actualEvent = calendarDataStore.createEvent("Event",
+                Arrays.asList("mail1@gmail.com", "mail2@gmail.com", "mail3@gmail.com"));
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
-        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         assertEquals(expectedEvent, actualEvent);
 
@@ -67,7 +64,8 @@ public class CalendarDataStoreImplTest {
     public void testSearchEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
 
         // initialize mocks
 
@@ -76,7 +74,7 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         calendarDataStore.addEvent(actualEvent);
-        EventInterface expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
+        Event expectedEvent = calendarDataStore.searchEvent(actualEvent.getTitle());
 
         // assert return value
         assertEquals(expectedEvent, actualEvent);
@@ -89,7 +87,8 @@ public class CalendarDataStoreImplTest {
     public void testRemoveEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
 
         // initialize mocks
 
@@ -174,7 +173,9 @@ public class CalendarDataStoreImplTest {
         Person person = new Person();
         Date startTime = new Date(new Date().getTime() - 3600000);
         Date endTime = new Date(new Date().getTime() + 3600000);
-        EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime).build();
+        Event event = new Event();
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
 
         person.addEventToPerson(event);
 
@@ -206,7 +207,6 @@ public class CalendarDataStoreImplTest {
 
         Person person1 = new Person();
         person1.setLogin("person1Login");
-        Date event1StartTime = NOW_TIME;
         Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         Person person2 = new Person();
@@ -219,15 +219,20 @@ public class CalendarDataStoreImplTest {
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
-        EventInterface event1 = new Event.Builder().startTime(event1StartTime).endTime(event1EndTime)
-                .attendersLogins(Arrays.asList("person1Login")).build();
+        Event event1 = new Event();
+        event1.setStartTime(NOW_TIME);
+        event1.setEndTime(event1EndTime);
+        event1.setAttendersLogins(Arrays.asList("person1Login"));
 
-        EventInterface event2 = new Event.Builder().startTime(event2StartTime).endTime(event2EndTime)
-                .attendersLogins(Arrays.asList("person2Login")).build();
+        Event event2 = new Event();
+        event2.setStartTime(event2StartTime);
+        event2.setEndTime(event2EndTime);
+        event2.setAttendersLogins(Arrays.asList("person2Login"));
 
-        EventInterface event3 = new Event.Builder().startTime(event3StartTime).endTime(event3EndTime)
-                .attendersLogins(Arrays.asList("person3Login")).build();
-
+        Event event3 = new Event();
+        event3.setStartTime(event3StartTime);
+        event3.setEndTime(event3EndTime);
+        event3.setAttendersLogins(Arrays.asList("person3Login"));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
         expectedTime.setTime(expectedTime.getTime()/1000/60*60*1000 + INTERVAL);
@@ -270,19 +275,24 @@ public class CalendarDataStoreImplTest {
 
         person.setLogin("personLogin");
 
-        Date eventStartTime = NOW_TIME;
         Date eventEndTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
 
-        EventInterface event1 = new Event.Builder().title("Event1").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event1 = new Event();
+        event1.setStartTime(NOW_TIME);
+        event1.setEndTime(eventEndTime);
+        event1.setAttendersLogins(Arrays.asList("personLogin"));
 
-        EventInterface event2 = new Event.Builder().title("Event2").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event2 = new Event();
+        event2.setStartTime(NOW_TIME);
+        event2.setEndTime(eventEndTime);
+        event2.setAttendersLogins(Arrays.asList("personLogin"));
 
-        EventInterface event3 = new Event.Builder().title("Event3").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event3 = new Event();
+        event3.setStartTime(NOW_TIME);
+        event3.setEndTime(eventEndTime);
+        event3.setAttendersLogins(Arrays.asList("personLogin"));
 
-        List<EventInterface> expectedEventList = Arrays.asList(event1, event2, event3);
+        List<Event> expectedEventList = Arrays.asList(event1, event2, event3);
         // initialize mocks
 
         // initialize class to test
@@ -299,7 +309,7 @@ public class CalendarDataStoreImplTest {
         calendarDataStore.addEvent(event3);
 
         // invoke method on class to test
-        List<EventInterface> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
+        List<Event> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
 
         // assert return value
         assertEquals(expectedEventList, eventList);

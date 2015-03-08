@@ -1,7 +1,6 @@
 package com.home.service;
 
 import com.home.common.Event;
-import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
 import org.junit.Test;
@@ -26,7 +25,9 @@ public class CalendarServiceImplTest {
         Person person = new Person();
         person.setLogin("personLogin");
 
-        Event actualEvent = new Event.Builder().title("Event").attendersLogins(Arrays.asList("personLogin")).build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
+        actualEvent.setAttendersLogins(Arrays.asList("personLogin"));
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -58,7 +59,6 @@ public class CalendarServiceImplTest {
         // initialize variable inputs
         String title = "Event";
         List<String> attendersEmails = Arrays.asList("email1", "email2");
-        Event actualEvent = new Event.Builder().title(title).attendersLogins(attendersEmails).build();
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -85,7 +85,8 @@ public class CalendarServiceImplTest {
     public void testSearchEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -96,7 +97,7 @@ public class CalendarServiceImplTest {
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
-        EventInterface expectedValue = calendarService.searchEvent(actualEvent.getTitle());
+        Event expectedValue = calendarService.searchEvent(actualEvent.getTitle());
 
         // assert return value
         assertEquals(expectedValue.getTitle(), actualEvent.getTitle());
@@ -109,7 +110,8 @@ public class CalendarServiceImplTest {
     public void testRemoveEvent() throws Exception {
 
         // initialize variable inputs
-        Event actualEvent = new Event.Builder().title("Event").build();
+        Event actualEvent = new Event();
+        actualEvent.setTitle("Event");
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -226,17 +228,19 @@ public class CalendarServiceImplTest {
         person.setLogin("personLogin");
         Date startTime = new Date(new Date().getTime()-3600000);
         Date endTime = new Date(new Date().getTime()+3600000);
-        EventInterface event = new Event.Builder().startTime(startTime).endTime(endTime).build();
+
+        Event event = new Event();
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
 
         person.addEventToPerson(event);
 
         Date checkedTime = new Date();
-        boolean expectedValue = false;
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
 
-        when(calendarDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime)).thenReturn(expectedValue);
+        when(calendarDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime)).thenReturn(false);
 
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
@@ -245,7 +249,7 @@ public class CalendarServiceImplTest {
         boolean value = calendarService.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
 
         // assert return value
-        assertEquals(expectedValue, value);
+        assertEquals(false, value);
 
         // verify mock expectations
         verify(calendarDataStore).checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
@@ -256,7 +260,6 @@ public class CalendarServiceImplTest {
 
         // initialize variable inputs
 
-        final Date NOW_TIME = new Date();
         final long INTERVAL = 15*60*1000;
 
         Person person1 = new Person();
@@ -268,29 +271,32 @@ public class CalendarServiceImplTest {
         Person person3 = new Person();
         person3.setLogin("person3Login");
 
-
-        Date event1StartTime = NOW_TIME;
+        final Date NOW_TIME = new Date();
         Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
-        EventInterface event1 = new Event.Builder().startTime(event1StartTime).endTime(event1EndTime)
-                .attendersLogins(Arrays.asList("person1Login")).build();
+        Event event1 = new Event();
+        event1.setStartTime(NOW_TIME);
+        event1.setEndTime(event1EndTime);
+        event1.setAttendersLogins(Arrays.asList("person1Login"));
 
         Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
         Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
 
-        EventInterface event2 = new Event.Builder().startTime(event2StartTime).endTime(event2EndTime)
-                .attendersLogins(Arrays.asList("person2Login")).build();
+        Event event2 = new Event();
+        event2.setStartTime(event2StartTime);
+        event2.setEndTime(event2EndTime);
+        event2.setAttendersLogins(Arrays.asList("person2Login"));
 
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
-        EventInterface event3 = new Event.Builder().startTime(event3StartTime).endTime(event3EndTime)
-                .attendersLogins(Arrays.asList("person3Login")).build();
-
-
+        Event event3 = new Event();
+        event3.setStartTime(event3StartTime);
+        event3.setEndTime(event3EndTime);
+        event3.setAttendersLogins(Arrays.asList("person3Login"));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
-        expectedTime.setTime(expectedTime.getTime()/1000/60*60*1000 + INTERVAL);
+        expectedTime.setTime(expectedTime.getTime() /1000/60 *1000*60 + INTERVAL);
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -385,24 +391,33 @@ public class CalendarServiceImplTest {
 
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin("personLogin");
+
         final Date NOW_TIME = new Date();
         Date checkTime = new Date(NOW_TIME.getTime()+60*60*1000);
 
-        person.setLogin("personLogin");
 
-        Date eventStartTime = NOW_TIME;
         Date eventEndTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
 
-        EventInterface event1 = new Event.Builder().title("Event1").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event1 = new Event();
+        event1.setTitle("Event1");
+        event1.setStartTime(NOW_TIME);
+        event1.setEndTime(eventEndTime);
+        event1.setAttendersLogins(Arrays.asList("personLogin"));
 
-        EventInterface event2 = new Event.Builder().title("Event2").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event2 = new Event();
+        event2.setTitle("Event2");
+        event2.setStartTime(NOW_TIME);
+        event2.setEndTime(eventEndTime);
+        event2.setAttendersLogins(Arrays.asList("personLogin"));
 
-        EventInterface event3 = new Event.Builder().title("Event3").startTime(eventStartTime).endTime(eventEndTime)
-                .attendersLogins(Arrays.asList("personLogin")).build();
+        Event event3 = new Event();
+        event3.setTitle("Event3");
+        event3.setStartTime(NOW_TIME);
+        event3.setEndTime(eventEndTime);
+        event3.setAttendersLogins(Arrays.asList("personLogin"));
 
-        List<EventInterface> expectedEventList = Arrays.asList(event1, event2, event3);
+        List<Event> expectedEventList = Arrays.asList(event1, event2, event3);
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -452,7 +467,7 @@ public class CalendarServiceImplTest {
         }
 
         // invoke method on class to test
-        List<EventInterface> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
+        List<Event> eventList = calendarDataStore.findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
 
         // assert return value
         assertEquals(expectedEventList, eventList);

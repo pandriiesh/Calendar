@@ -1,6 +1,6 @@
 package com.home.service;
 
-import com.home.common.EventInterface;
+import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
 
@@ -18,7 +18,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void addEvent(EventInterface event) {
+    public void addEvent(Event event) {
         for (String login : event.getAttendersLogins()) {
             findPerson(login).addEventToPerson(event);
         }
@@ -26,17 +26,17 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public EventInterface createEvent(String title, List<String> emails) {
+    public Event createEvent(String title, List<String> emails) {
         return calendarDataStore.createEvent(title, emails);
     }
 
     @Override
-    public EventInterface searchEvent(String title) {
+    public Event searchEvent(String title) {
         return calendarDataStore.searchEvent(title);
     }
 
     @Override
-    public void removeEvent(EventInterface event) {
+    public void removeEvent(Event event) {
         calendarDataStore.removeEvent(event);
     }
 
@@ -61,7 +61,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public Map<String, EventInterface> getEventStore() {
+    public Map<String, Event> getEventStore() {
         return calendarDataStore.getEventStore();
     }
 
@@ -76,7 +76,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<EventInterface> findPersonsEventsAtCertainTime(String personLogin, Date date) throws RemoteException {
+    public List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date) throws RemoteException {
         return calendarDataStore.findPersonsEventsAtCertainTime(personLogin, date);
     }
 }

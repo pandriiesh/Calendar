@@ -1,40 +1,41 @@
 package com.home.datastore;
 
 import com.home.common.Event;
-import com.home.common.EventInterface;
 import com.home.common.Person;
 
 import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
-    private final Map<String, EventInterface> eventStore = new HashMap<String, EventInterface>();
+    private final Map<String, Event> eventStore = new HashMap<String, Event>();
     private final Map<String, Person> personStore = new HashMap<String, Person>();
 
     @Override
-    public Map<String, EventInterface> getEventStore() {
+    public Map<String, Event> getEventStore() {
         return eventStore;
     }
 
     @Override
-    public void addEvent(EventInterface event) {
+    public void addEvent(Event event) {
         eventStore.put(event.getTitle(), event);
     }
 
     @Override
-    public void removeEvent(EventInterface event) {
+    public void removeEvent(Event event) {
         eventStore.remove(event.getTitle());
     }
 
     @Override
-    public EventInterface createEvent(String title, List<String> attendersEmails) {
-        EventInterface event = new Event.Builder().title(title).attendersLogins(attendersEmails).build();
+    public Event createEvent(String title, List<String> attendersLogins) {
+        Event event = new Event();
+        event.setTitle(title);
+        event.setAttendersLogins(attendersLogins);
         return event;
     }
 
     @Override
-    public EventInterface searchEvent(String title) {
-        EventInterface event = eventStore.get(title);
+    public Event searchEvent(String title) {
+        Event event = eventStore.get(title);
         return event;
     }
 
@@ -63,7 +64,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         Person person = personStore.get(personLogin);
 
-        for (EventInterface event : person.getEvents()) {
+        for (Event event : person.getEvents()) {
 
             if (date.after(event.getStartTime()) && date.before(event.getEndTime())) {
                 return false;
@@ -96,7 +97,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             }
 
         for (int i=0; i<personList.size(); i++) {
-            for (EventInterface event : personList.get(i).getEvents()) {
+            for (Event event : personList.get(i).getEvents()) {
 
                 if (event.getEndTime().before(new Date()))
                     continue;
@@ -152,11 +153,11 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public List<EventInterface> findPersonsEventsAtCertainTime(String personLogin, Date date) {
+    public List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date) {
 
-        List<EventInterface> eventList = new ArrayList<EventInterface>();
+        List<Event> eventList = new ArrayList<Event>();
 
-        for (EventInterface event : personStore.get(personLogin).getEvents()) {
+        for (Event event : personStore.get(personLogin).getEvents()) {
 
             if (date.after(event.getStartTime()) && date.before(event.getEndTime())) {
                 eventList.add(event);

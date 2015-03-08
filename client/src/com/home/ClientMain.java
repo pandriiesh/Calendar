@@ -1,7 +1,6 @@
 package com.home;
 
 import com.home.common.Event;
-import com.home.common.EventInterface;
 import com.home.common.Person;
 import com.home.service.CalendarService;
 import org.springframework.context.ApplicationContext;
@@ -26,8 +25,12 @@ public class ClientMain {
         Date startTime = new Date(new Date().getTime()-3600000);
         Date endTime = new Date(new Date().getTime()+3600000);
 
-        EventInterface beerFest = new Event.Builder().title("Beerfest").description("Go to pub and drink beer.")
-                .startTime(startTime).endTime(endTime).attendersLogins(Arrays.asList("pabloLogin")).build();
+        Event beerFest = new Event();
+        beerFest.setTitle("Beerfest");
+        beerFest.setDescription("Go to pub and drink beer.");
+        beerFest.setStartTime(startTime);
+        beerFest.setEndTime(endTime);
+        beerFest.setAttendersLogins(Arrays.asList("pabloLogin"));
 
         Person pablo = new Person();
         pablo.setLogin("pabloLogin");
@@ -46,10 +49,10 @@ public class ClientMain {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
 
-        Map<String, EventInterface> dataStore = service.getEventStore();
+        Map<String, Event> dataStore = service.getEventStore();
 
         logger.info("All events:");
-        for (Map.Entry<String, EventInterface> entry : dataStore.entrySet()) {
+        for (Map.Entry<String, Event> entry : dataStore.entrySet()) {
             logger.info(entry.getKey() + ": " + entry.getValue());
         }
 
@@ -57,7 +60,7 @@ public class ClientMain {
         Date certainTime2 = new Date(new Date().getTime()+4000000);
         logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime));
         logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime2));
-        
+
 
         //test findBestTimePeriodToCreateEventForUsers method
         final Date NOW_TIME = new Date();
@@ -78,14 +81,23 @@ public class ClientMain {
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
-        EventInterface event1 = new Event.Builder().startTime(event1StartTime).endTime(event1EndTime)
-                .attendersLogins(Arrays.asList("person1Login")).build();
+        Event event1 = new Event();
+        event1.setStartTime(event1StartTime);
+        event1.setEndTime(event1EndTime);
+        event1.setAttendersLogins(Arrays.asList("person1Login"));
 
-        EventInterface event2 = new Event.Builder().startTime(event2StartTime).endTime(event2EndTime)
-                .attendersLogins(Arrays.asList("person2Login")).build();
+        Event event2 = new Event();
+        event2.setStartTime(event2StartTime);
+        event2.setEndTime(event2EndTime);
+        event2.setAttendersLogins(Arrays.asList("person2Login"));
 
-        EventInterface event3 = new Event.Builder().startTime(event3StartTime).endTime(event3EndTime)
-                .attendersLogins(Arrays.asList("person3Login")).build();
+        Event event3 = new Event();
+        event3.setStartTime(event3StartTime);
+        event3.setEndTime(event3EndTime);
+        event3.setAttendersLogins(Arrays.asList("person3Login"));
+
+        Event event4 = new Event();
+        event4.setAttendersLogins(Arrays.asList("person3Login"));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
         expectedTime.setTime(expectedTime.getTime() / 1000 / 60 * 60 * 1000 + INTERVAL);
@@ -97,6 +109,7 @@ public class ClientMain {
         service.addEvent(event1);
         service.addEvent(event2);
         service.addEvent(event3);
+        service.addEvent(event4);
 
         Date calculatedTime = service.findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));
