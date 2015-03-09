@@ -6,7 +6,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Person implements Serializable{
 
@@ -72,11 +74,18 @@ public class Person implements Serializable{
 
     @Override
     public String toString() {
+        List<String> eventTitleList = new ArrayList<String>();
+
+        for(Event event : eventList) {
+            eventTitleList.add(event.getTitle());
+        }
+
         return "Person{" +
-                ", personName='" + personName + '\'' +
-                ", personEmail='" + personEmail + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", personName='" + personName + '\'' +
+                ", personEmail='" + personEmail + '\'' +
+                ", events='" + eventTitleList + '\'' +
                 '}';
     }
 }

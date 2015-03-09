@@ -7,10 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ClientMain {
@@ -69,41 +66,42 @@ public class ClientMain {
         final Date NOW_TIME = new Date();
         final long INTERVAL = 15*60*1000;
 
+
+
         Person person1 = new Person();
         person1.setLogin("person1Login");
-        Date event1StartTime = NOW_TIME;
-        Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         Person person2 = new Person();
         person2.setLogin("person2Login");
-        Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
-        Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
 
         Person person3 = new Person();
         person3.setLogin("person3Login");
-        Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
-        Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
+
 
         Event event1 = new Event();
+        Date event1StartTime = NOW_TIME;
+        Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
         event1.setTitle("event1");
         event1.setStartTime(event1StartTime);
         event1.setEndTime(event1EndTime);
         event1.setAttenders(Arrays.asList(person1));
 
         Event event2 = new Event();
+        Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
+        Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
         event2.setTitle("event2");
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
-        event2.setAttenders(Arrays.asList(person2));
+        event2.setAttenders(Arrays.asList(person1, person2));
 
         Event event3 = new Event();
         event3.setTitle("event3");
+        Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+        Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
-        event3.setAttenders(Arrays.asList(person2));
+        event3.setAttenders(Arrays.asList(person1, person2, person3));
 
-        Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
-        expectedTime.setTime(expectedTime.getTime() / 1000 / 60 * 60 * 1000 + INTERVAL);
 
         service.registerPerson(person1);
         service.registerPerson(person2);
@@ -113,8 +111,11 @@ public class ClientMain {
         service.addEvent(event2);
         service.addEvent(event3);
 
-        Date calculatedTime = service.findBestTimePeriodToCreateEventForUsers(1,
-                Arrays.asList("person1Login", "person2Login", "person3Login"));
+        Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
+        expectedTime.setTime(expectedTime.getTime() / 1000 / 60 * 60 * 1000 + INTERVAL);
+
+        List<String> loginList = Arrays.asList("person1Login", "person2Login", "person3Login");
+        Date calculatedTime = service.findBestTimePeriodToCreateEventForUsers(1, loginList);
 
         logger.info("Checking when three persons are going to be available for event with some duration:");
 
@@ -123,9 +124,18 @@ public class ClientMain {
 
         logger.info("Verdict: " + expectedTime.equals(calculatedTime));
 
+        logger.info("Testing finding events by title:");
         logger.info(service.findEventByTitle("event1").toString());
         logger.info(service.findEventByTitle("event2").toString());
         logger.info(service.findEventByTitle("event3").toString());
+
+        logger.info("Testing finding persons by login:");
+        logger.info(service.findPerson("person1Login").toString());
+        logger.info(service.findPerson("person2Login").toString());
+        logger.info(service.findPerson("person3Login").toString());
+
+
+
 
     }
 }

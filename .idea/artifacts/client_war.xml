@@ -3,11 +3,6 @@
     <output-path>$PROJECT_DIR$/client/target</output-path>
     <root id="archive" name="Calendar.war">
       <element id="artifact" artifact-name="client:war exploded" />
-      <element id="directory" name="WEB-INF">
-        <element id="directory" name="classes">
-          <element id="module-output" name="service" />
-        </element>
-      </element>
     </root>
   </artifact>
 </component>

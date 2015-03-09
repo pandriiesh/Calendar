@@ -1,10 +1,7 @@
 package com.home.common;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Event implements Serializable {
 
@@ -113,13 +110,19 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
+        List<String> personLoginList = new ArrayList<String>();
+
+        for(Person person : attenders) {
+            personLoginList.add(person.getLogin());
+        }
+
         return "Event{" +
                 "title=" + title +
                 ", description='" + description + '\'' +
-                ", attenders='" + attenders + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", id=" + id +
+                ", attenders='" + personLoginList + '\'' +
                 '}';
     }
 }

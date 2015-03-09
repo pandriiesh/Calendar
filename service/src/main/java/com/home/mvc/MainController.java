@@ -164,7 +164,7 @@ public class MainController {
 
         if (startTime != null && !startTime.isEmpty()) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-            Date parsedDate = null;
+            Date parsedDate;
             try {
                 parsedDate = formatter.parse(startTime);
             } catch (ParseException e) {
@@ -175,7 +175,7 @@ public class MainController {
 
         if (endTime != null && !endTime.isEmpty()) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-            Date parsedDate = null;
+            Date parsedDate;
             try {
                 parsedDate = formatter.parse(endTime);
             } catch (ParseException e) {
@@ -272,7 +272,7 @@ public class MainController {
 
         Date dateToFind = null;
 
-        if (timeToFind != null || !timeToFind.isEmpty()) {
+        if (timeToFind != null && !timeToFind.isEmpty()) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             try {
                 dateToFind = formatter.parse(timeToFind);
@@ -330,7 +330,7 @@ public class MainController {
         }
 
         List<String> personsLogins = Arrays.asList(eventAttenders.split(" "));
-        Date date = null;
+        Date date;
         try {
             date = calendarService.findBestTimePeriodToCreateEventForUsers(Double.parseDouble(eventDuration), personsLogins);
         } catch (Exception e) {
