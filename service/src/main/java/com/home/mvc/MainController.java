@@ -314,7 +314,9 @@ public class MainController {
         if(eventID==null || eventID.isEmpty()) {
             return "pages/ShowEvents";
         }
-        boolean eventRemoved = false;
+
+        boolean eventRemoved;
+
         try {
             eventRemoved = calendarService.removeEventById(eventID);
         } catch (IllegalArgumentException e) {
