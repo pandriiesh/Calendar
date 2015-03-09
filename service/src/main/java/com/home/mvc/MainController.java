@@ -152,7 +152,7 @@ public class MainController {
         }
 
         if (title == null || title.isEmpty() || attenders == null || attenders.isEmpty() ) {
-            return "pages/ControlPanel";
+            return "pages/CreateEventForm";
         }
 
         Event event;
@@ -160,7 +160,7 @@ public class MainController {
         try {
              event = calendarService.createEvent(title, Arrays.asList(attenders.split(" ")));
         } catch (Exception e) {
-            return "pages/ControlPanel";
+            return "pages/CreateEventForm";
         }
 
         if (description != null && !description.isEmpty()) {
