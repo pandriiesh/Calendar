@@ -13,7 +13,7 @@ public class Event implements Serializable {
     private Date endTime;
 
     public Event() {
-
+        //local code review (vtegza): do not encapsulate such logic in date object, create all needed object outside @ 09.03.15
         startTime = new Date();
 
         Calendar cal = Calendar.getInstance();

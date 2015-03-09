@@ -24,6 +24,7 @@ import java.util.*;
 @SessionAttributes("myRequestObject")
 public class MainController {
 
+    //local code review (vtegza): should be private final and injected to constructor @ 09.03.15
     CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
 
     @InitBinder

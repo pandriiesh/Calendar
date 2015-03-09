@@ -143,7 +143,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins) {
 
         List<Person> personList = new ArrayList<Person>(personsLogins.size());
-
+        //local code review (vtegza): no need for final here @ 09.03.15
         final long NOW_TIME_MINUTES = new Date().getTime()/1000/60;
         final long EVENT_DURATION_MINUTES = (long) durationMinutes;
         final long INTERVAL = 15*60*1000;

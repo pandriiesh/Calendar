@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -328,6 +327,7 @@ public class CalendarServiceImplTest {
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
+        //local code review (vtegza): should be called from separated test method @ 09.03.15
         // invoke method on class to test
         try {
             calendarService.registerPerson(person1);

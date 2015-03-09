@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class CalendarServiceImpl implements CalendarService {
 
+    //local code review (vtegza): should be final @ 09.03.15
     private CalendarDataStore calendarDataStore;
 
     public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
