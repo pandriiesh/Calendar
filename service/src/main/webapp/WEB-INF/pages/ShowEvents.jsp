@@ -23,7 +23,7 @@
                     <td><input type="text" name="attenderLogin"></td>
                     <td><input type="submit" value="Find" formaction="/FindEventByAttender.html"></td>
                 </tr>
-                <tr><td>Find events by day </td>
+                <tr><td>Find events by date </td>
                     <td><input type="text" name="dateToFind" value="DD.MM.YYYY"
                                onblur="if (this.value == '') {this.value = 'DD.MM.YYYY';}"
                                onfocus="if (this.value == 'DD.MM.YYYY') {this.value = '';}"></td>

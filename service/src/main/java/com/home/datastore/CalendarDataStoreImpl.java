@@ -26,6 +26,20 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
+    public boolean removeEventById(String id) {
+        boolean eventRemoved = false;
+        for(Map.Entry<String, Person> entry : personStore.entrySet()) {
+
+            if(entry.getValue().getEvents().contains(eventStore.get(UUID.fromString(id)))) {
+                entry.getValue().removeEvent(id);
+                eventRemoved = true;
+            }
+        }
+        eventStore.remove(UUID.fromString(id));
+        return eventRemoved;
+    }
+
+    @Override
     public Event createEvent(String title, List<String> attendersLogins) {
 
         Event event = new Event();

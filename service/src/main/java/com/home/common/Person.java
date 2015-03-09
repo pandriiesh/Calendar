@@ -5,10 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Person implements Serializable{
 
@@ -32,8 +29,13 @@ public class Person implements Serializable{
         eventList.add(event);
     }
 
-    public void removeEvent(Event event) {
-        eventList.remove(event);
+    public void removeEvent(String id) {
+        for (int i=0; i < eventList.size(); i++) {
+            if (eventList.get(i).getId().toString().equals(id)) {
+                eventList.remove(i);
+                i--;
+            }
+        }
     }
 
     public List<Event> getEvents() {

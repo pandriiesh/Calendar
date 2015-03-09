@@ -253,7 +253,17 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.findEventByAttender(attenderLogin);
+        if (attenderLogin==null) {
+            return "pages/ShowEvents";
+        }
+
+        List<Event> events;
+
+        try {
+            events = calendarService.findEventByAttender(attenderLogin);
+        } catch (NullPointerException e) {
+            return "pages/ShowEvents";
+        }
 
         request.setAttribute("foundedEvents", events);
 
@@ -277,7 +287,7 @@ public class MainController {
             try {
                 dateToFind = formatter.parse(timeToFind);
             } catch (ParseException e) {
-                return "pages/CreateEventForm";
+                return "pages/ShowEvents";
             }
         }
 
@@ -298,21 +308,17 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-
-        List<Event> events = calendarService.findEventById(eventID);
-
-        for (Event event : events) {
-            for (Person person : event.getAttenders()) {
-                calendarService.findPerson(person.getLogin()).removeEvent(event);
-            }
+        if(eventID==null || eventID.isEmpty()) {
+            return "pages/ShowEvents";
+        }
+        boolean eventRemoved = false;
+        try {
+            eventRemoved = calendarService.removeEventById(eventID);
+        } catch (IllegalArgumentException e) {
+            return "pages/ShowEvents";
         }
 
-        for(Event event : events) {
-            calendarService.removeEvent(event);
-        }
-
-
-        request.setAttribute("isRemoved", Boolean.TRUE);
+        request.setAttribute("isRemoved", eventRemoved);
 
         return "pages/ShowEvents";
     }
