@@ -31,14 +31,10 @@ public class ClientMain {
 
         service.registerPerson(pablo);
 
-        Event beerFest = new Event();
-        beerFest.setTitle("Beerfest");
+        Event beerFest = service.createEvent("Beerfest", Arrays.asList("pabloLogin"));
         beerFest.setDescription("Go to pub and drink beer.");
         beerFest.setStartTime(startTime);
         beerFest.setEndTime(endTime);
-        beerFest.setAttenders(Arrays.asList(pablo));
-
-
 
         service.addEvent(beerFest);
 
@@ -78,29 +74,23 @@ public class ClientMain {
         person3.setLogin("person3Login");
 
 
-        Event event1 = new Event();
+        Event event1 = service.createEvent("event1", Arrays.asList("person1Login"));
         Date event1StartTime = NOW_TIME;
         Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
-        event1.setTitle("event1");
         event1.setStartTime(event1StartTime);
         event1.setEndTime(event1EndTime);
-        event1.setAttenders(Arrays.asList(person1));
 
-        Event event2 = new Event();
+        Event event2 = service.createEvent("event2", Arrays.asList("person1Login", "person2Login"));
         Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
         Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
-        event2.setTitle("event2");
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
-        event2.setAttenders(Arrays.asList(person1, person2));
 
-        Event event3 = new Event();
-        event3.setTitle("event3");
+        Event event3 = service.createEvent("event3", Arrays.asList("person1Login", "person2Login", "person3Login"));
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
-        event3.setAttenders(Arrays.asList(person1, person2, person3));
 
 
         service.registerPerson(person1);

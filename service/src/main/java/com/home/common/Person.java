@@ -83,7 +83,7 @@ public class Person implements Serializable{
         }
 
         return "Person{" +
-                ", login='" + login + '\'' +
+                "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", personName='" + personName + '\'' +
                 ", personEmail='" + personEmail + '\'' +

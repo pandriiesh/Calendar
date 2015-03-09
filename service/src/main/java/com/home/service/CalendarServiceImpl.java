@@ -12,8 +12,7 @@ import java.util.UUID;
 
 public class CalendarServiceImpl implements CalendarService {
 
-    //local code review (vtegza): should be final @ 09.03.15
-    private CalendarDataStore calendarDataStore;
+    private final CalendarDataStore calendarDataStore;
 
     public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
         this.calendarDataStore = calendarDataStore;
@@ -21,9 +20,6 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public void addEvent(Event event) {
-        for (Person person : event.getAttenders()) {
-            findPerson(person.getLogin()).addEventToPerson(event);
-        }
         calendarDataStore.addEvent(event);
     }
 

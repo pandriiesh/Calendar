@@ -17,6 +17,9 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void addEvent(Event event) {
+        for (Person person : event.getAttenders()) {
+            findPerson(person.getLogin()).addEventToPerson(event);
+        }
         eventStore.put(event.getId(), event);
     }
 
@@ -43,12 +46,29 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public Event createEvent(String title, List<String> attendersLogins) {
 
         Event event = new Event();
+
         List<Person> personList = new ArrayList<Person>(attendersLogins.size());
+
         for(String login :attendersLogins) {
             personList.add(personStore.get(login));
         }
+
+        Date startTime = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startTime);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+
+        Date endTime = cal.getTime();
+
         event.setTitle(title);
         event.setAttenders(personList);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
+
         return event;
     }
 
@@ -143,12 +163,12 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins) {
 
         List<Person> personList = new ArrayList<Person>(personsLogins.size());
-        //local code review (vtegza): no need for final here @ 09.03.15
-        final long NOW_TIME_MINUTES = new Date().getTime()/1000/60;
-        final long EVENT_DURATION_MINUTES = (long) durationMinutes;
-        final long INTERVAL = 15*60*1000;
-        final int MATRIX_SIZE = 11*365*24*60;
-        final int MINUTES_IN_YEAR = 525600;
+
+        long NOW_TIME_MINUTES = new Date().getTime()/1000/60;
+        long EVENT_DURATION_MINUTES = (long) durationMinutes;
+        long INTERVAL = 15*60*1000;
+        int MATRIX_SIZE = 11*365*24*60;
+        int MINUTES_IN_YEAR = 525600;
 
         for (String personLogin : personsLogins) {
             personList.add(personStore.get(personLogin));

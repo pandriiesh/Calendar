@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    //local code review (vtegza): should be final @ 09.03.15
     public static final Logger logger = Logger.getAnonymousLogger();
 
     public static void main(String[] args) throws RemoteException {

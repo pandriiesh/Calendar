@@ -24,8 +24,11 @@ import java.util.*;
 @SessionAttributes("myRequestObject")
 public class MainController {
 
-    //local code review (vtegza): should be private final and injected to constructor @ 09.03.15
-    CalendarService calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
+    private final CalendarService calendarService;
+
+    public MainController() {
+        this.calendarService = new CalendarServiceImpl(new CalendarDataStoreImpl());
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -148,15 +151,16 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        Event event = new Event();
-        List<Person> personList = new ArrayList<Person>();
-
-        for (String personLogin : Arrays.asList(attenders.split(" "))) {
-            personList.add(calendarService.findPerson(personLogin));
+        if (title == null || title.isEmpty() || attenders == null || attenders.isEmpty() ) {
+            return "pages/ControlPanel";
         }
 
-        if (title != null && !title.isEmpty()) {
-            event.setTitle(title);
+        Event event;
+
+        try {
+             event = calendarService.createEvent(title, Arrays.asList(attenders.split(" ")));
+        } catch (Exception e) {
+            return "pages/ControlPanel";
         }
 
         if (description != null && !description.isEmpty()) {
@@ -184,8 +188,6 @@ public class MainController {
             }
             event.setEndTime(parsedDate);
         }
-
-        event.setAttenders(personList);
 
         calendarService.addEvent(event);
 
