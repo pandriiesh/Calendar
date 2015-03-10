@@ -1,39 +1,31 @@
 package com.home.common;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
-public class Event implements Serializable {
+@XmlRootElement
+public class EventAdapter {
 
     private String title;
     private String description;
     private final UUID id;
-    private List<Person> attenders;
+    private List<PersonAdapter> attenders;
     private Date startTime;
     private Date endTime;
 
-    public Event() {
+    public EventAdapter() {
         id = UUID.randomUUID();
-    }
-
-    public Event(Event event) {
-        title = event.title;
-        description = event.description;
-        id = UUID.randomUUID();
-        attenders = event.attenders;
-        startTime = event.startTime;
-        endTime = event.endTime;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public List<Person> getAttenders() {
+    public List<PersonAdapter> getAttenders() {
         return attenders;
     }
 
-    public void setAttenders(List<Person> attenders) {
+    public void setAttenders(List<PersonAdapter> attenders) {
         this.attenders = attenders;
     }
 
@@ -86,7 +78,7 @@ public class Event implements Serializable {
 
         Event that = (Event) o;
 
-        if (!id.equals(that.id)) return false;
+        if (!id.equals(that.getId())) return false;
 
         return true;
     }
@@ -99,7 +91,8 @@ public class Event implements Serializable {
     @Override
     public String toString() {
         List<String> personLoginList = new ArrayList<String>();
-        for(Person person : attenders) {
+
+        for(PersonAdapter person : attenders) {
             personLoginList.add(person.getLogin());
         }
 

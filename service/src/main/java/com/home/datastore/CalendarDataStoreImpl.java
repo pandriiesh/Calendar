@@ -10,6 +10,10 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     private final Map<UUID, Event> eventStore = new HashMap<UUID, Event>();
     private final Map<String, Person> personStore = new HashMap<String, Person>();
 
+    public CalendarDataStoreImpl() {
+
+    }
+
     @Override
     public Map<UUID, Event> getEventStore() {
         return eventStore;
@@ -132,6 +136,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void registerPerson(Person person) {
+
+
         personStore.put(person.getLogin(), person);
     }
 
