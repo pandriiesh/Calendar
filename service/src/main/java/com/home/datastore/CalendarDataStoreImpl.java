@@ -1,17 +1,34 @@
 package com.home.datastore;
 
 import com.home.common.Event;
+import com.home.common.EventAdapter;
 import com.home.common.Person;
+import com.home.common.PersonAdapter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import java.io.File;
 import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
-    private final Map<UUID, Event> eventStore = new HashMap<UUID, Event>();
-    private final Map<String, Person> personStore = new HashMap<String, Person>();
+    private final Map<UUID, Event> eventStore;
+    private final Map<String, Person> personStore;
+    private JAXBContext eventJAXBContext = null;
+    private JAXBContext personJAXBContext = null;
 
     public CalendarDataStoreImpl() {
+        eventStore = new HashMap<UUID, Event>();
+        personStore = new HashMap<String, Person>();
 
+        try {
+            eventJAXBContext = JAXBContext.newInstance(EventAdapter.class);
+            personJAXBContext = JAXBContext.newInstance(PersonAdapter.class);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -21,10 +38,13 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void addEvent(Event event) {
+
+
         for (Person person : event.getAttenders()) {
             findPerson(person.getLogin()).addEventToPerson(event);
         }
         eventStore.put(event.getId(), event);
+
     }
 
     @Override
@@ -137,6 +157,23 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public void registerPerson(Person person) {
 
+        File file = new File("C:\\Java\\CalendarXMLDataStore\\" + person.getLogin() + ".xml");
+
+        Marshaller marshaller;
+
+        try {
+            marshaller = personJAXBContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            PersonAdapter personAdapter = new PersonAdapter(person);
+            marshaller.marshal(personAdapter, file);
+            marshaller.marshal(personAdapter, System.out);
+
+        } catch (PropertyException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
 
         personStore.put(person.getLogin(), person);
     }

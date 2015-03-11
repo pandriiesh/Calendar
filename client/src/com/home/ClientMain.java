@@ -16,25 +16,72 @@ public class ClientMain {
 
     public static final Logger logger = Logger.getAnonymousLogger();
 
+    ApplicationContext context = new ClassPathXmlApplicationContext("clientApplicationContext.xml");
+
+    CalendarService service = (CalendarService) context.getBean("calendarService");
+
     public static void main(String[] args) throws RemoteException {
 
+        ClientMain client = new ClientMain();
+
         try {
-            checkIfPersonFreeAtCertainTime();
+            client.checkIfPersonFreeAtCertainTime();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
         try {
-            findBestTimeForEvent();
+            client.findBestTimeForEvent();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
     }
 
-    private static void findBestTimeForEvent() throws RemoteException {
+    private void checkIfPersonFreeAtCertainTime() throws RemoteException {
 
-        CalendarService service = new CalendarServiceImpl(new CalendarDataStoreImpl());
+        Date startTime = new Date(new Date().getTime()-3600000);
+        Date endTime = new Date(new Date().getTime()+3600000);
+
+        Person pavlo = new Person();
+        pavlo.setLogin("pavloLogin");
+        pavlo.setPassword("pavloPassword");
+        pavlo.setPersonName("Pavlo");
+        pavlo.setPersonEmail("pavlo@gmail.com");
+
+        service.registerPerson(pavlo);
+
+        Event beerFest = service.createEvent("Beerfest", Arrays.asList("pabloLogin"));
+        beerFest.setDescription("Go to pub and drink beer.");
+        beerFest.setStartTime(startTime);
+        beerFest.setEndTime(endTime);
+
+        service.addEvent(beerFest);
+
+        Map<String, Person> personStore = service.getPersonStore();
+
+        logger.info("All users:");
+        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
+            logger.info(entry.getKey() + ": " + entry.getValue());
+        }
+
+        Map<UUID, Event> dataStore = service.getEventStore();
+
+        logger.info("All events:");
+        for (Map.Entry<UUID, Event> entry : dataStore.entrySet()) {
+            logger.info(entry.getKey() + ": " + entry.getValue());
+        }
+
+        Date certainTime = new Date();
+        Date certainTime2 = new Date(new Date().getTime()+4000000);
+        logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime));
+        logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime2));
+
+    }
+
+
+
+    private void findBestTimeForEvent() throws RemoteException {
 
         final Date NOW_TIME = new Date();
         final long INTERVAL = 15*60*1000;
@@ -102,49 +149,5 @@ public class ClientMain {
     }
 
 
-    private static void checkIfPersonFreeAtCertainTime() throws RemoteException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("clientApplicationContext.xml");
 
-        CalendarService service = (CalendarService) context.getBean("calendarService");
-
-        Date startTime = new Date(new Date().getTime()-3600000);
-        Date endTime = new Date(new Date().getTime()+3600000);
-
-        Person pablo = new Person();
-        pablo.setLogin("pabloLogin");
-        pablo.setPassword("pabloPassword");
-        pablo.setPersonName("Pablo");
-        pablo.setPersonEmail("pablo@gmail.com");
-
-        service.registerPerson(pablo);
-
-        Event beerFest = service.createEvent("Beerfest", Arrays.asList("pabloLogin"));
-        beerFest.setDescription("Go to pub and drink beer.");
-        beerFest.setStartTime(startTime);
-        beerFest.setEndTime(endTime);
-
-        service.addEvent(beerFest);
-
-        Map<String, Person> personStore = service.getPersonStore();
-
-        logger.info("All users:");
-        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
-            logger.info(entry.getKey() + ": " + entry.getValue());
-        }
-
-        Map<UUID, Event> dataStore = service.getEventStore();
-
-        logger.info("All events:");
-        for (Map.Entry<UUID, Event> entry : dataStore.entrySet()) {
-            logger.info(entry.getKey() + ": " + entry.getValue());
-        }
-
-        Date certainTime = new Date();
-        Date certainTime2 = new Date(new Date().getTime()+4000000);
-        logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime));
-        logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime2));
-
-
-
-    }
 }

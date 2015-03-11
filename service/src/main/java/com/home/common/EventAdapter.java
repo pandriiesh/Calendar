@@ -1,5 +1,6 @@
 package com.home.common;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
@@ -7,14 +8,24 @@ import java.util.*;
 public class EventAdapter {
 
     private String title;
+
     private String description;
-    private final UUID id;
+
+    private UUID id;
+
     private List<PersonAdapter> attenders;
+
     private Date startTime;
+
     private Date endTime;
 
     public EventAdapter() {
         id = UUID.randomUUID();
+    }
+
+    @XmlAttribute
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public UUID getId() {
