@@ -67,17 +67,14 @@ public class JAXBExample {
         for (Path name : eventStorePath) {
             if (name.toString().startsWith("person_") && name.toString().endsWith(".xml")) {
                 System.out.println("name = " + name);
-                System.out.println();
-
 
                 try {
-                    File file = name.toFile();
+                    File file = new File(pathToXMLDataStore + "person_" + person.getLogin() +".xml");
                     JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
 
                     Unmarshaller unmarshaller = context.createUnmarshaller();
                     PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
                     System.out.println(personAdapter);
-
 
                 } catch (Exception e) {
                     e.printStackTrace();

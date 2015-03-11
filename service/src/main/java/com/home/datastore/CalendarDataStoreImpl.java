@@ -5,11 +5,10 @@ import com.home.common.EventAdapter;
 import com.home.common.Person;
 import com.home.common.PersonAdapter;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
+import javax.xml.bind.*;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
@@ -18,6 +17,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     private final Map<String, Person> personStore;
     private JAXBContext eventJAXBContext = null;
     private JAXBContext personJAXBContext = null;
+    private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
+
 
     public CalendarDataStoreImpl() {
         eventStore = new HashMap<UUID, Event>();
@@ -151,7 +152,36 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public Person findPerson(String personLogin) {
-        return personStore.get(personLogin);
+
+        Path eventStorePath = Paths.get(pathToXMLDataStore + "person_" + personLogin +".xml");
+
+        Person person = null;
+
+        for (Path name : eventStorePath) {
+            if (name.toString().startsWith("person_") && name.toString().endsWith(".xml")) {
+
+                try {
+                    File file = new File(pathToXMLDataStore + "person_" + personLogin +".xml");
+                    JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
+
+                    Unmarshaller unmarshaller = context.createUnmarshaller();
+                    PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
+
+                    person = new Person();
+                    person.setLogin(personAdapter.getLogin());
+                    person.setPassword(personAdapter.getPassword());
+                    person.setPersonName(personAdapter.getPersonName());
+                    person.setPersonEmail(personAdapter.getPersonEmail());
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return person;
+//        return personStore.get(personLogin);
     }
 
     @Override
