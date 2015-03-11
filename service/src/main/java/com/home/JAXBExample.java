@@ -25,7 +25,7 @@ public class JAXBExample {
         event.setStartTime(new Date());
         event.setEndTime(new Date());
 
-        try{
+        try {
             File file = new File(pathToXMLDataStore + "event_" + event.getId() + ".xml");
             JAXBContext context = JAXBContext.newInstance(EventAdapter.class);
             Marshaller marshaller = context.createMarshaller();
@@ -47,8 +47,8 @@ public class JAXBExample {
         person.setPersonEmail("personEmail");
         person.addEventToPerson(UUID.randomUUID().toString());
 
-        try{
-            File file = new File(pathToXMLDataStore + "person_" + person.getLogin() +".xml");
+        try {
+            File file = new File(pathToXMLDataStore + "person_" + person.getLogin() + ".xml");
             JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
             Marshaller marshaller = context.createMarshaller();
 
@@ -62,24 +62,19 @@ public class JAXBExample {
         }
 
 
-        Path eventStorePath = Paths.get(pathToXMLDataStore + "person_" + person.getLogin() +".xml");
+        try {
+            File file = new File(pathToXMLDataStore + "person_" + person.getLogin() + ".xml");
+            JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
 
-        for (Path name : eventStorePath) {
-            if (name.toString().startsWith("person_") && name.toString().endsWith(".xml")) {
-                System.out.println("name = " + name);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
+            System.out.println(personAdapter);
 
-                try {
-                    File file = new File(pathToXMLDataStore + "person_" + person.getLogin() +".xml");
-                    JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
+        } catch (Exception e) {
+            e.printStackTrace();
 
-                    Unmarshaller unmarshaller = context.createUnmarshaller();
-                    PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
-                    System.out.println(personAdapter);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
+
     }
 }

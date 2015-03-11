@@ -33,6 +33,21 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
+    public JAXBContext getEventJAXBContext() {
+        return eventJAXBContext;
+    }
+
+    @Override
+    public JAXBContext getPersonJAXBContext() {
+        return personJAXBContext;
+    }
+
+    @Override
+    public String getPathToXMLDataStore() {
+        return pathToXMLDataStore;
+    }
+
+    @Override
     public Map<UUID, Event> getEventStore() {
         return eventStore;
     }
@@ -153,41 +168,31 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public Person findPerson(String personLogin) {
 
-        Path eventStorePath = Paths.get(pathToXMLDataStore + "person_" + personLogin +".xml");
+        PersonAdapter personAdapter = null;
 
-        Person person = null;
+        try {
+            File file = new File(pathToXMLDataStore + "person_" + personLogin + ".xml");
+            JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
 
-        for (Path name : eventStorePath) {
-            if (name.toString().startsWith("person_") && name.toString().endsWith(".xml")) {
-
-                try {
-                    File file = new File(pathToXMLDataStore + "person_" + personLogin +".xml");
-                    JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
-
-                    Unmarshaller unmarshaller = context.createUnmarshaller();
-                    PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
-
-                    person = new Person();
-                    person.setLogin(personAdapter.getLogin());
-                    person.setPassword(personAdapter.getPassword());
-                    person.setPersonName(personAdapter.getPersonName());
-                    person.setPersonEmail(personAdapter.getPersonEmail());
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
         }
 
-        return person;
+        return personAdapter.asPerson();
+
 //        return personStore.get(personLogin);
     }
 
     @Override
     public void registerPerson(Person person) {
 
-        File file = new File("C:\\Java\\CalendarXMLDataStore\\" + person.getLogin() + ".xml");
+        File file = new File(pathToXMLDataStore + "person_" + person.getLogin() + ".xml");
 
         Marshaller marshaller;
 

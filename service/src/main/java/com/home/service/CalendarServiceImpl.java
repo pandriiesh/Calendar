@@ -4,6 +4,7 @@ import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
 
+import javax.xml.bind.JAXBContext;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.UUID;
 public class CalendarServiceImpl implements CalendarService {
 
     private final CalendarDataStore calendarDataStore;
+    private JAXBContext eventJAXBContext = null;
+    private JAXBContext personJAXBContext = null;
+    private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
 
     public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
         this.calendarDataStore = calendarDataStore;
@@ -36,6 +40,21 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Event> findEventById(String id) throws RemoteException {
         return calendarDataStore.findEventsById(id);
+    }
+
+    @Override
+    public JAXBContext getEventJAXBContext() {
+        return eventJAXBContext;
+    }
+
+    @Override
+    public JAXBContext getPersonJAXBContext() {
+        return personJAXBContext;
+    }
+
+    @Override
+    public String getPathToXMLDataStore() {
+        return pathToXMLDataStore;
     }
 
     @Override

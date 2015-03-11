@@ -3,6 +3,7 @@ package com.home.service;
 import com.home.common.Event;
 import com.home.common.Person;
 
+import javax.xml.bind.JAXBContext;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -17,6 +18,12 @@ public interface CalendarService extends Remote {
     void removeEvent(Event event) throws RemoteException;
 
     boolean removeEventById(String id) throws RemoteException;
+
+    String getPathToXMLDataStore() throws RemoteException;
+
+    JAXBContext getEventJAXBContext() throws RemoteException;
+
+    JAXBContext getPersonJAXBContext() throws RemoteException;
 
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;
 

@@ -35,6 +35,16 @@ public class PersonAdapter {
         this.eventList = eventList;
     }
 
+    public Person asPerson() {
+        Person person = new Person();
+        person.setLogin(login);
+        person.setPassword(password);
+        person.setPersonName(personName);
+        person.setPersonEmail(personEmail);
+
+        return person;
+    }
+
     public void addEventToPerson(String eventId) {
         eventList.add(eventId);
     }
