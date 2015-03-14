@@ -4,9 +4,14 @@ import com.home.common.Event;
 import com.home.common.EventAdapter;
 import com.home.common.Person;
 import com.home.common.PersonAdapter;
+import com.home.service.JAXBFileVisitor;
 
 import javax.xml.bind.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
@@ -26,6 +31,13 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             eventJAXBContext = JAXBContext.newInstance(EventAdapter.class);
             personJAXBContext = JAXBContext.newInstance(PersonAdapter.class);
         } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        Path path = Paths.get(pathToXMLDataStore);
+        try {
+            Files.walkFileTree(path, new JAXBFileVisitor(eventStore, personStore));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -60,7 +72,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             registerPerson(person);
         }
 
-        File file = new File(pathToXMLDataStore + "event_" + event.getId() + ".xml");
+        File file = new File(pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml");
 
         Marshaller marshaller;
 
@@ -78,27 +90,48 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             e.printStackTrace();
         }
 
-
         eventStore.put(event.getId(), event);
-
     }
 
     @Override
     public void removeEvent(Event event) {
-        eventStore.remove(event.getId());
+        System.out.println("event is " + event);
+        if(eventStore.containsKey(event.getId())) {
+            String filePath = pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml";
+
+            try {
+                Files.delete(new File(filePath).toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            List<String> attenders = event.getAttenders();
+            for(String personLogin : attenders) {
+                Person person = personStore.get(personLogin);
+                registerPerson(person);
+            }
+
+            eventStore.remove(event.getId());
+
+        }
     }
 
     @Override
     public boolean removeEventById(String id) {
         boolean eventRemoved = false;
-        for(Map.Entry<String, Person> entry : personStore.entrySet()) {
 
-            if(entry.getValue().getEvents().contains(eventStore.get(UUID.fromString(id)))) {
-                entry.getValue().removeEvent(id);
+        for(Map.Entry<String, Person> entry : personStore.entrySet()) {
+            List<String> eventList = entry.getValue().getEvents();
+
+            if(eventList.contains(id)) {
+                entry.getValue().removeEventFromPerson(id);
                 eventRemoved = true;
             }
         }
+
+        removeEvent(eventStore.get(UUID.fromString(id)));
         eventStore.remove(UUID.fromString(id));
+
         return eventRemoved;
     }
 
@@ -143,19 +176,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public List<Event> findEventsById(String id) {
         List<Event> events = new ArrayList<Event>();
-
-        EventAdapter eventAdapter;
-
-        try {
-            File file = new File(pathToXMLDataStore + "event_" + id + ".xml");
-            Unmarshaller unmarshaller = eventJAXBContext.createUnmarshaller();
-            eventAdapter = (EventAdapter) unmarshaller.unmarshal(file);
-
-            events.add(eventAdapter.asEvent());
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        events.add(eventStore.get(UUID.fromString(id)));
 
         return events;
     }
@@ -193,28 +214,13 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public Person findPerson(String personLogin) {
-
-        PersonAdapter personAdapter = null;
-
-        try {
-            File file = new File(pathToXMLDataStore + "person_" + personLogin + ".xml");
-
-            Unmarshaller unmarshaller = personJAXBContext.createUnmarshaller();
-            personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
-
-        return personAdapter == null ? null : personAdapter.asPerson();
-
+        return personStore.get(personLogin);
     }
 
     @Override
     public void registerPerson(Person person) {
 
-        File file = new File(pathToXMLDataStore + "person_" + person.getLogin() + ".xml");
+        File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
 
         Marshaller marshaller;
 

@@ -1,7 +1,5 @@
 <%@ page import="com.home.common.Event" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.home.common.Person" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

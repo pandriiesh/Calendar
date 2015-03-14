@@ -23,6 +23,7 @@ public class JAXBExample {
         Path path = Paths.get("./CalendarXMLDataStore/person_personLogin.xml");
         Path path1 = Paths.get("./CalendarXMLDataStore");
         Path path2 = Paths.get("./CalendarXMLDataStore2");
+
         try {
             Files.copy(path1, path2);
             Thread.sleep(1000);
@@ -46,11 +47,6 @@ public class JAXBExample {
             e.printStackTrace();
         }
 
-        try {
-            Files.walkFileTree(path1, new JAXBFileVisitor());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
         String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";

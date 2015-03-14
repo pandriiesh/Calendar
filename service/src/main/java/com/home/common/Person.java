@@ -32,7 +32,7 @@ public class Person implements Serializable{
         eventList.add(event.getId().toString());
     }
 
-    public void removeEvent(String id) {
+    public void removeEventFromPerson(String id) {
         for (int i=0; i < eventList.size(); i++) {
             if (eventList.get(i).equals(id)) {
                 eventList.remove(i);

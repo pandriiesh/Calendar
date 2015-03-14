@@ -14,9 +14,6 @@ import java.util.UUID;
 public class CalendarServiceImpl implements CalendarService {
 
     private final CalendarDataStore calendarDataStore;
-    private JAXBContext eventJAXBContext = null;
-    private JAXBContext personJAXBContext = null;
-    private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
 
     public CalendarServiceImpl(CalendarDataStore calendarDataStore) {
         this.calendarDataStore = calendarDataStore;
@@ -39,17 +36,17 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public JAXBContext getEventJAXBContext() {
-        return eventJAXBContext;
+        return calendarDataStore.getEventJAXBContext();
     }
 
     @Override
     public JAXBContext getPersonJAXBContext() {
-        return personJAXBContext;
+        return calendarDataStore.getPersonJAXBContext();
     }
 
     @Override
     public String getPathToXMLDataStore() {
-        return pathToXMLDataStore;
+        return calendarDataStore.getPathToXMLDataStore();
     }
 
     @Override

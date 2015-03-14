@@ -263,11 +263,7 @@ public class MainController {
 
         List<Event> events;
 
-        try {
-            events = calendarService.findEventsByAttender(attenderLogin);
-        } catch (NullPointerException e) {
-            return "pages/ShowEvents";
-        }
+        events = calendarService.findEventsByAttender(attenderLogin);
 
         request.setAttribute("foundedEvents", events);
 
@@ -325,6 +321,7 @@ public class MainController {
         }
 
         request.setAttribute("isRemoved", eventRemoved);
+        request.getSession().setAttribute("personEvents", calendarService.findEventsByAttender(personLogin));
 
         return "pages/ShowEvents";
     }
