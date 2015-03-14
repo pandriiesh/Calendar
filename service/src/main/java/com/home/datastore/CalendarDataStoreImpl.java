@@ -184,6 +184,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         }
 
+        assert personAdapter != null;
         return personAdapter.asPerson();
 
 //        return personStore.get(personLogin);
