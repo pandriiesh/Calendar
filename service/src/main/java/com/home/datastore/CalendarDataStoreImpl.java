@@ -43,21 +43,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public JAXBContext getEventJAXBContext() {
-        return eventJAXBContext;
-    }
-
-    @Override
-    public JAXBContext getPersonJAXBContext() {
-        return personJAXBContext;
-    }
-
-    @Override
-    public String getPathToXMLDataStore() {
-        return pathToXMLDataStore;
-    }
-
-    @Override
     public Map<UUID, Event> getEventStore() {
         return eventStore;
     }

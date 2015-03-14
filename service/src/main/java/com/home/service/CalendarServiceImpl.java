@@ -35,21 +35,6 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public JAXBContext getEventJAXBContext() {
-        return calendarDataStore.getEventJAXBContext();
-    }
-
-    @Override
-    public JAXBContext getPersonJAXBContext() {
-        return calendarDataStore.getPersonJAXBContext();
-    }
-
-    @Override
-    public String getPathToXMLDataStore() {
-        return calendarDataStore.getPathToXMLDataStore();
-    }
-
-    @Override
     public List<Event> findEventsByAttender(String personLogin) {
         return calendarDataStore.findEventsByAttender(personLogin);
     }

@@ -19,12 +19,6 @@ public interface CalendarService extends Remote {
 
     boolean removeEventById(String id) throws RemoteException;
 
-    String getPathToXMLDataStore() throws RemoteException;
-
-    JAXBContext getEventJAXBContext() throws RemoteException;
-
-    JAXBContext getPersonJAXBContext() throws RemoteException;
-
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;
 
     List<Event> findEventsByTitle(String title) throws RemoteException;

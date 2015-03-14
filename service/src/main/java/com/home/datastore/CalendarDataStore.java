@@ -17,12 +17,6 @@ public interface CalendarDataStore {
 
     boolean removeEventById(String id);
 
-    String getPathToXMLDataStore();
-
-    JAXBContext getEventJAXBContext();
-
-    JAXBContext getPersonJAXBContext();
-
     Event createEvent(String title, List<String> attendersLogins);
 
     List<Event> findEventsByTitle(String title);
