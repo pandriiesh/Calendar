@@ -4,12 +4,9 @@ import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
 
-import javax.xml.bind.JAXBContext;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class CalendarServiceImpl implements CalendarService {
 
@@ -75,13 +72,8 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public Map<String, Person> getPersonStore() {
-        return calendarDataStore.getPersonStore();
-    }
-
-    @Override
-    public Map<UUID, Event> getEventStore() {
-        return calendarDataStore.getEventStore();
+    public List<Person> findPersonsAlike(String personLogin) throws RemoteException {
+        return calendarDataStore.findPersonsAlike(personLogin);
     }
 
     @Override

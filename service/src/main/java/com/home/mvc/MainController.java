@@ -40,7 +40,7 @@ public class MainController {
     public void addingCommonObjects(Model model, HttpServletRequest request) throws RemoteException {
 
         model.addAttribute("headerMessage", "ONLINE CALENDAR");
-        request.getSession().setAttribute("personMap", calendarService.getPersonStore());
+        request.getSession().setAttribute("personList", calendarService.findPersonsAlike(""));
     }
 
     @RequestMapping("/")
@@ -119,7 +119,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        request.getSession().setAttribute("personMap", calendarService.getPersonStore());
+        request.getSession().setAttribute("personList", calendarService.findPersonsAlike(""));
 
         return "pages/RegisteredPersons";
     }
@@ -231,7 +231,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/FindEventByID.html")
-    public String findEventByID(@RequestParam("ID") String attenderID,
+    public String findEventByID(@RequestParam("ID") String eventId,
                                       HttpServletRequest request) throws RemoteException {
 
         String personLogin = (String) request.getSession().getAttribute("personLogin");
@@ -240,7 +240,8 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.findEventsById(attenderID);
+
+        List<Event> events = calendarService.findEventsById(eventId);
 
         request.setAttribute("foundedEvents", events);
 
@@ -258,6 +259,10 @@ public class MainController {
         }
 
         if (attenderLogin==null) {
+            return "pages/ShowEvents";
+        }
+
+        if(calendarService.findPerson(attenderLogin)==null) {
             return "pages/ShowEvents";
         }
 

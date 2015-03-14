@@ -56,19 +56,16 @@ public class ClientMain {
 
         service.addEvent(beerFest);
 
-        Map<String, Person> personStore = service.getPersonStore();
-
         logger.info("All users:");
-        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
-            logger.info(entry.getKey() + ": " + entry.getValue());
+        for (Person person : service.findPersonsAlike("")) {
+            logger.info(person.toString());
         }
-
-        Map<UUID, Event> dataStore = service.getEventStore();
 
         logger.info("All events:");
-        for (Map.Entry<UUID, Event> entry : dataStore.entrySet()) {
-            logger.info(entry.getKey() + ": " + entry.getValue());
+        for (Event event : service.findEventsByTitle("")) {
+            logger.info(event.toString());
         }
+
 
         Date certainTime = new Date();
         Date certainTime2 = new Date(new Date().getTime()+4000000);

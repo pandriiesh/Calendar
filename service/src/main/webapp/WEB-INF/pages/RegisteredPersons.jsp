@@ -1,7 +1,6 @@
 <%@ page import="com.home.common.Person" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -11,9 +10,9 @@
 <body>
     <h2>Registered users:</h2>
     <h3><%
-        Map<String, Person> personMap = (HashMap<String, Person>) session.getAttribute("personMap");
-        for (Map.Entry<String, Person> entry : personMap.entrySet()) {
-            out.println(entry.getKey() +", ");
+        List<Person> personList = (List<Person>) session.getAttribute("personList");
+        for (Person person : personList) {
+            out.println(person.getLogin() +", ");
         }
     %>
     </h3>

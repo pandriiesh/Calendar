@@ -27,15 +27,13 @@ public interface CalendarDataStore {
 
     List<Event> findEventsByDate(Date day);
 
-    Map<UUID, Event> getEventStore();
-
     void registerPerson(Person person);
 
     void removePerson(Person person);
 
     Person findPerson(String personLogin);
 
-    Map<String, Person> getPersonStore();
+    List<Person> findPersonsAlike(String personLogin);
 
     boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date);
 

@@ -37,9 +37,7 @@ public interface CalendarService extends Remote {
 
     Person findPerson(String personLogin) throws RemoteException;
 
-    Map<String, Person> getPersonStore() throws RemoteException;
-
-    Map<UUID, Event> getEventStore() throws RemoteException;
+    List<Person> findPersonsAlike(String personLogin) throws RemoteException;
 
     Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins) throws RemoteException;
 

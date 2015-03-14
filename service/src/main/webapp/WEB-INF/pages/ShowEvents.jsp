@@ -64,10 +64,6 @@
         <%
 
                 for (Event event : events) {
-
-
-
-
         %>
             <table>
                 <tr><td>Title:            </td><td><%out.print(event.getTitle());%></td></tr>

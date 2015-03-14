@@ -42,10 +42,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         }
     }
 
-    @Override
-    public Map<UUID, Event> getEventStore() {
-        return eventStore;
-    }
 
     @Override
     public void addEvent(Event event) {
@@ -80,7 +76,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void removeEvent(Event event) {
-        System.out.println("event is " + event);
         if(eventStore.containsKey(event.getId())) {
             String filePath = pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml";
 
@@ -104,6 +99,10 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public boolean removeEventById(String id) {
         boolean eventRemoved = false;
+
+        if (findEventsById(id).isEmpty()) {
+            return false;
+        }
 
         for(Map.Entry<String, Person> entry : personStore.entrySet()) {
             List<String> eventList = entry.getValue().getEvents();
@@ -161,7 +160,17 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public List<Event> findEventsById(String id) {
         List<Event> events = new ArrayList<Event>();
-        events.add(eventStore.get(UUID.fromString(id)));
+        UUID uuid;
+
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return events;
+        }
+
+        if (eventStore.containsKey(uuid)) {
+            events.add(eventStore.get(uuid));
+        }
 
         return events;
     }
@@ -203,6 +212,19 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
+    public List<Person> findPersonsAlike(String personLogin) {
+        List<Person> personList = new ArrayList<Person>();
+
+        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
+            if (entry.getValue().getLogin().contains(personLogin)) {
+                personList.add(entry.getValue());
+            }
+        }
+
+        return personList;
+    }
+
+    @Override
     public void registerPerson(Person person) {
 
         File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
@@ -231,10 +253,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         personStore.remove(person.getLogin());
     }
 
-    @Override
-    public Map<String, Person> getPersonStore() {
-        return personStore;
-    }
 
     @Override
     public boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) {
