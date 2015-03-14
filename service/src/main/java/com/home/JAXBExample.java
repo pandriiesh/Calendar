@@ -7,6 +7,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -15,6 +18,12 @@ import java.util.UUID;
 public class JAXBExample {
 
     public static void main(String[] args) {
+
+        Path path = Paths.get("C:/Java/Projects/Calendar2/CalendarXMLDataStore/person_personLogin.xml");
+
+        for (Path name : path) {
+            System.out.println(name.getFileName());
+        }
 
         String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
 

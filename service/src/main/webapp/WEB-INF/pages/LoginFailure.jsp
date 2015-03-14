@@ -6,11 +6,6 @@
 <body>
     <h1>${headerMessage}</h1>
     <h2>SORRY! YOU'VE ENTERED INVALID LOGIN OR PASSWORD</h2>
-    <h3>You typed such information: </h3>
-    <table>
-        <tr><td>Login:      </td><td>${login}</td></tr>
-        <tr><td>Password:   </td><td>${password}</td></tr>
-    </table>
 
     <h3>Please try again or <a href="${pageContext.request.contextPath}/RegistrationForm.html">register</a></h3>
     <form action="${pageContext.request.contextPath}/submitLoginForm.html" method="post">

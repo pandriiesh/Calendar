@@ -47,6 +47,11 @@ public class MainController {
         request.getSession().setAttribute("personMap", calendarService.getPersonStore());
     }
 
+    @RequestMapping("/")
+    public String home() {
+        return "pages/LoginForm";
+    }
+
     @RequestMapping(value = "/LoginForm.html", method = RequestMethod.GET)
     public String getLoginForm(HttpServletRequest request) {
 
@@ -55,22 +60,17 @@ public class MainController {
     }
 
     @RequestMapping(value = "/submitLoginForm.html", method = RequestMethod.POST)
-    public ModelAndView submitLoginForm(@RequestParam("login") String login,
+    public String submitLoginForm(@RequestParam("login") String login,
                                         @RequestParam("password") String password,
                                         HttpServletRequest request) throws RemoteException {
 
         Person person = calendarService.findPerson(login);
 
         if (person != null && person.getPassword().equals(password)) {
-            ModelAndView model = new ModelAndView("pages/LoginSuccess");
-            model.addObject("person", person);
             request.getSession().setAttribute("personLogin", person.getLogin());
-            return model;
+            return "pages/LoginSuccess";
         } else {
-            ModelAndView model = new ModelAndView("pages/LoginFailure");
-            model.addObject("login", login);
-            model.addObject("password", password);
-            return model;
+            return "pages/LoginFailure";
         }
     }
 
