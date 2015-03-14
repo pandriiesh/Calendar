@@ -1,7 +1,6 @@
 package com.home.common;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
@@ -15,7 +14,8 @@ public class PersonAdapter {
 
     private String password;
 
-    private List<String> eventList = new ArrayList<String>();
+    private List<String> eventList;
+
 
     public PersonAdapter() {
     }
@@ -25,22 +25,17 @@ public class PersonAdapter {
         personEmail = person.getPersonEmail();
         login = person.getLogin();
         password = person.getPassword();
-
-        List<String> eventList = new ArrayList<String>(person.getEvents().size());
-
-        for (Event event : person.getEvents()) {
-            eventList.add(event.getId().toString());
-        }
-
-        this.eventList = eventList;
+        eventList = person.getEvents();
     }
 
     public Person asPerson() {
         Person person = new Person();
+
         person.setLogin(login);
         person.setPassword(password);
         person.setPersonName(personName);
         person.setPersonEmail(personEmail);
+        person.setEventList(eventList);
 
         return person;
     }
@@ -53,12 +48,16 @@ public class PersonAdapter {
         for (int i=0; i < eventList.size(); i++) {
             if (eventList.equals(id)) {
                 eventList.remove(i);
-                i--;
+                return;
             }
         }
     }
 
-    public List<String> getEvents() {
+    public void setEventList(List<String> eventList) {
+        this.eventList = eventList;
+    }
+
+    public List<String> getEventList() {
         return eventList;
     }
 

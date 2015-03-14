@@ -1,29 +1,50 @@
 package com.home.common;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
 @XmlRootElement
 public class EventAdapter {
 
+    private UUID id;
+
     private String title;
 
     private String description;
-
-    private UUID id;
-
-    private List<PersonAdapter> attenders;
 
     private Date startTime;
 
     private Date endTime;
 
+    private List<String> attenders;
+
     public EventAdapter() {
         id = UUID.randomUUID();
     }
 
-    @XmlAttribute
+
+    public EventAdapter(Event event) {
+        id = event.getId();
+        title = event.getTitle();
+        description = event.getDescription();
+        startTime = event.getStartTime();
+        endTime = event.getEndTime();
+        attenders = event.getAttenders();
+    }
+
+    public Event asEvent() {
+        Event event = new Event();
+
+        event.setId(id);
+        event.setTitle(title);
+        event.setDescription(description);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
+        event.setAttenders(attenders);
+
+        return event;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -32,11 +53,11 @@ public class EventAdapter {
         return id;
     }
 
-    public List<PersonAdapter> getAttenders() {
+    public List<String> getAttenders() {
         return attenders;
     }
 
-    public void setAttenders(List<PersonAdapter> attenders) {
+    public void setAttenders(List<String> attenders) {
         this.attenders = attenders;
     }
 
@@ -101,11 +122,6 @@ public class EventAdapter {
 
     @Override
     public String toString() {
-        List<String> personLoginList = new ArrayList<String>();
-
-        for(PersonAdapter person : attenders) {
-            personLoginList.add(person.getLogin());
-        }
 
         return "Event{" +
                 "title=" + title +
@@ -113,7 +129,7 @@ public class EventAdapter {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", id=" + id +
-                ", attenders='" + personLoginList + '\'' +
+                ", attenders='" + attenders + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.home.mvc;
 
 import com.home.common.Event;
 import com.home.common.Person;
-import com.home.common.PersonAdapter;
 import com.home.datastore.CalendarDataStoreImpl;
 import com.home.service.CalendarService;
 import com.home.service.CalendarServiceImpl;
@@ -12,12 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -208,9 +204,11 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        Person person = calendarService.findPerson((String) request.getSession().getAttribute("personLogin"));
+        Person person = calendarService.findPerson(personLogin);
+        List<Event> personEvents = calendarService.findEventsByAttender(personLogin);
 
         request.getSession().setAttribute("person", person);
+        request.getSession().setAttribute("personEvents", personEvents);
 
         return "pages/ShowEvents";
     }
@@ -225,7 +223,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.findEventByTitle(attenderLogin);
+        List<Event> events = calendarService.findEventsByTitle(attenderLogin);
 
         request.setAttribute("foundedEvents", events);
 
@@ -242,7 +240,7 @@ public class MainController {
             return "pages/LoginForm";
         }
 
-        List<Event> events = calendarService.findEventById(attenderID);
+        List<Event> events = calendarService.findEventsById(attenderID);
 
         request.setAttribute("foundedEvents", events);
 
@@ -266,7 +264,7 @@ public class MainController {
         List<Event> events;
 
         try {
-            events = calendarService.findEventByAttender(attenderLogin);
+            events = calendarService.findEventsByAttender(attenderLogin);
         } catch (NullPointerException e) {
             return "pages/ShowEvents";
         }

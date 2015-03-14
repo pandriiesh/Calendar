@@ -33,13 +33,8 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<Event> findEventByTitle(String title) {
+    public List<Event> findEventsByTitle(String title) {
         return calendarDataStore.findEventsByTitle(title);
-    }
-
-    @Override
-    public List<Event> findEventById(String id) throws RemoteException {
-        return calendarDataStore.findEventsById(id);
     }
 
     @Override
@@ -58,8 +53,13 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<Event> findEventByAttender(String login) {
-        return calendarDataStore.findEventsByAttender(login);
+    public List<Event> findEventsByAttender(String personLogin) {
+        return calendarDataStore.findEventsByAttender(personLogin);
+    }
+
+    @Override
+    public List<Event> findEventsById(String id) throws RemoteException {
+        return calendarDataStore.findEventsById(id);
     }
 
     @Override

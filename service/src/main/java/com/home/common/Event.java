@@ -7,8 +7,8 @@ public class Event implements Serializable {
 
     private String title;
     private String description;
-    private final UUID id;
-    private List<Person> attenders;
+    private UUID id;
+    private List<String> attenders;
     private Date startTime;
     private Date endTime;
 
@@ -29,11 +29,15 @@ public class Event implements Serializable {
         return id;
     }
 
-    public List<Person> getAttenders() {
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public List<String> getAttenders() {
         return attenders;
     }
 
-    public void setAttenders(List<Person> attenders) {
+    public void setAttenders(List<String> attenders) {
         this.attenders = attenders;
     }
 
@@ -98,10 +102,6 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        List<String> personLoginList = new ArrayList<String>();
-        for(Person person : attenders) {
-            personLoginList.add(person.getLogin());
-        }
 
         return "Event{" +
                 "title=" + title +
@@ -109,7 +109,7 @@ public class Event implements Serializable {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", id=" + id +
-                ", attenders='" + personLoginList + '\'' +
+                ", attenders='" + attenders + '\'' +
                 '}';
     }
 }

@@ -2,9 +2,7 @@ package com.home;
 
 import com.home.common.Event;
 import com.home.common.Person;
-import com.home.datastore.CalendarDataStoreImpl;
 import com.home.service.CalendarService;
-import com.home.service.CalendarServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -138,9 +136,9 @@ public class ClientMain {
         logger.info("Verdict: " + expectedTime.equals(calculatedTime));
 
         logger.info("Testing finding events by title:");
-        logger.info(service.findEventByTitle("event1").toString());
-        logger.info(service.findEventByTitle("event2").toString());
-        logger.info(service.findEventByTitle("event3").toString());
+        logger.info(service.findEventsByTitle("event1").toString());
+        logger.info(service.findEventsByTitle("event2").toString());
+        logger.info(service.findEventsByTitle("event3").toString());
 
         logger.info("Testing finding persons by login:");
         logger.info(service.findPerson("person1Login").toString());

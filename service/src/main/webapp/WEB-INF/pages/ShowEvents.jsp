@@ -66,11 +66,9 @@
         <%
 
                 for (Event event : events) {
-                    List<String> attenders = new ArrayList<String>();
 
-                    for(Person person: event.getAttenders()) {
-                        attenders.add(person.getLogin());
-                    }
+
+
 
         %>
             <table>
@@ -78,7 +76,7 @@
                 <tr><td>Description:      </td><td><%out.print(event.getDescription());%></td></tr>
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
-                <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
+                <tr><td>Attenders:        </td><td><%out.print(event.getAttenders().toString());%></td></tr>
                 <tr><td>ID:               </td><td><%out.print(event.getId());%></td></tr>
             </table>
             <br>
@@ -96,23 +94,17 @@
         <% } %>
     <h2>Events with you:</h2>
     <%
-        Person person = (Person) request.getSession().getAttribute("person");
-
-        List<Event> eventList = person.getEvents();
+        List<Event> eventList = (List<Event>) request.getSession().getAttribute("personEvents");
 
         for (Event event : eventList) {
-            List<String> attenders = new ArrayList<String>();
 
-            for(Person person1: event.getAttenders()) {
-                attenders.add(person1.getLogin());
-            }
     %>
             <table>
                 <tr><td>Title:            </td><td><%out.print(event.getTitle());%></td></tr>
                 <tr><td>Description:      </td><td><%out.print(event.getDescription());%></td></tr>
                 <tr><td>Start Date/Time:  </td><td><%out.print(event.getStartTime());%></td></tr>
                 <tr><td>End Date/Time:    </td><td><%out.print(event.getEndTime());%></td></tr>
-                <tr><td>Attenders:        </td><td><%out.print(attenders.toString());%></td></tr>
+                <tr><td>Attenders:        </td><td><%out.print(event.getAttenders().toString());%></td></tr>
                 <tr><td>ID:               </td><td><%out.print(event.getId());%></td></tr>
             </table>
             <br>

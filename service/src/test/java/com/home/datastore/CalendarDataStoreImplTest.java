@@ -224,17 +224,17 @@ public class CalendarDataStoreImplTest {
         Event event1 = new Event();
         event1.setStartTime(NOW_TIME);
         event1.setEndTime(event1EndTime);
-        event1.setAttenders(Arrays.asList(person1));
+        event1.setAttenders(Arrays.asList(person1.getLogin()));
 
         Event event2 = new Event();
         event2.setStartTime(event2StartTime);
         event2.setEndTime(event2EndTime);
-        event2.setAttenders(Arrays.asList(person2));
+        event2.setAttenders(Arrays.asList(person2.getLogin()));
 
         Event event3 = new Event();
         event3.setStartTime(event3StartTime);
         event3.setEndTime(event3EndTime);
-        event3.setAttenders(Arrays.asList(person3));
+        event3.setAttenders(Arrays.asList(person3.getLogin()));
 
         Date expectedTime = new Date(NOW_TIME.getTime() + 4 * 60 * 60 * 1000);
         expectedTime.setTime(expectedTime.getTime()/1000/60*60*1000 + INTERVAL);
@@ -282,17 +282,17 @@ public class CalendarDataStoreImplTest {
         Event event1 = new Event();
         event1.setStartTime(NOW_TIME);
         event1.setEndTime(eventEndTime);
-        event1.setAttenders(Arrays.asList(person));
+        event1.setAttenders(Arrays.asList(person.getLogin()));
 
         Event event2 = new Event();
         event2.setStartTime(NOW_TIME);
         event2.setEndTime(eventEndTime);
-        event2.setAttenders(Arrays.asList(person));
+        event2.setAttenders(Arrays.asList(person.getLogin()));
 
         Event event3 = new Event();
         event3.setStartTime(NOW_TIME);
         event3.setEndTime(eventEndTime);
-        event3.setAttenders(Arrays.asList(person));
+        event3.setAttenders(Arrays.asList(person.getLogin()));
 
         List<Event> expectedEventList = Arrays.asList(event1, event2, event3);
         // initialize mocks

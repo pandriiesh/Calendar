@@ -23,22 +23,31 @@ public class Person implements Serializable{
     @Size(min=4, max=20, message = "Password length must be between {min} and {max} characters!")
     private String password;
 
-    private List<Event> eventList = new ArrayList<Event>();
+    private List<String> eventList = new ArrayList<String>();
 
     public void addEventToPerson(Event event) {
-        eventList.add(event);
+        if(eventList==null) {
+            eventList = new ArrayList<String>();
+        }
+        eventList.add(event.getId().toString());
     }
 
     public void removeEvent(String id) {
         for (int i=0; i < eventList.size(); i++) {
-            if (eventList.get(i).getId().toString().equals(id)) {
+            if (eventList.get(i).equals(id)) {
                 eventList.remove(i);
-                i--;
+                break;
             }
         }
     }
 
-    public List<Event> getEvents() {
+    public void setEventList(List<String> eventList) {
+        this.eventList = eventList;
+    }
+
+    public List<String> getEvents() {
+        if (eventList==null)
+            return new ArrayList<String>();
         return eventList;
     }
 
@@ -76,18 +85,13 @@ public class Person implements Serializable{
 
     @Override
     public String toString() {
-        List<String> eventTitleList = new ArrayList<String>();
-
-        for(Event event : eventList) {
-            eventTitleList.add(event.getTitle());
-        }
 
         return "Person{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", personName='" + personName + '\'' +
                 ", personEmail='" + personEmail + '\'' +
-                ", events='" + eventTitleList + '\'' +
+                ", events='" + eventList + '\'' +
                 '}';
     }
 }

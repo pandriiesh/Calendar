@@ -7,8 +7,6 @@ import com.home.common.PersonAdapter;
 
 import javax.xml.bind.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
@@ -55,10 +53,32 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public void addEvent(Event event) {
 
+        for (String personLogin : event.getAttenders()) {
 
-        for (Person person : event.getAttenders()) {
-            findPerson(person.getLogin()).addEventToPerson(event);
+            Person person = findPerson(personLogin);
+            person.addEventToPerson(event);
+            registerPerson(person);
         }
+
+        File file = new File(pathToXMLDataStore + "event_" + event.getId() + ".xml");
+
+        Marshaller marshaller;
+
+        try {
+            marshaller = eventJAXBContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            EventAdapter eventAdapter = new EventAdapter(event);
+            marshaller.marshal(eventAdapter, file);
+            marshaller.marshal(eventAdapter, System.out);
+
+        } catch (PropertyException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+
         eventStore.put(event.getId(), event);
 
     }
@@ -83,15 +103,9 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public Event createEvent(String title, List<String> attendersLogins) {
+    public Event createEvent(String eventId, List<String> attendersLogins) {
 
         Event event = new Event();
-
-        List<Person> personList = new ArrayList<Person>(attendersLogins.size());
-
-        for(String login :attendersLogins) {
-            personList.add(personStore.get(login));
-        }
 
         Date startTime = new Date();
 
@@ -104,8 +118,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         Date endTime = cal.getTime();
 
-        event.setTitle(title);
-        event.setAttenders(personList);
+        event.setTitle(eventId);
+        event.setAttenders(attendersLogins);
         event.setStartTime(startTime);
         event.setEndTime(endTime);
 
@@ -130,18 +144,30 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public List<Event> findEventsById(String id) {
         List<Event> events = new ArrayList<Event>();
 
-        for (Map.Entry<UUID, Event> entry : eventStore.entrySet()) {
-            if (entry.getValue().getId().toString().equals(id)) {
-                events.add(entry.getValue());
-            }
+        EventAdapter eventAdapter;
+
+        try {
+            File file = new File(pathToXMLDataStore + "event_" + id + ".xml");
+            Unmarshaller unmarshaller = eventJAXBContext.createUnmarshaller();
+            eventAdapter = (EventAdapter) unmarshaller.unmarshal(file);
+
+            events.add(eventAdapter.asEvent());
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
 
         return events;
     }
 
     @Override
-    public List<Event> findEventsByAttender(String login) {
-        return personStore.get(login).getEvents();
+    public List<Event> findEventsByAttender(String personLogin) {
+        List<Event> eventList = new ArrayList<Event>();
+
+        for(String eventId : findPerson(personLogin).getEvents()) {
+            eventList.addAll(findEventsById(eventId));
+        }
+        return eventList;
     }
 
     @Override
@@ -172,22 +198,17 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         try {
             File file = new File(pathToXMLDataStore + "person_" + personLogin + ".xml");
-            JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
 
-            Unmarshaller unmarshaller = context.createUnmarshaller();
+            Unmarshaller unmarshaller = personJAXBContext.createUnmarshaller();
             personAdapter = (PersonAdapter) unmarshaller.unmarshal(file);
 
-
-        } catch (Exception e) {
+        } catch (JAXBException e) {
             e.printStackTrace();
-
-
         }
 
-        assert personAdapter != null;
-        return personAdapter.asPerson();
 
-//        return personStore.get(personLogin);
+        return personAdapter == null ? null : personAdapter.asPerson();
+
     }
 
     @Override
@@ -227,10 +248,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public boolean checkIfPersonIsFreeAtCertainTime(String personLogin, Date date) {
 
-        Person person = personStore.get(personLogin);
-
-        for (Event event : person.getEvents()) {
-
+        for (Event event : findEventsByAttender(personLogin)) {
             if (date.after(event.getStartTime()) && date.before(event.getEndTime())) {
                 return false;
             }
@@ -262,7 +280,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             }
 
         for (int i=0; i<personList.size(); i++) {
-            for (Event event : personList.get(i).getEvents()) {
+            for (Event event : findEventsByAttender(personList.get(i).getLogin())) {
 
                 if (event.getEndTime().before(new Date()))
                     continue;
@@ -322,7 +340,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         List<Event> eventList = new ArrayList<Event>();
 
-        for (Event event : personStore.get(personLogin).getEvents()) {
+        for (Event event : findEventsByAttender(personLogin)) {
 
             if (date.after(event.getStartTime()) && date.before(event.getEndTime())) {
                 eventList.add(event);

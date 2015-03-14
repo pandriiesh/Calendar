@@ -27,11 +27,11 @@ public interface CalendarService extends Remote {
 
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;
 
-    List<Event> findEventByTitle(String title) throws RemoteException;
+    List<Event> findEventsByTitle(String title) throws RemoteException;
 
-    List<Event> findEventById(String id) throws RemoteException;
+    List<Event> findEventsById(String id) throws RemoteException;
 
-    List<Event> findEventByAttender(String login) throws RemoteException;
+    List<Event> findEventsByAttender(String login) throws RemoteException;
 
     List<Event> findEventsByDate(Date day) throws RemoteException;
 
