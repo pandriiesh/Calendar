@@ -4,7 +4,6 @@ import com.home.common.Event;
 import com.home.common.EventAdapter;
 import com.home.common.Person;
 import com.home.common.PersonAdapter;
-import com.home.service.JAXBFileVisitor;
 
 import javax.xml.bind.*;
 import java.io.File;

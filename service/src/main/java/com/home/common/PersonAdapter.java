@@ -40,19 +40,6 @@ public class PersonAdapter {
         return person;
     }
 
-    public void addEventToPerson(String eventId) {
-        eventList.add(eventId);
-    }
-
-    public void removeEvent(String id) {
-        for (int i=0; i < eventList.size(); i++) {
-            if (eventList.equals(id)) {
-                eventList.remove(i);
-                return;
-            }
-        }
-    }
-
     public void setEventList(List<String> eventList) {
         this.eventList = eventList;
     }

@@ -1,4 +1,4 @@
-package com.home.service;
+package com.home.datastore;
 
 import com.home.common.Event;
 import com.home.common.EventAdapter;

@@ -3,13 +3,10 @@ package com.home.service;
 import com.home.common.Event;
 import com.home.common.Person;
 
-import javax.xml.bind.JAXBContext;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public interface CalendarService extends Remote {
 
