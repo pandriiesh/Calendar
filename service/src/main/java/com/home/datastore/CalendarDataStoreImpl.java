@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
@@ -21,11 +23,13 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     private JAXBContext eventJAXBContext = null;
     private JAXBContext personJAXBContext = null;
     private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
+    private final ExecutorService executor;
 
 
     public CalendarDataStoreImpl() {
         eventStore = new ConcurrentHashMap<UUID, Event>();
         personStore = new ConcurrentHashMap<String, Person>();
+        executor = Executors.newFixedThreadPool(10);;
 
         try {
             eventJAXBContext = JAXBContext.newInstance(EventAdapter.class);
@@ -57,23 +61,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         }
 
         File file = new File(pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml");
-
-        Marshaller marshaller;
-
-        try {
-            marshaller = eventJAXBContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            EventAdapter eventAdapter = new EventAdapter(event);
-            marshaller.marshal(eventAdapter, file);
-            marshaller.marshal(eventAdapter, System.out);
-
-        } catch (PropertyException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
+        executor.submit(new EventDownloaderThread(file, event));
         eventStore.put(event.getId(), event);
     }
 
@@ -233,34 +221,19 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         if (personStore.get(person.getLogin())!= null) {
             throw new RuntimeException("Such login already exists");
         }
-
         registerOrOverridePersonIfExists(person);
     }
 
     private void registerOrOverridePersonIfExists(Person person) {
+
         File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
-
-        Marshaller marshaller;
-
-        try {
-            marshaller = personJAXBContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            PersonAdapter personAdapter = new PersonAdapter(person);
-            marshaller.marshal(personAdapter, file);
-            marshaller.marshal(personAdapter, System.out);
-
-        } catch (PropertyException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
+        executor.submit(new PersonDownloaderThread(file, person));
         personStore.put(person.getLogin(), person);
     }
 
     @Override
     public void removePerson(String personLogin) {
+        System.out.println("Removing " + personLogin);
         String filePath = pathToXMLDataStore + "PersonDataStore/person_" + personLogin + ".xml";
 
         try {
