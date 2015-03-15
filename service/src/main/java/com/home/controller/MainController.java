@@ -1,4 +1,4 @@
-package com.home.mvc;
+package com.home.controller;
 
 import com.home.common.Event;
 import com.home.common.Person;
@@ -90,8 +90,13 @@ public class MainController {
             return "pages/RegistrationForm";
         }
 
-
-        calendarService.registerPerson(person);
+        try {
+            calendarService.registerPerson(person);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("Such login already exists")) {
+                return "pages/RegistrationForm";
+            }
+        }
 
         return "pages/RegistrationSuccess";
     }

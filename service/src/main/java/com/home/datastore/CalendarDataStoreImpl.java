@@ -50,7 +50,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
             if (!person.getEvents().contains(event.getId().toString())) {
                 person.addEventToPerson(event.getId().toString());
-                registerPerson(person);
+                registerOrOverridePersonIfExists(person);
             }
         }
 
@@ -89,7 +89,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             List<String> attenders = event.getAttenders();
             for(String personLogin : attenders) {
                 Person person = personStore.get(personLogin);
-                registerPerson(person);
+                registerOrOverridePersonIfExists(person);
             }
 
             eventStore.remove(event.getId());
@@ -228,6 +228,14 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     @Override
     public void registerPerson(Person person) {
 
+        if (personStore.get(person.getLogin())!= null) {
+            throw new RuntimeException("Such login already exists");
+        }
+
+        registerOrOverridePersonIfExists(person);
+    }
+
+    private void registerOrOverridePersonIfExists(Person person) {
         File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
 
         Marshaller marshaller;
