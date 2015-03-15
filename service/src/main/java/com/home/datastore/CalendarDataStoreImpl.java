@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
@@ -23,8 +24,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
 
     public CalendarDataStoreImpl() {
-        eventStore = new HashMap<UUID, Event>();
-        personStore = new HashMap<String, Person>();
+        eventStore = new ConcurrentHashMap<UUID, Event>();
+        personStore = new ConcurrentHashMap<String, Person>();
 
         try {
             eventJAXBContext = JAXBContext.newInstance(EventAdapter.class);
