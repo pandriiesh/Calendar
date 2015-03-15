@@ -20,8 +20,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     private final Map<UUID, Event> eventStore;
     private final Map<String, Person> personStore;
-    private JAXBContext eventJAXBContext = null;
-    private JAXBContext personJAXBContext = null;
     private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
     private final ExecutorService executor;
 
@@ -31,12 +29,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         personStore = new ConcurrentHashMap<String, Person>();
         executor = Executors.newFixedThreadPool(10);;
 
-        try {
-            eventJAXBContext = JAXBContext.newInstance(EventAdapter.class);
-            personJAXBContext = JAXBContext.newInstance(PersonAdapter.class);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
 
         Path path = Paths.get(pathToXMLDataStore);
 
@@ -62,6 +54,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         File file = new File(pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml");
         executor.submit(new EventDownloaderThread(file, event));
+//        new Thread(new EventDownloaderThread(file, event)).start();
         eventStore.put(event.getId(), event);
     }
 
@@ -228,6 +221,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
         executor.submit(new PersonDownloaderThread(file, person));
+//        new Thread(new PersonDownloaderThread(file, person)).start();
+
         personStore.put(person.getLogin(), person);
     }
 

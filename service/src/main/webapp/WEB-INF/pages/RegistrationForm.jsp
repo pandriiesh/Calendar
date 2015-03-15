@@ -24,5 +24,6 @@
             </table>
             <input type="submit" value="Done">
         </form>
+        <h3><a href="${pageContext.request.contextPath}/LoginForm.html">Back to Login Form</a></h3>
 </body>
 </html>

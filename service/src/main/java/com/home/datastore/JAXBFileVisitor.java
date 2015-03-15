@@ -40,9 +40,10 @@ public class JAXBFileVisitor extends SimpleFileVisitor<Path> {
 
             if (fileName.startsWith("event_") && fileName.endsWith(".xml")) {
                 executorService.submit(new EventUploaderThread(path, eventStore));
-
+//                new Thread(new EventUploaderThread(path, eventStore)).start();
             } else if (fileName.startsWith("person_") && fileName.endsWith(".xml")) {
                 executorService.submit(new PersonUploaderThread(path, personStore));
+//                new Thread(new PersonUploaderThread(path, personStore)).start();
             }
         }
 
