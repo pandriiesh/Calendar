@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.*;
 
-public class Person implements Serializable{
+public class Person implements Serializable, Comparable<Person>{
 
     @Size(min=1, max=20, message = "Name length must be between {min} and {max} characters!")
     @Pattern(regexp="[^0-9]*", message = "Name field cannot contain digits.")
@@ -93,5 +93,14 @@ public class Person implements Serializable{
                 ", personEmail='" + personEmail + '\'' +
                 ", events='" + eventList + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Person person) {
+
+        if (person==null) {
+            return 1;
+        }
+        return this.getLogin().compareTo(person.getLogin());
     }
 }

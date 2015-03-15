@@ -1,6 +1,7 @@
 <%@ page import="com.home.common.Person" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -11,6 +12,8 @@
     <h2>Registered users:</h2>
     <h3><%
         List<Person> personList = (List<Person>) session.getAttribute("personList");
+        Collections.sort(personList);
+
         for (Person person : personList) {
             out.println(person.getLogin() +", ");
         }

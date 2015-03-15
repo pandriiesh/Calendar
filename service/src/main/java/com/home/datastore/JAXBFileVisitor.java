@@ -13,17 +13,23 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class JAXBFileVisitor extends SimpleFileVisitor<Path> {
 
     private final Map<UUID, Event> eventStore;
     private final Map<String, Person> personStore;
+    private final ExecutorService executorService;
 
     public JAXBFileVisitor(Map<UUID, Event> eventStore, Map<String, Person> personStore) {
         this.eventStore = eventStore;
         this.personStore = personStore;
+        executorService = Executors.newFixedThreadPool(10);
     }
 
     @Override
@@ -33,29 +39,10 @@ public class JAXBFileVisitor extends SimpleFileVisitor<Path> {
             String fileName = path.getFileName().toString();
 
             if (fileName.startsWith("event_") && fileName.endsWith(".xml")) {
-
-                Thread eventUploaderThread = new Thread(new EventUploaderThread(path, eventStore));
-                eventUploaderThread.start();
-
-//                try {
-//                    EventAdapter eventAdapter = (EventAdapter) eventUnmarshaller.unmarshal(path.toFile());
-//                    eventStore.put(eventAdapter.getId(), eventAdapter.asEvent());
-//                } catch (JAXBException e) {
-//                    e.printStackTrace();
-//                }
+                executorService.submit(new EventUploaderThread(path, eventStore));
 
             } else if (fileName.startsWith("person_") && fileName.endsWith(".xml")) {
-
-                Thread personUploaderThread = new Thread(new PersonUploaderThread(path, personStore));
-                personUploaderThread.start();
-//
-//                try {
-//                    PersonAdapter personAdapter = (PersonAdapter) personUnmarshaller.unmarshal(path.toFile());
-//                    personStore.put(personAdapter.getLogin(), personAdapter.asPerson());
-//
-//                } catch (JAXBException e) {
-//                    e.printStackTrace();
-//                }
+                executorService.submit(new PersonUploaderThread(path, personStore));
             }
         }
 

@@ -30,9 +30,6 @@ public class EventUploaderThread implements Runnable {
             EventAdapter eventAdapter = (EventAdapter) unmarshaller.unmarshal(path.toFile());
             eventStore.put(eventAdapter.getId(), eventAdapter.asEvent());
 
-            System.out.println("EventThread: " + Thread.currentThread().getName() + " "
-                    + Thread.currentThread().getId() + ", uploaded: " + eventAdapter.getDescription());
-
         } catch (JAXBException e) {
             e.printStackTrace();
         }

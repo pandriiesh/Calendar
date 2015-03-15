@@ -35,6 +35,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         }
 
         Path path = Paths.get(pathToXMLDataStore);
+
         try {
             Files.walkFileTree(path, new JAXBFileVisitor(eventStore, personStore));
         } catch (IOException e) {

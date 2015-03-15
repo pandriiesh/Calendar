@@ -29,9 +29,6 @@ public class PersonUploaderThread implements Runnable {
             PersonAdapter personAdapter = (PersonAdapter) unmarshaller.unmarshal(path.toFile());
             personStore.put(personAdapter.getLogin(), personAdapter.asPerson());
 
-            System.out.println("PersonThread: " + Thread.currentThread().getName() + " "
-                    + Thread.currentThread().getId() + ", uploaded: " + personAdapter.getLogin());
-
         } catch (JAXBException e) {
             e.printStackTrace();
         }
