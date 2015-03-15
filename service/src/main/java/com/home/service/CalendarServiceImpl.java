@@ -67,8 +67,8 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void removePerson(Person person) {
-        calendarDataStore.removePerson(person);
+    public void removePerson(String personLogin) {
+        calendarDataStore.removePerson(personLogin);
     }
 
     @Override

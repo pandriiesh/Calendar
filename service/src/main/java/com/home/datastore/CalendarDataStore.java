@@ -26,7 +26,7 @@ public interface CalendarDataStore {
 
     void registerPerson(Person person);
 
-    void removePerson(Person person);
+    void removePerson(String personLogin);
 
     Person findPerson(String personLogin);
 

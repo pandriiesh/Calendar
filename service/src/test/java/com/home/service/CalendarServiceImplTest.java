@@ -199,7 +199,7 @@ public class CalendarServiceImplTest {
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
 
         RuntimeException tobeThrown = new RuntimeException("testRemovePerson method");
-        doThrow(tobeThrown).when(calendarDataStore).removePerson(person);
+        doThrow(tobeThrown).when(calendarDataStore).removePerson(person.getLogin());
 
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
@@ -208,7 +208,7 @@ public class CalendarServiceImplTest {
         calendarService.registerPerson(person);
 
         try {
-            calendarService.removePerson(person);
+            calendarService.removePerson(person.getLogin());
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), tobeThrown.getMessage());
         }
@@ -216,7 +216,7 @@ public class CalendarServiceImplTest {
         // assert return value
 
         // verify mock expectations
-        verify(calendarDataStore).removePerson(person);
+        verify(calendarDataStore).removePerson(person.getLogin());
     }
 
     @Test
@@ -232,7 +232,7 @@ public class CalendarServiceImplTest {
         event.setStartTime(startTime);
         event.setEndTime(endTime);
 
-        person.addEventToPerson(event);
+        person.addEventToPerson(event.getId().toString());
 
         Date checkedTime = new Date();
 

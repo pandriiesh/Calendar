@@ -354,5 +354,19 @@ public class MainController {
 
         return "pages/ShowEvents";
     }
+
+    @RequestMapping(value = "/DeleteAccount.html")
+    public String deleteAccount(HttpServletRequest request) throws RemoteException {
+
+        String personLogin = (String) request.getSession().getAttribute("personLogin");
+
+        if (personLogin == null) {
+            return "pages/LoginForm";
+        }
+
+        calendarService.removePerson(personLogin);
+
+        return "pages/LoginForm";
+    }
 }
 

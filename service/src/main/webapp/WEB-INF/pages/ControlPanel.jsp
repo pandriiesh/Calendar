@@ -26,6 +26,14 @@
 
         <h3><a href="${pageContext.request.contextPath}/ShowEvents.html">Show my Events</a></h3>
 
+        <br>
+        <br>
+        <br>
+        <h4>WARNING! DANGER ZONE!</h4>
+        <h4>By deleting your account you will be deleted from all events with you as attender.</h4>
+        <h4>All events where you was the only attender will be deleted too.</h4>
+        <h3><a href="${pageContext.request.contextPath}/DeleteAccount.html">Delete my account</a></h3>
+
 
 </body>
 </html>

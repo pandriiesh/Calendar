@@ -46,10 +46,12 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public void addEvent(Event event) {
 
         for (String personLogin : event.getAttenders()) {
-
             Person person = findPerson(personLogin);
-            person.addEventToPerson(event);
-            registerPerson(person);
+
+            if (!person.getEvents().contains(event.getId().toString())) {
+                person.addEventToPerson(event.getId().toString());
+                registerPerson(person);
+            }
         }
 
         File file = new File(pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml");
@@ -248,8 +250,32 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     }
 
     @Override
-    public void removePerson(Person person) {
-        personStore.remove(person.getLogin());
+    public void removePerson(String personLogin) {
+        String filePath = pathToXMLDataStore + "PersonDataStore/person_" + personLogin + ".xml";
+
+        try {
+            Files.delete(new File(filePath).toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Person person = personStore.get(personLogin);
+
+        List<String> events = new ArrayList<String>(person.getEvents());
+
+        for (String eventId : events) {
+            Event event = eventStore.get(UUID.fromString(eventId));
+            event.removePersonFromEvent(personLogin);
+            addEvent(event);
+
+            if (event.getAttenders().isEmpty()) {
+                removeEventById(event.getId().toString());
+            }
+        }
+
+        person.setEventList(events);
+        personStore.remove(personLogin);
+
     }
 
 

@@ -159,7 +159,7 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         calendarDataStore.registerPerson(person);
-        calendarDataStore.removePerson(person);
+        calendarDataStore.removePerson(person.getLogin());
         Person expectedPerson = calendarDataStore.findPerson(person.getLogin());
 
         // assert return value
@@ -179,7 +179,7 @@ public class CalendarDataStoreImplTest {
         event.setStartTime(startTime);
         event.setEndTime(endTime);
 
-        person.addEventToPerson(event);
+        person.addEventToPerson(event.getId().toString());
 
         Date checkedTime = new Date();
 
@@ -244,9 +244,9 @@ public class CalendarDataStoreImplTest {
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
-        person1.addEventToPerson(event1);
-        person2.addEventToPerson(event2);
-        person3.addEventToPerson(event3);
+        person1.addEventToPerson(event1.getId().toString());
+        person2.addEventToPerson(event2.getId().toString());
+        person3.addEventToPerson(event3.getId().toString());
 
         calendarDataStore.registerPerson(person1);
         calendarDataStore.registerPerson(person2);
@@ -300,9 +300,9 @@ public class CalendarDataStoreImplTest {
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
-        person.addEventToPerson(event1);
-        person.addEventToPerson(event2);
-        person.addEventToPerson(event3);
+        person.addEventToPerson(event1.getId().toString());
+        person.addEventToPerson(event2.getId().toString());
+        person.addEventToPerson(event3.getId().toString());
 
         calendarDataStore.registerPerson(person);
 

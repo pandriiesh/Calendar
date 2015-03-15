@@ -25,6 +25,20 @@ public class Event implements Serializable {
         endTime = event.endTime;
     }
 
+    public void addPersonToEvent(String personLogin) {
+        if(attenders==null) {
+            attenders = new ArrayList<String>();
+        }
+        attenders.add(personLogin);
+    }
+
+    public void removePersonFromEvent(String personLogin) {
+        attenders = new ArrayList<String>(attenders);
+        if (attenders.contains(personLogin)) {
+            attenders.remove(personLogin);
+        }
+    }
+
     public UUID getId() {
         return id;
     }

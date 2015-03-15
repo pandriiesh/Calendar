@@ -30,7 +30,7 @@ public interface CalendarService extends Remote {
 
     void registerPerson(Person person) throws RemoteException;
 
-    void removePerson(Person person) throws RemoteException;
+    void removePerson(String personLogin) throws RemoteException;
 
     Person findPerson(String personLogin) throws RemoteException;
 

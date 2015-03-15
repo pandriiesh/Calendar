@@ -25,11 +25,11 @@ public class Person implements Serializable{
 
     private List<String> eventList = new ArrayList<String>();
 
-    public void addEventToPerson(Event event) {
+    public void addEventToPerson(String id) {
         if(eventList==null) {
             eventList = new ArrayList<String>();
         }
-        eventList.add(event.getId().toString());
+        eventList.add(id);
     }
 
     public void removeEventFromPerson(String id) {
