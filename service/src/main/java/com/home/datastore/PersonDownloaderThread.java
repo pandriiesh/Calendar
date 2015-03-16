@@ -11,6 +11,7 @@ import java.io.File;
 
 public class PersonDownloaderThread implements Runnable {
 
+    //local code review (vtegza): should be final @ 16.03.15
     private File file;
     private Person person;
 
@@ -29,6 +30,7 @@ public class PersonDownloaderThread implements Runnable {
             PersonAdapter personAdapter = new PersonAdapter(person);
             marshaller.marshal(personAdapter, file);
 
+            //local code review (vtegza): take a look at loggers (log4j for instance) @ 16.03.15
         } catch (PropertyException e) {
             e.printStackTrace();
         } catch (JAXBException e) {

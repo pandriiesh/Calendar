@@ -1,17 +1,19 @@
 package com.home.datastore;
 
 import com.home.common.Event;
-import com.home.common.EventAdapter;
 import com.home.common.Person;
-import com.home.common.PersonAdapter;
 
-import javax.xml.bind.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +35,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         Path path = Paths.get(pathToXMLDataStore);
 
         try {
+            //local code review (vtegza): check if all loading is finished and print information message @ 16.03.15
             Files.walkFileTree(path, new JAXBFileVisitor(eventStore, personStore));
         } catch (IOException e) {
             e.printStackTrace();

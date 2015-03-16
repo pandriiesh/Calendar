@@ -14,5 +14,6 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
         logger.info("Service started");
+        //local code review (vtegza): use (ClassPathXmlApplicationContext)context.registerShutdownHook for grace shutdown @ 16.03.15
     }
 }

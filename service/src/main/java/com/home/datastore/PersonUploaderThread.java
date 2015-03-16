@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class PersonUploaderThread implements Runnable {
 
+    //local code review (vtegza): should be final @ 16.03.15
     private Path path;
     private Map<String, Person> personStore;
 

@@ -42,17 +42,20 @@ public class CalendarServiceImplTest {
 
         try {
             calendarService.addEvent(actualEvent);
+            //local code review (vtegza): fail("exceptionShould be thrown) @ 16.03.15
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Void method testing string");
         }
 
         // verify mock expectations
+        //local code review (vtegza): verify in cacth block and verifyNoMoreInteraction here @ 16.03.15
         verify(calendarDataStore).findPerson("personLogin");
         verify(calendarDataStore).addEvent(actualEvent);
 
     }
 
     @Test
+    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testCreateEvent() throws Exception {
 
         // initialize variable inputs
@@ -102,10 +105,12 @@ public class CalendarServiceImplTest {
         assertEquals(expectedValue, Arrays.asList(actualEvent));
 
         // verify mock expectations
+        //local code review (vtegza): no need in this verufy, if expected behave would not be triggered assertation wil fail  @ 16.03.15
         verify(calendarDataStore).findEventsByTitle(actualEvent.getTitle());
     }
 
     @Test
+    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRemoveEvent() throws Exception {
 
         // initialize variable inputs
@@ -156,11 +161,13 @@ public class CalendarServiceImplTest {
         assertEquals(expectedPerson, person);
 
         // verify mock expectations
+        //local code review (vtegza): same as for testSearchEvent @ 16.03.15
         verify(calendarDataStore).findPerson("personLogin");
 
     }
 
     @Test
+    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRegisterPerson() throws Exception {
 
         // initialize variable inputs
@@ -190,6 +197,7 @@ public class CalendarServiceImplTest {
     }
 
     @Test
+    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRemovePerson() throws Exception {
 
         // initialize variable inputs
@@ -220,6 +228,7 @@ public class CalendarServiceImplTest {
     }
 
     @Test
+    //local code review (vtegza): same as for testSearchEvent @ 16.03.15
     public void testCheckIfPersonIsFreeAtCertainTime() throws Exception {
 
         // initialize variable inputs

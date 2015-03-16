@@ -21,6 +21,7 @@ import java.util.*;
 
 @Controller
 @SessionAttributes("myRequestObject")
+//local code review (vtegza): take a look at spring-test in order to implement some module/integration test @ 16.03.15
 public class MainController {
 
     private final CalendarService calendarService;
