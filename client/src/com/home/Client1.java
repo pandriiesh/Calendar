@@ -3,24 +3,24 @@ package com.home;
 import com.home.common.Event;
 import com.home.common.Person;
 import com.home.service.CalendarService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.logging.Logger;
 
-public class ClientMain {
+public class Client1 {
 
-    public static final Logger logger = Logger.getAnonymousLogger();
+    private final Logger logger = Logger.getLogger(Client1.class);
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("clientApplicationContext.xml");
+    private final ApplicationContext context = new ClassPathXmlApplicationContext("clientApplicationContext.xml");
 
-    CalendarService service = (CalendarService) context.getBean("calendarService");
+    private final CalendarService service = (CalendarService) context.getBean("calendarService");
 
     public static void main(String[] args) throws RemoteException {
 
-        ClientMain client = new ClientMain();
+        Client1 client = new Client1();
 
         try {
             client.checkIfPersonFreeAtCertainTime();
@@ -49,7 +49,7 @@ public class ClientMain {
 
         service.registerPerson(pavlo);
 
-        Event beerFest = service.createEvent("Beerfest", Arrays.asList("pabloLogin"));
+        Event beerFest = service.createEvent("Beerfest", Arrays.asList("pavloLogin"));
         beerFest.setDescription("Go to pub and drink beer.");
         beerFest.setStartTime(startTime);
         beerFest.setEndTime(endTime);
@@ -69,9 +69,16 @@ public class ClientMain {
 
         Date certainTime = new Date();
         Date certainTime2 = new Date(new Date().getTime()+4000000);
-        logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime));
-        logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pabloLogin", certainTime2));
 
+        logger.info("Checking if Pablo free at certain time("+certainTime+"): " + service.checkIfPersonIsFreeAtCertainTime("pavloLogin", certainTime));
+        logger.info("Checking if Pablo free at certain time("+certainTime2+"): " + service.checkIfPersonIsFreeAtCertainTime("pavloLogin", certainTime2));
+
+        try {
+            Thread.sleep(1000);
+            service.removePerson(pavlo.getLogin());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -141,7 +148,24 @@ public class ClientMain {
         logger.info(service.findPerson("person1Login").toString());
         logger.info(service.findPerson("person2Login").toString());
         logger.info(service.findPerson("person3Login").toString());
+
+        logger.info("Removing person1, person2, person3...");
+
+        try {
+            Thread.sleep(2000);
+            service.removePerson(person1.getLogin());
+            Thread.sleep(2000);
+            service.removePerson(person2.getLogin());
+            Thread.sleep(2000);
+            service.removePerson(person3.getLogin());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("Removed person1, person2, person3.");
+
     }
+
 
 
 

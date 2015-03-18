@@ -2,17 +2,21 @@ package com.home.datastore;
 
 import com.home.common.Event;
 import com.home.common.EventAdapter;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.File;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
-public class EventDownloaderThread implements Runnable {
+public class EventDownloaderThread implements Callable<Boolean> {
 
     private final File file;
     private final Event event;
+    private final Logger logger = Logger.getLogger(EventDownloaderThread.class);
 
     public EventDownloaderThread(File file, Event event) {
         this.file = file;
@@ -20,7 +24,7 @@ public class EventDownloaderThread implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         try {
             JAXBContext context = JAXBContext.newInstance(EventAdapter.class);
             Marshaller marshaller = context.createMarshaller();
@@ -29,10 +33,15 @@ public class EventDownloaderThread implements Runnable {
             EventAdapter eventAdapter = new EventAdapter(event);
             marshaller.marshal(eventAdapter, file);
 
+            logger.info("Event " + file.getAbsolutePath() + " downloaded successfully");
+
+            return Boolean.TRUE;
+
         } catch (PropertyException e) {
-            e.printStackTrace();
+            logger.warn("Event " + file.getAbsolutePath() + " downloading error: PropertyException", e);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.warn("Event " + file.getAbsolutePath() + " downloading error: JAXBException", e);
         }
+        return Boolean.FALSE;
     }
 }

@@ -2,21 +2,15 @@ package com.home.datastore;
 
 import com.home.common.Event;
 import com.home.common.Person;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class CalendarDataStoreImpl implements CalendarDataStore {
 
@@ -24,19 +18,24 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     private final Map<String, Person> personStore;
     private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
     private final ExecutorService executor;
-
+    private final Logger logger = Logger.getLogger(CalendarDataStoreImpl.class);
 
     public CalendarDataStoreImpl() {
         eventStore = new ConcurrentHashMap<UUID, Event>();
         personStore = new ConcurrentHashMap<String, Person>();
-        executor = Executors.newFixedThreadPool(10);;
-
+        executor = new ThreadPoolExecutor(10, 100, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());;
 
         Path path = Paths.get(pathToXMLDataStore);
 
         try {
-            //local code review (vtegza): check if all loading is finished and print information message @ 16.03.15
-            Files.walkFileTree(path, new JAXBFileVisitor(eventStore, personStore));
+            logger.info("Loading files...");
+
+            JAXBFileVisitor fileVisitor = new JAXBFileVisitor(eventStore, personStore);
+            Files.walkFileTree(path, fileVisitor);
+
+            logger.info("Loading complete: " + fileVisitor.getCountOfUploadedFiles() +
+                    " files were uploaded from disk storage");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +44,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void addEvent(Event event) {
-
         for (String personLogin : event.getAttenders()) {
             Person person = findPerson(personLogin);
 
@@ -56,32 +54,43 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         }
 
         File file = new File(pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml");
-        executor.submit(new EventDownloaderThread(file, event));
-//        new Thread(new EventDownloaderThread(file, event)).start();
+
+        Callable<Boolean> thread = new EventDownloaderThread(file, event);
+        Future future = executor.submit(thread);
+
+        try {
+            future.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         eventStore.put(event.getId(), event);
     }
 
     @Override
     public void removeEvent(Event event) {
-        if(eventStore.containsKey(event.getId())) {
+        if (eventStore.containsKey(event.getId())) {
             String filePath = pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml";
 
             try {
                 Files.delete(new File(filePath).toPath());
+                logger.info("Event " + filePath + " removed");
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Removing event " + filePath + " failed");
             }
 
             List<String> attenders = event.getAttenders();
-            for(String personLogin : attenders) {
+            for (String personLogin : attenders) {
                 Person person = personStore.get(personLogin);
                 registerOrOverridePersonIfExists(person);
             }
 
             eventStore.remove(event.getId());
-
         }
     }
+
 
     @Override
     public boolean removeEventById(String id) {
@@ -91,10 +100,10 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             return false;
         }
 
-        for(Map.Entry<String, Person> entry : personStore.entrySet()) {
+        for (Map.Entry<String, Person> entry : personStore.entrySet()) {
             List<String> eventList = entry.getValue().getEvents();
 
-            if(eventList.contains(id)) {
+            if (eventList.contains(id)) {
                 entry.getValue().removeEventFromPerson(id);
                 eventRemoved = true;
             }
@@ -223,21 +232,30 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     private void registerOrOverridePersonIfExists(Person person) {
 
         File file = new File(pathToXMLDataStore + "PersonDataStore/person_" + person.getLogin() + ".xml");
-        executor.submit(new PersonDownloaderThread(file, person));
-//        new Thread(new PersonDownloaderThread(file, person)).start();
+
+        Callable<Boolean> thread = new PersonDownloaderThread(file, person);
+        Future future = executor.submit(thread);
+
+        try {
+            future.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         personStore.put(person.getLogin(), person);
     }
 
     @Override
     public void removePerson(String personLogin) {
-        System.out.println("Removing " + personLogin);
         String filePath = pathToXMLDataStore + "PersonDataStore/person_" + personLogin + ".xml";
 
         try {
             Files.delete(new File(filePath).toPath());
+            logger.info("Person " + filePath + " removed");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Removing person " + filePath + " failed", e);
         }
 
         Person person = personStore.get(personLogin);

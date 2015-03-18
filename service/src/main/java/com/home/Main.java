@@ -1,19 +1,21 @@
 package com.home;
 
-import org.springframework.context.ApplicationContext;
+import org.apache.log4j.Logger;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.rmi.RemoteException;
-import java.util.logging.Logger;
+
 
 public class Main {
 
-    public static final Logger logger = Logger.getAnonymousLogger();
+    public static final Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) throws RemoteException {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
+        context.registerShutdownHook();
+
         logger.info("Service started");
-        //local code review (vtegza): use (ClassPathXmlApplicationContext)context.registerShutdownHook for grace shutdown @ 16.03.15
     }
 }

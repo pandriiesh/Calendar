@@ -2,18 +2,20 @@ package com.home.datastore;
 
 import com.home.common.Person;
 import com.home.common.PersonAdapter;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.File;
+import java.util.concurrent.Callable;
 
-public class PersonDownloaderThread implements Runnable {
+public class PersonDownloaderThread implements Callable<Boolean> {
 
-    //local code review (vtegza): should be final @ 16.03.15
-    private File file;
-    private Person person;
+    private final File file;
+    private final Person person;
+    private final Logger logger = Logger.getLogger(PersonDownloaderThread.class);
 
     public PersonDownloaderThread(File file, Person person) {
         this.file = file;
@@ -21,7 +23,7 @@ public class PersonDownloaderThread implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         try {
             JAXBContext context = JAXBContext.newInstance(PersonAdapter.class);
             Marshaller marshaller = context.createMarshaller();
@@ -30,11 +32,15 @@ public class PersonDownloaderThread implements Runnable {
             PersonAdapter personAdapter = new PersonAdapter(person);
             marshaller.marshal(personAdapter, file);
 
-            //local code review (vtegza): take a look at loggers (log4j for instance) @ 16.03.15
+            logger.info("Person " + file.getAbsolutePath() + " downloaded successfully");
+
+            return Boolean.TRUE;
+
         } catch (PropertyException e) {
-            e.printStackTrace();
+            logger.warn("Person " + file.getAbsolutePath() + " downloading error: PropertyException", e);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.warn("Person " + file.getAbsolutePath() + " downloading error: JAXBException", e);
         }
+        return Boolean.FALSE;
     }
 }

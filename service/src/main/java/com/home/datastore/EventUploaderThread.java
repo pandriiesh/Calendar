@@ -2,6 +2,7 @@ package com.home.datastore;
 
 import com.home.common.Event;
 import com.home.common.EventAdapter;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -9,11 +10,14 @@ import javax.xml.bind.Unmarshaller;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
-public class EventUploaderThread implements Runnable {
+public class EventUploaderThread implements Callable<Boolean> {
 
     private final Map<UUID, Event> eventStore;
     private final Path path;
+    Logger logger = Logger.getLogger(EventUploaderThread.class);
+
 
     public EventUploaderThread(Path path, Map<UUID, Event> eventStore) {
         this.path = path;
@@ -21,7 +25,7 @@ public class EventUploaderThread implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         try {
 
             JAXBContext context = JAXBContext.newInstance(EventAdapter.class);
@@ -30,8 +34,13 @@ public class EventUploaderThread implements Runnable {
             EventAdapter eventAdapter = (EventAdapter) unmarshaller.unmarshal(path.toFile());
             eventStore.put(eventAdapter.getId(), eventAdapter.asEvent());
 
+            logger.info("Event " + path.toString() + " uploaded successfully");
+
+            return Boolean.TRUE;
+
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.warn("Person " + path.toString() + " upload error:", e);
         }
+        return Boolean.FALSE;
     }
 }
