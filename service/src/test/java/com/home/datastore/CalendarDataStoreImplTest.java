@@ -4,10 +4,7 @@ import com.home.common.Event;
 import com.home.common.Person;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -17,8 +14,12 @@ public class CalendarDataStoreImplTest {
     public void testAddEvent() throws Exception {
 
         // initialize variable inputs
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
         Event actualEvent = new Event();
         actualEvent.setTitle("Event");
+        actualEvent.setAttenders(Arrays.asList(person.getLogin()));
 
         // initialize mocks
 
@@ -26,6 +27,7 @@ public class CalendarDataStoreImplTest {
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
         // invoke method on class to test
+        calendarDataStore.registerPerson(person);
         calendarDataStore.addEvent(actualEvent);
 
         // assert return value
@@ -33,6 +35,7 @@ public class CalendarDataStoreImplTest {
 
         assertEquals(expectedEvents, Arrays.asList(actualEvent));
 
+        calendarDataStore.removePerson(person.getLogin());
         // verify mock expectations
 
     }
@@ -40,18 +43,31 @@ public class CalendarDataStoreImplTest {
     @Test
     public void testCreateEvent() throws Exception {
         // initialize variable inputs
+        Person person1 = new Person();
+        person1.setLogin(UUID.randomUUID().toString());
+
+        Person person2 = new Person();
+        person2.setLogin(UUID.randomUUID().toString());
+
+        Person person3 = new Person();
+        person3.setLogin(UUID.randomUUID().toString());
 
         // initialize mocks
 
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        calendarDataStore.registerPerson(person1);
+        calendarDataStore.registerPerson(person2);
+        calendarDataStore.registerPerson(person3);
 
         // invoke method on class to test
         Event actualEvent = calendarDataStore.createEvent("Event",
-                Arrays.asList("mail1@gmail.com", "mail2@gmail.com", "mail3@gmail.com"));
+                Arrays.asList(person1.getLogin(), person2.getLogin(), person3.getLogin()));
+
         calendarDataStore.addEvent(actualEvent);
 
-        List<Event> expectedEvents = calendarDataStore.findEventsByTitle(actualEvent.getTitle());
+        List<Event> expectedEvents = calendarDataStore.findEventsById(actualEvent.getId().toString());
 
         // assert return value
 
@@ -59,15 +75,22 @@ public class CalendarDataStoreImplTest {
 
         // verify mock expectations
 
+        calendarDataStore.removePerson(person1.getLogin());
+        calendarDataStore.removePerson(person2.getLogin());
+        calendarDataStore.removePerson(person3.getLogin());
 
     }
 
     @Test
-    public void testSearchEvent() throws Exception {
+    public void testFindEventsByTitle() throws Exception {
 
         // initialize variable inputs
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
         Event actualEvent = new Event();
         actualEvent.setTitle("Event");
+        actualEvent.setAttenders(Arrays.asList(person.getLogin()));
 
         // initialize mocks
 
@@ -75,22 +98,29 @@ public class CalendarDataStoreImplTest {
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
         // invoke method on class to test
+        calendarDataStore.registerPerson(person);
         calendarDataStore.addEvent(actualEvent);
+
         List<Event> expectedEvents = calendarDataStore.findEventsByTitle(actualEvent.getTitle());
 
         // assert return value
-        assertEquals(expectedEvents, Arrays.asList(actualEvent));
+        assertTrue(expectedEvents.containsAll(Arrays.asList(actualEvent)));
 
         // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
 
     }
 
     @Test
-    public void testRemoveEvent() throws Exception {
+    public void testRemoveEventById() throws Exception {
 
         // initialize variable inputs
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
         Event actualEvent = new Event();
         actualEvent.setTitle("Event");
+        actualEvent.setAttenders(Arrays.asList(person.getLogin()));
 
         // initialize mocks
 
@@ -98,19 +128,22 @@ public class CalendarDataStoreImplTest {
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
         // invoke method on class to test
+        calendarDataStore.registerPerson(person);
         calendarDataStore.addEvent(actualEvent);
-        calendarDataStore.removeEvent(actualEvent);
+        calendarDataStore.removeEventById(actualEvent.getId().toString());
 
         // assert return value
-        assertEquals(new ArrayList(), calendarDataStore.findEventsByTitle(actualEvent.getTitle()));
+        assertEquals(new ArrayList(), calendarDataStore.findEventsById(actualEvent.getId().toString()));
 
         // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
     }
 
     @Test
     public void testFindPerson() throws Exception {
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
 
         // initialize mocks
 
@@ -125,6 +158,7 @@ public class CalendarDataStoreImplTest {
         assertEquals(person, expectedPerson);
 
         // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
 
     }
 
@@ -132,6 +166,7 @@ public class CalendarDataStoreImplTest {
     public void testRegisterPerson() throws Exception {
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
 
         // initialize mocks
 
@@ -145,12 +180,15 @@ public class CalendarDataStoreImplTest {
         assertEquals(person, calendarDataStore.findPerson(person.getLogin()));
 
         // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
     }
 
     @Test
     public void testRemovePerson() throws Exception {
+
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
 
         // initialize mocks
 
@@ -173,13 +211,14 @@ public class CalendarDataStoreImplTest {
 
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
         Date startTime = new Date(new Date().getTime() - 3600000);
         Date endTime = new Date(new Date().getTime() + 3600000);
-        Event event = new Event();
         event.setStartTime(startTime);
         event.setEndTime(endTime);
-
-        person.addEventToPerson(event.getId().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
 
         Date checkedTime = new Date();
 
@@ -188,6 +227,7 @@ public class CalendarDataStoreImplTest {
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
         calendarDataStore.registerPerson(person);
+        calendarDataStore.addEvent(event);
 
         // invoke method on class to test
         boolean checked = calendarDataStore.checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
@@ -196,6 +236,7 @@ public class CalendarDataStoreImplTest {
         assertFalse(checked);
 
         // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
 
     }
 
@@ -208,16 +249,16 @@ public class CalendarDataStoreImplTest {
         final long INTERVAL = 15*60*1000;
 
         Person person1 = new Person();
-        person1.setLogin("person1Login");
+        person1.setLogin(UUID.randomUUID().toString());
         Date event1EndTime = new Date(NOW_TIME.getTime()+2*60*60*1000 - 60*1000);
 
         Person person2 = new Person();
-        person2.setLogin("person2Login");
+        person2.setLogin(UUID.randomUUID().toString());
         Date event2StartTime = new Date(NOW_TIME.getTime()+60*60*1000);
         Date event2EndTime = new Date(NOW_TIME.getTime()+3*60*60*1000 - 60*1000);
 
         Person person3 = new Person();
-        person3.setLogin("person3Login");
+        person3.setLogin(UUID.randomUUID().toString());
         Date event3StartTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
         Date event3EndTime = new Date(NOW_TIME.getTime() + 4*60*60*1000 - 60*1000);
 
@@ -244,10 +285,6 @@ public class CalendarDataStoreImplTest {
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
 
-        person1.addEventToPerson(event1.getId().toString());
-        person2.addEventToPerson(event2.getId().toString());
-        person3.addEventToPerson(event3.getId().toString());
-
         calendarDataStore.registerPerson(person1);
         calendarDataStore.registerPerson(person2);
         calendarDataStore.registerPerson(person3);
@@ -258,12 +295,15 @@ public class CalendarDataStoreImplTest {
 
         // invoke method on class to test
         Date calculatedTime = calendarDataStore.findBestTimePeriodToCreateEventForUsers(1,
-                Arrays.asList("person1Login", "person2Login", "person3Login"));
+                Arrays.asList(person1.getLogin(), person2.getLogin(), person3.getLogin()));
 
         // assert return value
         assertEquals(expectedTime, calculatedTime);
 
         // verify mock expectations
+        calendarDataStore.removePerson(person1.getLogin());
+        calendarDataStore.removePerson(person2.getLogin());
+        calendarDataStore.removePerson(person3.getLogin());
 
     }
 
@@ -271,26 +311,25 @@ public class CalendarDataStoreImplTest {
     public void testFindPersonsEventsAtCertainTime() throws Exception {
 
         // initialize variable inputs
+        final Date eventStartTime = new Date();
+        final Date eventEndTime = new Date(eventStartTime.getTime()+2*60*60*1000);
+        final Date checkTime = new Date(eventStartTime.getTime()+60*60*1000);
+
         Person person = new Person();
-        final Date NOW_TIME = new Date();
-        Date checkTime = new Date(NOW_TIME.getTime()+60*60*1000);
-
-        person.setLogin("personLogin");
-
-        Date eventEndTime = new Date(NOW_TIME.getTime()+2*60*60*1000);
+        person.setLogin(UUID.randomUUID().toString());
 
         Event event1 = new Event();
-        event1.setStartTime(NOW_TIME);
+        event1.setStartTime(eventStartTime);
         event1.setEndTime(eventEndTime);
         event1.setAttenders(Arrays.asList(person.getLogin()));
 
         Event event2 = new Event();
-        event2.setStartTime(NOW_TIME);
+        event2.setStartTime(eventStartTime);
         event2.setEndTime(eventEndTime);
         event2.setAttenders(Arrays.asList(person.getLogin()));
 
         Event event3 = new Event();
-        event3.setStartTime(NOW_TIME);
+        event3.setStartTime(eventStartTime);
         event3.setEndTime(eventEndTime);
         event3.setAttenders(Arrays.asList(person.getLogin()));
 
@@ -299,10 +338,6 @@ public class CalendarDataStoreImplTest {
 
         // initialize class to test
         CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
-
-        person.addEventToPerson(event1.getId().toString());
-        person.addEventToPerson(event2.getId().toString());
-        person.addEventToPerson(event3.getId().toString());
 
         calendarDataStore.registerPerson(person);
 
@@ -317,6 +352,6 @@ public class CalendarDataStoreImplTest {
         assertEquals(expectedEventList, eventList);
 
         // verify mock expectations
-
+        calendarDataStore.removePerson(person.getLogin());
     }
 }

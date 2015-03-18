@@ -10,8 +10,6 @@ public interface CalendarDataStore {
 
     void addEvent(Event event);
 
-    void removeEvent(Event event);
-
     boolean removeEventById(String id);
 
     Event createEvent(String title, List<String> attendersLogins);

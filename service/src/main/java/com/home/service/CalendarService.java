@@ -12,8 +12,6 @@ public interface CalendarService extends Remote {
 
     void addEvent(Event event) throws RemoteException;
 
-    void removeEvent(Event event) throws RemoteException;
-
     boolean removeEventById(String id) throws RemoteException;
 
     Event createEvent(String title, List<String> attendersEmails) throws RemoteException;

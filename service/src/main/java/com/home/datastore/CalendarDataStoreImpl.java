@@ -69,8 +69,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         eventStore.put(event.getId(), event);
     }
 
-    @Override
-    public void removeEvent(Event event) {
+    private void removeEvent(Event event) {
         if (eventStore.containsKey(event.getId())) {
             String filePath = pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml";
 

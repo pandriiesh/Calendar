@@ -33,7 +33,7 @@ public class EventDownloaderThread implements Callable<Boolean> {
             EventAdapter eventAdapter = new EventAdapter(event);
             marshaller.marshal(eventAdapter, file);
 
-            logger.info("Event " + file.getAbsolutePath() + " downloaded successfully");
+            logger.info("Event " + file.getAbsolutePath() + " downloaded");
 
             return Boolean.TRUE;
 

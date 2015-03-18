@@ -107,7 +107,7 @@ public class CalendarServiceImplTest {
     }
 
     @Test
-    public void testRemoveEvent() throws Exception {
+    public void testRemoveEventById() throws Exception {
 
         // initialize variable inputs
         Event actualEvent = new Event();
@@ -116,7 +116,7 @@ public class CalendarServiceImplTest {
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
 
-        doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).removeEvent(actualEvent);
+        doThrow(new RuntimeException("Void method testing")).when(calendarDataStore).removeEventById(actualEvent.getId().toString());
 
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
@@ -125,12 +125,12 @@ public class CalendarServiceImplTest {
         // assert return value
 
         try {
-            calendarService.removeEvent(actualEvent);
+            calendarService.removeEventById(actualEvent.getId().toString());
             fail("Exception should be thrown");
 
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Void method testing");
-            verify(calendarDataStore).removeEvent(actualEvent);
+            verify(calendarDataStore).removeEventById(actualEvent.getId().toString());
         }
 
         // verify mock expectations

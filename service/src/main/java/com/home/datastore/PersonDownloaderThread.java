@@ -32,7 +32,7 @@ public class PersonDownloaderThread implements Callable<Boolean> {
             PersonAdapter personAdapter = new PersonAdapter(person);
             marshaller.marshal(personAdapter, file);
 
-            logger.info("Person " + file.getAbsolutePath() + " downloaded successfully");
+            logger.info("Person " + file.getAbsolutePath() + " downloaded");
 
             return Boolean.TRUE;
 

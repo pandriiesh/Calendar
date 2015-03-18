@@ -47,11 +47,6 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void removeEvent(Event event) {
-        calendarDataStore.removeEvent(event);
-    }
-
-    @Override
     public boolean removeEventById(String id) throws RemoteException {
         return calendarDataStore.removeEventById(id);
     }
