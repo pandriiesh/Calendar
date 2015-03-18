@@ -9,7 +9,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.File;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 
 public class EventDownloaderThread implements Callable<Boolean> {

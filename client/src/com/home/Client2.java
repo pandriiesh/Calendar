@@ -1,9 +1,7 @@
 package com.home;
 
 import com.home.common.Person;
-import com.home.datastore.CalendarDataStoreImpl;
 import com.home.service.CalendarService;
-import com.home.service.CalendarServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

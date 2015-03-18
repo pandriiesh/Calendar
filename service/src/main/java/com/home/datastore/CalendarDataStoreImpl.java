@@ -23,7 +23,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
     public CalendarDataStoreImpl() {
         eventStore = new ConcurrentHashMap<UUID, Event>();
         personStore = new ConcurrentHashMap<String, Person>();
-        executor = new ThreadPoolExecutor(10, 100, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());;
+        executor = new ThreadPoolExecutor(10, 100, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
 
         Path path = Paths.get(pathToXMLDataStore);
 

@@ -34,7 +34,7 @@ public class JAXBFileVisitor extends SimpleFileVisitor<Path> {
         if(attrs.isRegularFile()) {
 
             String fileName = path.getFileName().toString();
-            Future future = null;;
+            Future future = null;
 
             if (fileName.startsWith("event_") && fileName.endsWith(".xml")) {
                 future = executorService.submit(new EventUploaderThread(path, eventStore));
