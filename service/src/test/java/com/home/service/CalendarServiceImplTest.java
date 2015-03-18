@@ -10,10 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 public class CalendarServiceImplTest {
 
@@ -42,20 +40,18 @@ public class CalendarServiceImplTest {
 
         try {
             calendarService.addEvent(actualEvent);
-            //local code review (vtegza): fail("exceptionShould be thrown) @ 16.03.15
+            fail("Exception should be thrown");
+
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Void method testing string");
+            verify(calendarDataStore).addEvent(actualEvent);
         }
 
         // verify mock expectations
-        //local code review (vtegza): verify in cacth block and verifyNoMoreInteraction here @ 16.03.15
-        verify(calendarDataStore).findPerson("personLogin");
-        verify(calendarDataStore).addEvent(actualEvent);
-
+        verifyNoMoreInteractions(calendarDataStore);
     }
 
     @Test
-    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testCreateEvent() throws Exception {
 
         // initialize variable inputs
@@ -75,12 +71,15 @@ public class CalendarServiceImplTest {
 
         try {
             calendarService.createEvent(title, attendersEmails);
+            fail("Exception should be thrown");
+
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Void method testing");
+            verify(calendarDataStore).createEvent(title, attendersEmails);
         }
 
         // verify mock expectations
-        verify(calendarDataStore).createEvent(title, attendersEmails);
+        verifyNoMoreInteractions(calendarDataStore);
     }
 
     @Test
@@ -105,12 +104,9 @@ public class CalendarServiceImplTest {
         assertEquals(expectedValue, Arrays.asList(actualEvent));
 
         // verify mock expectations
-        //local code review (vtegza): no need in this verufy, if expected behave would not be triggered assertation wil fail  @ 16.03.15
-        verify(calendarDataStore).findEventsByTitle(actualEvent.getTitle());
     }
 
     @Test
-    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRemoveEvent() throws Exception {
 
         // initialize variable inputs
@@ -130,12 +126,15 @@ public class CalendarServiceImplTest {
 
         try {
             calendarService.removeEvent(actualEvent);
+            fail("Exception should be thrown");
+
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Void method testing");
+            verify(calendarDataStore).removeEvent(actualEvent);
         }
 
         // verify mock expectations
-        verify(calendarDataStore).removeEvent(actualEvent);
+        verifyNoMoreInteractions(calendarDataStore);
 
     }
 
@@ -161,13 +160,9 @@ public class CalendarServiceImplTest {
         assertEquals(expectedPerson, person);
 
         // verify mock expectations
-        //local code review (vtegza): same as for testSearchEvent @ 16.03.15
-        verify(calendarDataStore).findPerson("personLogin");
-
     }
 
     @Test
-    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRegisterPerson() throws Exception {
 
         // initialize variable inputs
@@ -186,22 +181,25 @@ public class CalendarServiceImplTest {
         // invoke method on class to test
         try {
             calendarService.registerPerson(person);
+            fail("Exception should be thrown");
+
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), tobeThrown.getMessage());
+            verify(calendarDataStore).registerPerson(person);
         }
 
         // assert return value
 
         // verify mock expectations
-        verify(calendarDataStore).registerPerson(person);
+        verifyNoMoreInteractions(calendarDataStore);
     }
 
     @Test
-    //local code review (vtegza): same as in testAddEvent @ 16.03.15
     public void testRemovePerson() throws Exception {
 
         // initialize variable inputs
         Person person = new Person();
+        person.setLogin("personLogin");
 
         // initialize mocks
         CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
@@ -213,22 +211,22 @@ public class CalendarServiceImplTest {
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
         // invoke method on class to test
-        calendarService.registerPerson(person);
-
         try {
             calendarService.removePerson(person.getLogin());
+            fail("Exception should be thrown");
+
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), tobeThrown.getMessage());
+            verify(calendarDataStore).removePerson(person.getLogin());
         }
 
         // assert return value
 
         // verify mock expectations
-        verify(calendarDataStore).removePerson(person.getLogin());
+        verifyNoMoreInteractions(calendarDataStore);
     }
 
     @Test
-    //local code review (vtegza): same as for testSearchEvent @ 16.03.15
     public void testCheckIfPersonIsFreeAtCertainTime() throws Exception {
 
         // initialize variable inputs
@@ -260,7 +258,6 @@ public class CalendarServiceImplTest {
         assertEquals(false, value);
 
         // verify mock expectations
-        verify(calendarDataStore).checkIfPersonIsFreeAtCertainTime(person.getLogin(), checkedTime);
     }
 
     @Test
@@ -336,44 +333,6 @@ public class CalendarServiceImplTest {
         // initialize class to test
         CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
 
-        //local code review (vtegza): should be called from separated test method @ 09.03.15
-        // invoke method on class to test
-        try {
-            calendarService.registerPerson(person1);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "register person1");
-        }
-
-        try {
-            calendarService.registerPerson(person2);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "register person2");
-        }
-
-        try {
-            calendarService.registerPerson(person3);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "register person3");
-        }
-
-        try {
-            calendarService.addEvent(event1);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "add event 1");
-        }
-
-        try {
-            calendarService.addEvent(event2);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "add event 2");
-        }
-
-        try {
-            calendarService.addEvent(event3);
-        } catch (RuntimeException e) {
-            assertEquals(e.getMessage(), "add event 3");
-        }
-
         // invoke method on class to test
         Date calculatedTime = calendarService.findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));
@@ -382,16 +341,10 @@ public class CalendarServiceImplTest {
         assertEquals(expectedTime, calculatedTime);
 
         // verify mock expectations
-        verify(calendarDataStore).registerPerson(person1);
-        verify(calendarDataStore).registerPerson(person2);
-        verify(calendarDataStore).registerPerson(person3);
-
-        verify(calendarDataStore).addEvent(event1);
-        verify(calendarDataStore).addEvent(event2);
-        verify(calendarDataStore).addEvent(event3);
-
         verify(calendarDataStore).findBestTimePeriodToCreateEventForUsers(1,
                 Arrays.asList("person1Login", "person2Login", "person3Login"));
+
+        verifyNoMoreInteractions(calendarDataStore);
 
     }
 
