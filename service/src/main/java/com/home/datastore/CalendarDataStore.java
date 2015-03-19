@@ -35,4 +35,6 @@ public interface CalendarDataStore {
     Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins);
 
     List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date);
+
+    void addPeriodicEvent(Event event, Period period, int quantity);
 }

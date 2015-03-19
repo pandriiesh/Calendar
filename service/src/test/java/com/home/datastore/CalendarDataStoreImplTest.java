@@ -354,4 +354,132 @@ public class CalendarDataStoreImplTest {
         // verify mock expectations
         calendarDataStore.removePerson(person.getLogin());
     }
+
+    @Test
+    public void testAddYearlyPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.addPeriodicEvent(event, Period.YEAR, quantity);
+
+        List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
+
+        // assert return value
+        assertEquals(quantity+1, returnedValue.size());
+
+        // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
+    }
+
+    @Test
+    public void testAddMonthlyPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.addPeriodicEvent(event, Period.MONTH, quantity);
+
+        List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
+
+        // assert return value
+        assertEquals(quantity+1, returnedValue.size());
+
+        // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
+    }
+
+    @Test
+    public void testAddWeeklyPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.addPeriodicEvent(event, Period.WEEK, quantity);
+
+        List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
+
+        // assert return value
+        assertEquals(quantity+1, returnedValue.size());
+
+        // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
+    }
+
+    @Test
+    public void testAddDailyPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.addPeriodicEvent(event, Period.DAY, quantity);
+
+        List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
+
+        // assert return value
+        assertEquals(quantity+1, returnedValue.size());
+
+        // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
+    }
 }

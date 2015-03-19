@@ -381,4 +381,109 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
         return eventList;
     }
+
+    @Override
+    public void addPeriodicEvent(Event event, Period period, int quantity) {
+
+        addEvent(event);
+
+        switch(period) {
+
+            case YEAR:
+                for (int i=1; i<=quantity; i++) {
+                    Event nextEvent = new Event(event);
+
+                    Calendar calStart = Calendar.getInstance();
+                    calStart.setTime(nextEvent.getStartTime());
+                    calStart.add(Calendar.YEAR, i);
+                    Date startDate = calStart.getTime();
+
+                    Calendar calEnd = Calendar.getInstance();
+                    calEnd.setTime(nextEvent.getEndTime());
+                    calEnd.add(Calendar.YEAR, i);
+                    Date endDate = calEnd.getTime();
+
+                    nextEvent.setStartTime(startDate);
+                    nextEvent.setEndTime(endDate);
+
+                    addEvent(nextEvent);
+                    System.out.println(startDate);
+                    System.out.println(endDate);
+                }
+                break;
+
+
+            case MONTH:
+                for (int i=1; i<=quantity; i++) {
+                    Event nextEvent = new Event(event);
+
+                    Calendar calStart = Calendar.getInstance();
+                    calStart.setTime(nextEvent.getStartTime());
+                    calStart.add(Calendar.MONTH, i);
+                    Date startDate = calStart.getTime();
+
+                    Calendar calEnd = Calendar.getInstance();
+                    calEnd.setTime(nextEvent.getEndTime());
+                    calEnd.add(Calendar.MONTH, i);
+                    Date endDate = calEnd.getTime();
+
+                    nextEvent.setStartTime(startDate);
+                    nextEvent.setEndTime(endDate);
+
+                    addEvent(nextEvent);
+                    System.out.println(startDate);
+                    System.out.println(endDate);
+                }
+                break;
+
+
+            case WEEK:
+                for (int i=1; i<=quantity; i++) {
+                    Event nextEvent = new Event(event);
+
+                    Calendar calStart = Calendar.getInstance();
+                    calStart.setTime(nextEvent.getStartTime());
+                    calStart.add(Calendar.WEEK_OF_YEAR, i);
+                    Date startDate = calStart.getTime();
+
+                    Calendar calEnd = Calendar.getInstance();
+                    calEnd.setTime(nextEvent.getEndTime());
+                    calEnd.add(Calendar.WEEK_OF_YEAR, i);
+                    Date endDate = calEnd.getTime();
+
+                    nextEvent.setStartTime(startDate);
+                    nextEvent.setEndTime(endDate);
+
+                    addEvent(nextEvent);
+                    System.out.println(startDate);
+                    System.out.println(endDate);
+                }
+                break;
+
+
+            case DAY:
+                for (int i=1; i<=quantity; i++) {
+                    Event nextEvent = new Event(event);
+
+                    Calendar calStart = Calendar.getInstance();
+                    calStart.setTime(nextEvent.getStartTime());
+                    calStart.add(Calendar.DAY_OF_YEAR, i);
+                    Date startDate = calStart.getTime();
+
+                    Calendar calEnd = Calendar.getInstance();
+                    calEnd.setTime(nextEvent.getEndTime());
+                    calEnd.add(Calendar.DAY_OF_YEAR, i);
+                    Date endDate = calEnd.getTime();
+
+                    nextEvent.setStartTime(startDate);
+                    nextEvent.setEndTime(endDate);
+
+                    addEvent(nextEvent);
+                    System.out.println(startDate);
+                    System.out.println(endDate);
+                }
+                break;
+        }
+
+    }
 }
