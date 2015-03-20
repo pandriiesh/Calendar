@@ -494,7 +494,7 @@ public class CalendarDataStoreImplTest {
 
         Event event = new Event();
         event.setStartTime(new Date());
-        event.setTitle(UUID.randomUUID().toString());
+        event.setTitle("My title for test perposes");
         event.setAttenders(Arrays.asList(person.getLogin()));
 
         List<PeriodDayOfWeek> daysList = Arrays.asList(PeriodDayOfWeek.TUESDAY, PeriodDayOfWeek.THURSDAY);
@@ -511,7 +511,7 @@ public class CalendarDataStoreImplTest {
         List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
 
         // assert return value
-        assertEquals(quantity * daysList.size() + 1, returnedValue.size());
+        assertEquals(quantity + 1, returnedValue.size());
 
         // verify mock expectations
         calendarDataStore.removePerson(person.getLogin());

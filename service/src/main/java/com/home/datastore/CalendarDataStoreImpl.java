@@ -384,296 +384,81 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     @Override
     public void addPeriodicEvent(Event event, Period period, int quantity) {
-        System.out.println(event.getStartTime());
-        System.out.println(event.getEndTime());
+
         addEvent(event);
 
-        switch(period) {
+        for (int i = 1; i <= quantity; i++) {
 
-            case YEAR:
-                for (int i=1; i<=quantity; i++) {
-                    Event nextEvent = new Event(event);
+            Event nextEvent = new Event(event);
 
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
+            Calendar calStart = Calendar.getInstance();
+            calStart.setTime(nextEvent.getStartTime());
+
+            Calendar calEnd = Calendar.getInstance();
+            calEnd.setTime(nextEvent.getEndTime());
+
+            switch (period) {
+
+                case YEAR:
                     calStart.add(Calendar.YEAR, i);
-                    Date startDate = calStart.getTime();
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
                     calEnd.add(Calendar.YEAR, i);
-                    Date endDate = calEnd.getTime();
+                    break;
 
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addEvent(nextEvent);
-                }
-                break;
-
-
-            case MONTH:
-                for (int i=1; i<=quantity; i++) {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
+                case MONTH:
                     calStart.add(Calendar.MONTH, i);
-                    Date startDate = calStart.getTime();
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
                     calEnd.add(Calendar.MONTH, i);
-                    Date endDate = calEnd.getTime();
+                    break;
 
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addEvent(nextEvent);
-                }
-                break;
-
-
-            case WEEK:
-                for (int i=1; i<=quantity; i++) {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
+                case WEEK:
                     calStart.add(Calendar.WEEK_OF_YEAR, i);
-                    Date startDate = calStart.getTime();
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
                     calEnd.add(Calendar.WEEK_OF_YEAR, i);
-                    Date endDate = calEnd.getTime();
+                    break;
 
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    System.out.println(startDate);
-                    System.out.println(endDate);
-
-                    addEvent(nextEvent);
-                }
-                break;
-
-
-            case DAY:
-                for (int i=1; i<=quantity; i++) {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
+                case DAY:
                     calStart.add(Calendar.DAY_OF_YEAR, i);
-                    Date startDate = calStart.getTime();
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
                     calEnd.add(Calendar.DAY_OF_YEAR, i);
-                    Date endDate = calEnd.getTime();
+                    break;
+            }
 
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
+            Date startDate = calStart.getTime();
+            Date endDate = calEnd.getTime();
 
-                    addEvent(nextEvent);
-                }
-                break;
+            nextEvent.setStartTime(startDate);
+            nextEvent.setEndTime(endDate);
+
+            addEvent(nextEvent);
         }
     }
-
 
     @Override
     public void addPeriodicEvent(Event event, List<PeriodDayOfWeek> daysList, int quantity) {
 
+        System.out.println(event.getStartTime());
         addEvent(event);
+        List<Integer> daysListValues = new ArrayList<Integer>();
 
-        for (PeriodDayOfWeek period : daysList) {
+        for(PeriodDayOfWeek period : daysList) {
+            daysListValues.add(period.getValue());
+        }
 
-            switch (period) {
 
-                case MONDAY: {
-                    Event nextEvent = new Event(event);
+        Event nextEvent = new Event(event);
 
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTime(nextEvent.getStartTime());
 
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTime(nextEvent.getEndTime());
 
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
+        for (int i = 0; i < quantity; i++) {
+            calStart.add(Calendar.DAY_OF_YEAR, 1);
+            calEnd.add(Calendar.DAY_OF_YEAR, 1);
 
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case TUESDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        }
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case WEDNESDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case THURSDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case FRIDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case SATURDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
-                case SUNDAY: {
-                    Event nextEvent = new Event(event);
-
-                    Calendar calStart = Calendar.getInstance();
-                    calStart.setTime(nextEvent.getStartTime());
-
-                    Calendar calEnd = Calendar.getInstance();
-                    calEnd.setTime(nextEvent.getEndTime());
-
-                    for (int i = 1; i < 8; i++) {
-                        if (calStart.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                            calStart.add(Calendar.DAY_OF_WEEK, 1);
-                            calEnd.add(Calendar.DAY_OF_WEEK, 1);
-                        } else break;
-                    }
-
-                    Date startDate = calStart.getTime();
-                    Date endDate = calEnd.getTime();
-
-                    nextEvent.setStartTime(startDate);
-                    nextEvent.setEndTime(endDate);
-
-                    addPeriodicEvent(nextEvent, Period.WEEK, quantity-1);
-                }
-                break;
-
+            if (daysListValues.contains(calStart.get(Calendar.DAY_OF_WEEK))) {
+                System.out.println(event.getStartTime());
+                addEvent(new Event(nextEvent));
+            } else {
+                i--;
             }
         }
     }

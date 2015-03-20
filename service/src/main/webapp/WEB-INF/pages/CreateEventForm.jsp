@@ -18,11 +18,11 @@
             <tr><td>Start Date/Time*:          </td><td><input type="text" name="startTime"/></td></tr>
             <tr><td>End Date/Time*:            </td><td><input type="text" name="endTime"/></td></tr>
             <tr><td>Attenders**:               </td><td><input type="text" name="attendersLogins"/></td></tr>
-            <%--<tr><td>Make event periodic:       </td></tr>--%>
-            <%--<tr><td><input type="radio" name="periodic" value="year"/>Every year</td></tr>--%>
-            <%--<tr><td><input type="radio" name="periodic" value="month"/>Every month</td></tr>--%>
-            <%--<tr><td><input type="radio" name="periodic" value="week"/>Every week</td></tr>--%>
-            <%--<tr><td><input type="radio" name="periodic" value="day"/>Every day</td></tr>--%>
+            <tr><td>Make event periodic:       </td></tr>
+            <tr><td><input type="radio" name="periodic" value="year"/>Every year</td></tr>
+            <tr><td><input type="radio" name="periodic" value="month"/>Every month</td></tr>
+            <tr><td><input type="radio" name="periodic" value="week"/>Every week</td></tr>
+            <tr><td><input type="radio" name="periodic" value="day"/>Every day</td></tr>
             <%--<tr><td><input type="radio" name="periodic" value="concreteDay"/>Every day of week:</td></tr>--%>
             <%--<tr><td><input type="checkbox" name="monday" value="Monday"/>Monday</td></tr>--%>
             <%--<tr><td><input type="checkbox" name="tuesday" value="Tuesday"/>Tuesday</td></tr>--%>
@@ -31,8 +31,8 @@
             <%--<tr><td><input type="checkbox" name="friday" value="Friday"/>Friday</td></tr>--%>
             <%--<tr><td><input type="checkbox" name="saturday" value="Saturday"/>Saturday</td></tr>--%>
             <%--<tr><td><input type="checkbox" name="sunday" value="Sunday"/>Sunday</td></tr>--%>
-            <%--<tr><td>Events quantity:</td>--%>
-                <%--<td><input type="text" name="eventPeriodicQuantity"/></td></tr>--%>
+            <tr><td>Events quantity:</td>
+                <td><input type="text" name="eventPeriodicQuantity"/></td></tr>
 
         </table>
 
