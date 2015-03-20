@@ -3,6 +3,8 @@ package com.home.service;
 import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
+import com.home.datastore.Period;
+import com.home.datastore.PeriodDayOfWeek;
 
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -84,5 +86,15 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date) throws RemoteException {
         return calendarDataStore.findPersonsEventsAtCertainTime(personLogin, date);
+    }
+
+    @Override
+    public void addPeriodicEvent(Event event, Period period, int quantity) throws RemoteException {
+        calendarDataStore.addPeriodicEvent(event, period, quantity);
+    }
+
+    @Override
+    public void addPeriodicEvent(Event event, List<PeriodDayOfWeek> daysList, int quantity) throws RemoteException {
+        calendarDataStore.addPeriodicEvent(event, daysList, quantity);
     }
 }

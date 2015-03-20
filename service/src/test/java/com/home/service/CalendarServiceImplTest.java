@@ -3,11 +3,14 @@ package com.home.service;
 import com.home.common.Event;
 import com.home.common.Person;
 import com.home.datastore.CalendarDataStore;
+import com.home.datastore.Period;
+import com.home.datastore.PeriodDayOfWeek;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -442,6 +445,85 @@ public class CalendarServiceImplTest {
         verify(calendarDataStore).addEvent(event3);
 
         verify(calendarDataStore).findPersonsEventsAtCertainTime(person.getLogin(), checkTime);
+    }
 
+
+    @Test
+    public void testAddPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        // initialize mocks
+        CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
+
+        // initialize class to test
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
+
+        doThrow(new RuntimeException("Must be thrown")).when(calendarDataStore).addPeriodicEvent(event, Period.YEAR, quantity);
+
+        // invoke method on class to test
+        try {
+            calendarService.addPeriodicEvent(event, Period.YEAR, quantity);
+            fail("Exception must be thrown");
+
+        } catch (RuntimeException e) {
+            assertEquals("Must be thrown", e.getMessage());
+        }
+
+        // assert return value
+
+        // verify mock expectations
+        verify(calendarDataStore).addPeriodicEvent(event, Period.YEAR, quantity);
+        verifyNoMoreInteractions(calendarDataStore);
+    }
+
+
+    @Test
+    public void testAddPeriodicEventWithCertainDays() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        List<PeriodDayOfWeek> daysList = Arrays.asList(PeriodDayOfWeek.TUESDAY, PeriodDayOfWeek.FRIDAY);
+
+        // initialize mocks
+        CalendarDataStore calendarDataStore = mock(CalendarDataStore.class);
+
+        // initialize class to test
+        CalendarService calendarService = new CalendarServiceImpl(calendarDataStore);
+
+        doThrow(new RuntimeException("Must be thrown")).when(calendarDataStore).addPeriodicEvent(event, daysList, quantity);
+
+        // invoke method on class to test
+        try {
+            calendarService.addPeriodicEvent(event, daysList, quantity);
+            fail("Exception must be thrown");
+
+        } catch (RuntimeException e) {
+            assertEquals("Must be thrown", e.getMessage());
+        }
+
+        // assert return value
+
+        // verify mock expectations
+        verify(calendarDataStore).addPeriodicEvent(event, daysList, quantity);
+        verifyNoMoreInteractions(calendarDataStore);
     }
 }

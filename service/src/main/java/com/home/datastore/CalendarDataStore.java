@@ -37,4 +37,7 @@ public interface CalendarDataStore {
     List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date);
 
     void addPeriodicEvent(Event event, Period period, int quantity);
+
+    void addPeriodicEvent(Event event, List<PeriodDayOfWeek> daysList, int quantity);
+
 }

@@ -477,9 +477,44 @@ public class CalendarDataStoreImplTest {
         List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
 
         // assert return value
-        assertEquals(quantity+1, returnedValue.size());
+        assertEquals(quantity + 1, returnedValue.size());
 
         // verify mock expectations
         calendarDataStore.removePerson(person.getLogin());
     }
+
+    @Test
+    public void testAddConcreteDaysPeriodicEvent() throws Exception {
+
+        // initialize variable inputs
+        final int quantity = 10;
+
+        Person person = new Person();
+        person.setLogin(UUID.randomUUID().toString());
+
+        Event event = new Event();
+        event.setStartTime(new Date());
+        event.setTitle(UUID.randomUUID().toString());
+        event.setAttenders(Arrays.asList(person.getLogin()));
+
+        List<PeriodDayOfWeek> daysList = Arrays.asList(PeriodDayOfWeek.TUESDAY, PeriodDayOfWeek.THURSDAY);
+
+        // initialize mocks
+
+        // initialize class to test
+        CalendarDataStore calendarDataStore = new CalendarDataStoreImpl();
+
+        // invoke method on class to test
+        calendarDataStore.registerPerson(person);
+        calendarDataStore.addPeriodicEvent(event, daysList, quantity);
+
+        List<Event> returnedValue = calendarDataStore.findEventsByTitle(event.getTitle());
+
+        // assert return value
+        assertEquals(quantity * daysList.size() + 1, returnedValue.size());
+
+        // verify mock expectations
+        calendarDataStore.removePerson(person.getLogin());
+    }
+
 }

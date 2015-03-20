@@ -2,6 +2,8 @@ package com.home.service;
 
 import com.home.common.Event;
 import com.home.common.Person;
+import com.home.datastore.Period;
+import com.home.datastore.PeriodDayOfWeek;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -37,4 +39,9 @@ public interface CalendarService extends Remote {
     Date findBestTimePeriodToCreateEventForUsers(double durationMinutes, List<String> personsLogins) throws RemoteException;
 
     List<Event> findPersonsEventsAtCertainTime(String personLogin, Date date) throws RemoteException;
+
+    void addPeriodicEvent(Event event, Period period, int quantity) throws RemoteException;
+
+    void addPeriodicEvent(Event event, List<PeriodDayOfWeek> daysList, int quantity) throws RemoteException;
+
 }
