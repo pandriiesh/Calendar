@@ -103,14 +103,12 @@ public class EventAdapter {
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Event that = (Event) o;
+    public boolean equals(EventAdapter event) {
+        if (this == event) return true;
+        if (event == null || getClass() != event.getClass()) return false;
 
-        if (!id.equals(that.getId())) return false;
+        if (!id.equals(event.getId())) return false;
 
         return true;
     }

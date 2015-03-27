@@ -23,14 +23,14 @@
             <tr><td><input type="radio" name="periodic" value="month"/>Every month</td></tr>
             <tr><td><input type="radio" name="periodic" value="week"/>Every week</td></tr>
             <tr><td><input type="radio" name="periodic" value="day"/>Every day</td></tr>
-            <%--<tr><td><input type="radio" name="periodic" value="concreteDay"/>Every day of week:</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="monday" value="Monday"/>Monday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="tuesday" value="Tuesday"/>Tuesday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="wednesday" value="Wednesday"/>Wednesday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="thursday" value="Thursday"/>Thrusday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="friday" value="Friday"/>Friday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="saturday" value="Saturday"/>Saturday</td></tr>--%>
-            <%--<tr><td><input type="checkbox" name="sunday" value="Sunday"/>Sunday</td></tr>--%>
+            <tr><td><input type="radio" name="periodic" value="concreteDay"/>Every day of week:</td></tr>
+            <tr><td><input type="checkbox" name="monday" value="Monday"/>Monday</td></tr>
+            <tr><td><input type="checkbox" name="tuesday" value="Tuesday"/>Tuesday</td></tr>
+            <tr><td><input type="checkbox" name="wednesday" value="Wednesday"/>Wednesday</td></tr>
+            <tr><td><input type="checkbox" name="thursday" value="Thursday"/>Thursday</td></tr>
+            <tr><td><input type="checkbox" name="friday" value="Friday"/>Friday</td></tr>
+            <tr><td><input type="checkbox" name="saturday" value="Saturday"/>Saturday</td></tr>
+            <tr><td><input type="checkbox" name="sunday" value="Sunday"/>Sunday</td></tr>
             <tr><td>Events quantity:</td>
                 <td><input type="text" name="eventPeriodicQuantity"/></td></tr>
 

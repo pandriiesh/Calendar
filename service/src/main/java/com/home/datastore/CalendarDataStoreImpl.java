@@ -16,7 +16,7 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
 
     private final Map<UUID, Event> eventStore;
     private final Map<String, Person> personStore;
-    private final String pathToXMLDataStore = "C:/Java/Projects/Calendar2/CalendarXMLDataStore/";
+    private final String pathToXMLDataStore = "./CalendarXMLDataStore/";
     private final ExecutorService executor;
     private final Logger logger = Logger.getLogger(CalendarDataStoreImpl.class);
 
@@ -74,8 +74,9 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
             String filePath = pathToXMLDataStore + "EventDataStore/event_" + event.getId() + ".xml";
 
             try {
-                Files.delete(new File(filePath).toPath());
-                logger.info("Event " + filePath + " removed");
+                File file = new File(filePath);
+                Files.delete(file.toPath());
+                logger.info("Event " + file.getAbsolutePath() + " removed");
             } catch (IOException e) {
                 logger.error("Removing event " + filePath + " failed");
             }
@@ -251,8 +252,9 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         String filePath = pathToXMLDataStore + "PersonDataStore/person_" + personLogin + ".xml";
 
         try {
-            Files.delete(new File(filePath).toPath());
-            logger.info("Person " + filePath + " removed");
+            File file = new File(filePath);
+            Files.delete(file.toPath());
+            logger.info("Person " + file.getAbsolutePath() + " removed");
         } catch (IOException e) {
             logger.error("Removing person " + filePath + " failed", e);
         }
@@ -418,6 +420,8 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
                     calStart.add(Calendar.DAY_OF_YEAR, i);
                     calEnd.add(Calendar.DAY_OF_YEAR, i);
                     break;
+
+                default: break;
             }
 
             Date startDate = calStart.getTime();
@@ -440,7 +444,6 @@ public class CalendarDataStoreImpl implements CalendarDataStore {
         for(PeriodDayOfWeek period : daysList) {
             daysListValues.add(period.getValue());
         }
-
 
         Event nextEvent = new Event(event);
 
